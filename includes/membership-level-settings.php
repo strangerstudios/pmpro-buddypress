@@ -7,7 +7,7 @@
  * Add settings to the edit level page in the dashboard.
  * Fires on the 'pmpro_membership_level_after_other_settings' hook.
  */
-function pmpro_bp_group_creation_level_settings()
+function pmpro_bp_level_settings()
 {	
 	if(isset($_REQUEST['edit']))
 	{
@@ -19,6 +19,9 @@ function pmpro_bp_group_creation_level_settings()
 		$pmpro_bp_restrictions = get_option('pmpro_bp_restrictions_'.$edit);
 		$pmpro_bp_private_messaging = get_option('pmpro_bp_private_messaging_'.$edit);
 		$pmpro_bp_send_friend_request = get_option('pmpro_bp_send_friend_request_'.$edit);
+		$pmpro_bp_group_automatic_add = get_option('pmpro_bp_group_automatic_add_'.$edit);
+		
+		$pmpro_bp_member_types = get_option('pmpro_bp_member_types_'.$edit);
 	}
 	else
 	{
@@ -29,10 +32,12 @@ function pmpro_bp_group_creation_level_settings()
 		$pmpro_bp_restrictions = 0;
 		$pmpro_bp_private_messaging = 0;
 		$pmpro_bp_send_friend_request = 0;
+		$pmpro_bp_group_automatic_add = 0;
+		$pmpro_bp_member_types = 0;
 	}
 
 	?>
-	<h3 class="topborder"> <?php _e('BuddyPress Group Restrictions', 'pmpro');?></h3>
+	<h3 class="topborder"> <?php _e('BuddyPress Restrictions', 'pmpro');?></h3>
 	<table class="form-table">
 		<tbody>
 			<tr>
@@ -130,6 +135,86 @@ function pmpro_bp_group_creation_level_settings()
 				</tr>
 		</tbody>
 		</table>
+	
+		<h3 class="topborder"> <?php _e('BuddyPress Group Membership', 'pmpro');?></h3>
+
+		<?php 
+		//get groups by status
+		$group_type_ids = BP_Groups_Group::get_group_type_ids();
+		$private_group_ids = $group_type_ids['private'];
+		
+		$groups_args = array('include' => $private_group_ids);
+		//$pmpro_bp_group_automatic_add = pmpro_getOption("pmpro_bp_group_automatic_add_".$edit);
+		
+		//if(!is_array($pmpro_bp_group_automatic_add))
+		//		$pmpro_bp_group_automatic_add = explode(",", $pmpro_bp_group_automatic_add);
+		
+		if(empty($pmpro_bp_group_automatic_add))
+			$pmpro_bp_group_automatic_add = array();
+			
+		?>
+		
+		<table id="group_adding" class="form-table">
+		<tbody>
+	
+			<tr>
+				<th scope="row" valign="top"><label for="pmpro_bp_group_automatic_add"><?php _e('Group Automatic Add', 'pmpro');?>:</label></th>
+				<td>
+					<div class="checkbox_box" <?php if(count($private_group_ids) > 10) { ?>style="height: 100px; overflow: auto;"<?php } ?>>
+						<?php
+							global $groups_template;
+		
+							if ( bp_has_groups( $groups_args ) ) {
+								while ( bp_groups() ) {
+									bp_the_group();?>
+									<div class="clickable"><input type="checkbox" id="pmpro_bp_group_automatic_add_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_automatic_add[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_automatic_add)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name?></div> <?php
+								}
+							} ?>
+					</div>
+					<script>
+						jQuery('.checkbox_box input').click(function(event) {
+							event.stopPropagation()
+						});
+						jQuery('.checkbox_box div.clickable').click(function() {
+							var checkbox = jQuery(this).find(':checkbox');
+							checkbox.attr('checked', !checkbox.attr('checked'));
+						});
+					</script>
+			
+				</td>
+			</tr>
+			</tbody>
+		</table>
+		<h3 class="topborder"> <?php _e('BuddyPress Member Types', 'pmpro');?></h3>
+		
+		<?php
+		
+		$registered_member_type_objects = bp_get_member_types( array(), 'objects' );
+	
+		?>
+		
+		
+		<table id="member-types" class="form-table">
+		<tbody>
+	
+			<tr>
+				<th scope="row" valign="top"><label for="pmpro_bp_member_types"><?php _e('Member Types', 'pmpro');?>:</label></th>
+				<td>
+			
+				<select multiple='yes' name='pmpro_bp_member_types[]'> 
+					<?php
+					
+					foreach($registered_member_type_objects as $member_type => $member_type_data)
+					{?>
+						<option value= "<?php echo $member_type;?>" <?php if(is_array($pmpro_bp_member_types) && in_array($member_type, $pmpro_bp_member_types)) echo " selected='selected'";?>" ><?php echo $member_type_data->labels['name'];?></option><?php
+					}
+					?>
+				</select>
+				</td>
+			</tr>
+			</tbody>
+		</table>	
+		
 		
 		<script>
 
@@ -152,14 +237,63 @@ function pmpro_bp_group_creation_level_settings()
 		
 	<?php 
 }
-add_action('pmpro_membership_level_after_other_settings','pmpro_bp_group_creation_level_settings');
+add_action('pmpro_membership_level_after_other_settings','pmpro_bp_level_settings');
+
+
+function pmpro_bp_pmpro_after_change_membership_level($level_id, $user_id, $cancel_level)
+{
+	//Perform any group additions and removals
+	
+	//get their old level groups and remove them
+	$old_groups = get_option('pmpro_bp_group_automatic_add_'.$cancel_level);
+	
+	if(empty($old_groups))
+		$old_groups = array();
+	
+	foreach($old_groups as $group_id)
+	{
+		groups_leave_group($group_id, $user_id);
+	}
+	
+	//then get their new level groups and add them
+	$new_groups = get_option('pmpro_bp_group_automatic_add_'.$level_id);
+	
+	if(empty($new_groups))
+		$new_groups = array();
+	
+	foreach($new_groups as $group_id)
+	{
+		groups_accept_invite($user_id, $group_id);
+	}
+	
+	//Update member types based on level
+	
+	$old_member_types = get_option('pmpro_bp_member_types_'.$cancel_level);
+	$new_member_types = get_option('pmpro_bp_member_types_'.$level_id);
+	
+	if(!empty($old_member_types) && !empty($new_member_types))
+	{
+		foreach($old_member_types as $member_type)
+		{
+			bp_remove_member_type($user_id, $member_type);
+		}
+	
+		foreach($new_member_types as $member_type)
+		{
+			//make sure we can sign up for more than one member type
+			bp_set_member_type($user_id, $member_type, true);
+		}
+	}
+}
+
+add_action('pmpro_after_change_membership_level', 'pmpro_bp_pmpro_after_change_membership_level', 10, 3);
 
 /**
  * Save the settings on the edit membership page of the dashboard.
  * Fires on the 'pmpro_save_membership_level' hook.
  */
 function pmpro_bp_pmpro_save_membership_level($level_id)
-{
+{		
 	if( $level_id <= 0 )
 	{
 		return;
@@ -172,6 +306,8 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 	$pmpro_bp_restrictions = $_REQUEST['pmpro_bp_restrictions'];
 	$pmpro_bp_private_messaging = $_REQUEST['pmpro_bp_private_messaging'];
 	$pmpro_bp_send_friend_request = $_REQUEST['pmpro_bp_send_friend_request'];
+	$pmpro_bp_group_automatic_add = $_REQUEST['pmpro_bp_group_automatic_add'];
+	$pmpro_bp_member_types = $_REQUEST['pmpro_bp_member_types'];
 	
 	update_option('pmpro_bp_group_creation_'.$level_id, $can_create_groups);
 	update_option('pmpro_bp_group_single_viewing_'.$level_id, $can_view_single_group);
@@ -180,5 +316,7 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 	update_option('pmpro_bp_restrictions_'.$level_id, $pmpro_bp_restrictions);
 	update_option('pmpro_bp_private_messaging_'.$level_id, $pmpro_bp_private_messaging);
 	update_option('pmpro_bp_send_friend_request_'.$level_id, $pmpro_bp_send_friend_request);
+	update_option('pmpro_bp_group_automatic_add_'.$level_id, $pmpro_bp_group_automatic_add);
+	update_option('pmpro_bp_member_types_'.$level_id, $pmpro_bp_member_types);
 }
 add_action('pmpro_save_membership_level','pmpro_bp_pmpro_save_membership_level', 10, 1);

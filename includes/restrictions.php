@@ -129,7 +129,7 @@ function pmpro_bp_restrict_group_viewing()
 	}
 }
 
-add_action( 'template_redirect', 'pmpro_bp_restrict_group_viewing' );
+//add_action( 'template_redirect', 'pmpro_bp_restrict_group_viewing' );
 
 function pmpro_bp_restricted_message()
 {
@@ -153,3 +153,118 @@ function pmpro_bp_bp_get_groups_join_button($button_args)
 	
 	return $button_args;
 }
+
+function pmpro_bp_restrict_private_messaging() {
+	
+	global $current_user, $pmpro_pages;
+	
+	$user_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	
+	if($user_level)
+		$pmpro_bp_private_messaging = get_option('pmpro_bp_private_messaging_'.$user_level->ID);
+	
+	if(empty($pmpro_bp_private_messaging) && bp_is_current_component('messages'))
+	{
+		wp_redirect(get_permalink($pmpro_pages['pmprobp_restricted']));
+		exit();
+	}
+}
+add_action('wp','pmpro_bp_restrict_private_messaging');
+
+function pmpro_bp_bp_get_send_message_button_args($args)
+{
+	global $current_user, $pmpro_pages;
+	
+	$user_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	
+	if(!empty($user_level))
+		$pmpro_bp_private_messaging = get_option('pmpro_bp_private_messaging_'.$user_level->ID);
+	
+	if(empty($pmpro_bp_private_messaging))
+	{
+		$args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+	}
+
+	return $args;
+}
+
+add_filter('bp_get_send_message_button_args', 'pmpro_bp_bp_get_send_message_button_args');
+
+/*
+ * RESTRICT PUBLIC MESSAGING
+function pmpro_bp_bp_get_send_public_message_button($args)
+{
+	global $pmpro_pages;
+	
+	$args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+	return $args;
+}
+
+add_filter('bp_get_send_public_message_button', 'pmpro_bp_bp_get_send_public_message_button');
+*/
+
+function pmpro_bp_bp_get_add_friend_button($button)
+{
+	global $current_user, $pmpro_pages;
+	
+	$user_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	
+	$pmpro_bp_send_friend_request = get_option('pmpro_bp_send_friend_request_'.$user_level->ID);
+	
+	if(empty($pmpro_bp_send_friend_request))
+	{
+		$button['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+	}
+
+	return $button;
+}
+
+add_filter('bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button');
+
+
+//http://hookr.io/functions/bp_get_send_message_button/
+//http://buddypress.wp-a2z.org/oik_api/bp_get_add_friend_button/
+//http://buddypress.wp-a2z.org/oik_api/bp_get_send_public_message_button/
+
+function pmpro_bp_lockdown_all_bp()
+{
+	global $pmpro_pages, $post;
+	
+	$level = pmpro_getMembershipLevelForUser();
+	
+	if(!empty($level))
+	{
+		$pmpro_bp_restrictions = get_option('pmpro_bp_restrictions_'.$level->ID);
+	}
+	else
+	{
+		$pmpro_bp_restrictions = null;	
+	}
+	
+	if(($pmpro_bp_restrictions == 1 && is_buddypress()) || ($pmpro_bp_restrictions == null 
+		   && $post->ID != $pmpro_pages['pmprobp_restricted'] && is_buddypress()))
+	{
+		wp_redirect(get_permalink($pmpro_pages['pmprobp_restricted']));
+		exit();
+	}
+
+
+}
+
+//add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
+
+
+function my_function_name()
+{
+	$level = pmpro_getMembershipLevelForUser(bp_displayed_user_id());
+	
+	$show_level = get_option('pmpro_bp_show_level_on_bp_profile');
+	
+	if($show_level == 'yes' && $level)
+	{?>
+		<div class="pmpro_bp_show_level_on_bp_profile">
+			<strong>Membership Level: <?php echo $level->name; ?> </strong>
+		</div><?php
+	}
+}
+add_filter( 'bp_profile_header_meta', 'my_function_name' );
