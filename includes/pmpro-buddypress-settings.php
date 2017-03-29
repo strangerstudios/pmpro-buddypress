@@ -17,8 +17,7 @@ function pmpro_bp_add_admin_menu_page()
 
 add_action('admin_menu', 'pmpro_bp_add_admin_menu_page');
 
-
-//HV TODO: Need clarification on this feature.
+//redirect the Register button from wp-login.php
 function pmpro_bp_registration_pmpro_to_bp_redirect($url)
 {
 	$bp_pages = get_option('bp-pages');
@@ -26,7 +25,7 @@ function pmpro_bp_registration_pmpro_to_bp_redirect($url)
 	$pmpro_bp_register = get_option('pmpro_bp_registration_page');
 	if(!empty($pmpro_bp_register) && $pmpro_bp_register == 'buddypress')
 	{
-		$url = $bp_pages['register'];
+		$url = get_permalink($bp_pages['register']);
 	}
 	
 	return $url;
@@ -40,7 +39,7 @@ function pmpro_bp_buddpress_admin_page()
 	if(!empty($_REQUEST['savesettings']))
 	{
 		update_option('pmpro_bp_registration_page', $_POST['pmpro_bp_register']);
-		update_option('pmpro_bp_show_level_on_bp_profile', $_POST['pmpro_bp_level_profile']) ;
+		update_option('pmpro_bp_show_level_on_bp_profile', $_POST['pmpro_bp_level_profile'], 'no') ;
 	}
 	
     $pmpro_bp_register = get_option('pmpro_bp_registration_page');

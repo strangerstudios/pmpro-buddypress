@@ -18,9 +18,10 @@ function pmpro_bp_level_settings()
 		$can_join_groups = get_option('pmpro_bp_groups_join_'.$edit);
 		$pmpro_bp_restrictions = get_option('pmpro_bp_restrictions_'.$edit);
 		$pmpro_bp_private_messaging = get_option('pmpro_bp_private_messaging_'.$edit);
+		$pmpro_bp_public_messaging = get_option('pmpro_bp_public_messaging_'.$edit);
 		$pmpro_bp_send_friend_request = get_option('pmpro_bp_send_friend_request_'.$edit);
 		$pmpro_bp_group_automatic_add = get_option('pmpro_bp_group_automatic_add_'.$edit);
-		
+		$pmpro_bp_group_can_request_invite = get_option('pmpro_bp_group_can_request_invite_'.$edit);
 		$pmpro_bp_member_types = get_option('pmpro_bp_member_types_'.$edit);
 	}
 	else
@@ -31,8 +32,10 @@ function pmpro_bp_level_settings()
 		$can_join_groups = 0;
 		$pmpro_bp_restrictions = 0;
 		$pmpro_bp_private_messaging = 0;
+		$pmpro_bp_public_messaging = 0;
 		$pmpro_bp_send_friend_request = 0;
 		$pmpro_bp_group_automatic_add = 0;
+		$pmpro_bp_group_can_request_invite = 0;
 		$pmpro_bp_member_types = 0;
 	}
 
@@ -70,8 +73,7 @@ function pmpro_bp_level_settings()
 				</td>
 			</tr>
 				
-				<?php //viewing an individual group setting 
-				?>
+				<?php //viewing an individual group setting ?>
 				<tr>
 				<th scope="row" valign="top"><label for="pmpro_bp_group_single_viewing"><?php _e('Single Group Viewing', 'pmpro');?>:</label></th>
 				<td>
@@ -84,8 +86,7 @@ function pmpro_bp_level_settings()
 					</td>
 				</tr>
 				
-				<?php //viewing the groups page
-				?>
+				<?php //viewing the groups page?>
 				<tr>
 				<th scope="row" valign="top"><label for="pmpro_bp_groups_page_viewing"><?php _e('Groups Page Viewing', 'pmpro');?>:</label></th>
 				<td>
@@ -98,8 +99,7 @@ function pmpro_bp_level_settings()
 					</td>
 				</tr>
 				
-				<?php //can members of this level join groups?
-				?>
+				<?php //can members of this level join groups??>
 				<tr>
 				<th scope="row" valign="top"><label for="pmpro_bp_groups_join"><?php _e('Joining Groups', 'pmpro');?>:</label></th>
 				<td>
@@ -111,7 +111,16 @@ function pmpro_bp_level_settings()
 					<p class="description">Can members of this level join BuddyPress Groups?</p>
 				</td>
 				</tr>
-				
+				<tr>
+				<th scope="row" valign="top"><label for="pmpro_bp_public_messaging"><?php _e('Public Messaging', 'pmpro');?>:</label></th>
+				<td>
+					<select name="pmpro_bp_public_messaging" id="pmpro_bp_public_messaging">
+							<option value= '0' <?php if($pmpro_bp_public_messaging == 0) echo "selected"; ?> >No</option>
+							<option value= '1' <?php if($pmpro_bp_public_messaging == 1) echo "selected"; ?>>Yes</option>
+					</select>
+					<p class="description">Can members of this level send public messages to other members?</p>
+					</td>
+				</tr>
 				<tr>
 				<th scope="row" valign="top"><label for="pmpro_bp_private_messaging"><?php _e('Private Messaging', 'pmpro');?>:</label></th>
 				<td>
@@ -140,17 +149,14 @@ function pmpro_bp_level_settings()
 
 		<?php 
 		//get groups by status
-		$group_type_ids = BP_Groups_Group::get_group_type_ids();
-		$private_group_ids = $group_type_ids['private'];
-		
-		$groups_args = array('include' => $private_group_ids);
-		//$pmpro_bp_group_automatic_add = pmpro_getOption("pmpro_bp_group_automatic_add_".$edit);
-		
-		//if(!is_array($pmpro_bp_group_automatic_add))
-		//		$pmpro_bp_group_automatic_add = explode(",", $pmpro_bp_group_automatic_add);
+		$group_type_ids = BP_Groups_Group::get_group_type_ids();	
+		$group_ids = $group_type_ids['all'];	
+		$groups_args = array('include' => $group_ids, 'per_page' => 0);
 		
 		if(empty($pmpro_bp_group_automatic_add))
 			$pmpro_bp_group_automatic_add = array();
+		if(empty($pmpro_bp_group_can_request_invite))
+			$pmpro_bp_group_can_request_invite = array();
 			
 		?>
 		
@@ -160,14 +166,14 @@ function pmpro_bp_level_settings()
 			<tr>
 				<th scope="row" valign="top"><label for="pmpro_bp_group_automatic_add"><?php _e('Group Automatic Add', 'pmpro');?>:</label></th>
 				<td>
-					<div class="checkbox_box" <?php if(count($private_group_ids) > 10) { ?>style="height: 100px; overflow: auto;"<?php } ?>>
+					<div class="checkbox_box" <?php if(count($group_ids) > 30) { ?>style="height: 300px; overflow: auto;"<?php } ?>>
 						<?php
 							global $groups_template;
 		
 							if ( bp_has_groups( $groups_args ) ) {
 								while ( bp_groups() ) {
 									bp_the_group();?>
-									<div class="clickable"><input type="checkbox" id="pmpro_bp_group_automatic_add_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_automatic_add[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_automatic_add)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name?></div> <?php
+									<div class="clickable"><input type="checkbox" id="pmpro_bp_group_automatic_add_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_automatic_add[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_automatic_add)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name. " (".$groups_template->group->status.")"?></div> <?php
 								}
 							} ?>
 					</div>
@@ -183,6 +189,40 @@ function pmpro_bp_level_settings()
 			
 				</td>
 			</tr>
+			
+			<?php
+				$group_ids = $group_type_ids['private'];
+				$groups_args = array('include' => $group_ids, 'per_page' => 0);
+			?>
+			
+			<tr>
+				<th scope="row" valign="top"><label for="pmpro_bp_group_can_request_invite"><?php _e('Private Group Invite', 'pmpro');?>:</label></th>
+				<td>
+					<div class="checkbox_box" <?php if(count($group_ids) > 30) { ?>style="height: 300px; overflow: auto;"<?php } ?>>
+						<?php
+							global $groups_template;
+		
+							if ( bp_has_groups( $groups_args ) ) {
+								while ( bp_groups() ) {
+									bp_the_group();?>
+									<div class="clickable"><input type="checkbox" id="pmpro_bp_group_can_request_invite_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_can_request_invite[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_can_request_invite)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name. " (".$groups_template->group->status.")"?></div> <?php
+								}
+							} ?>
+					</div>
+					
+					<script>
+						jQuery('.checkbox_box input').click(function(event) {
+							event.stopPropagation()
+						});
+						jQuery('.checkbox_box div.clickable').click(function() {
+							var checkbox = jQuery(this).find(':checkbox');
+							checkbox.attr('checked', !checkbox.attr('checked'));
+						});
+					</script>
+			
+				</td>
+			</tr>			
+			
 			</tbody>
 		</table>
 		<h3 class="topborder"> <?php _e('BuddyPress Member Types', 'pmpro');?></h3>
@@ -215,13 +255,11 @@ function pmpro_bp_level_settings()
 			</tbody>
 		</table>	
 		
-		
 		<script>
-
 			function pmpro_updateBuddyPressTRs()
 			{
 				var specific_features = jQuery('#pmpro_bp_restrictions').val();
-				console.log(specific_features);
+
 				if(specific_features == 2)
 				{
 					jQuery('#specific_features').show();
@@ -304,9 +342,11 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 	$can_view_groups_page = $_REQUEST['pmpro_bp_groups_page_viewing'];
 	$can_join_groups = $_REQUEST['pmpro_bp_groups_join'];
 	$pmpro_bp_restrictions = $_REQUEST['pmpro_bp_restrictions'];
+	$pmpro_bp_public_messaging = $_REQUEST['pmpro_bp_public_messaging'];
 	$pmpro_bp_private_messaging = $_REQUEST['pmpro_bp_private_messaging'];
 	$pmpro_bp_send_friend_request = $_REQUEST['pmpro_bp_send_friend_request'];
 	$pmpro_bp_group_automatic_add = $_REQUEST['pmpro_bp_group_automatic_add'];
+	$pmpro_bp_group_can_request_invite = $_REQUEST['pmpro_bp_group_can_request_invite'];
 	$pmpro_bp_member_types = $_REQUEST['pmpro_bp_member_types'];
 	
 	update_option('pmpro_bp_group_creation_'.$level_id, $can_create_groups);
@@ -315,8 +355,10 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 	update_option('pmpro_bp_groups_join_'.$level_id, $can_join_groups);
 	update_option('pmpro_bp_restrictions_'.$level_id, $pmpro_bp_restrictions);
 	update_option('pmpro_bp_private_messaging_'.$level_id, $pmpro_bp_private_messaging);
+	update_option('pmpro_bp_public_messaging_'.$level_id, $pmpro_bp_public_messaging);
 	update_option('pmpro_bp_send_friend_request_'.$level_id, $pmpro_bp_send_friend_request);
 	update_option('pmpro_bp_group_automatic_add_'.$level_id, $pmpro_bp_group_automatic_add);
+	update_option('pmpro_bp_group_can_request_invite_'.$level_id, $pmpro_bp_group_can_request_invite);
 	update_option('pmpro_bp_member_types_'.$level_id, $pmpro_bp_member_types);
 }
 add_action('pmpro_save_membership_level','pmpro_bp_pmpro_save_membership_level', 10, 1);
