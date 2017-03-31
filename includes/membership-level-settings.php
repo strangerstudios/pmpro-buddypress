@@ -12,17 +12,20 @@ function pmpro_bp_level_settings()
 	if(isset($_REQUEST['edit']))
 	{
 		$edit = $_REQUEST['edit'];
-		$can_create_groups = get_option('pmpro_bp_group_creation_'.$edit);
-		$can_view_single_group = get_option('pmpro_bp_group_single_viewing_'.$edit);
-		$can_view_groups_page = get_option('pmpro_bp_groups_page_viewing_'.$edit);
-		$can_join_groups = get_option('pmpro_bp_groups_join_'.$edit);
-		$pmpro_bp_restrictions = get_option('pmpro_bp_restrictions_'.$edit);
-		$pmpro_bp_private_messaging = get_option('pmpro_bp_private_messaging_'.$edit);
-		$pmpro_bp_public_messaging = get_option('pmpro_bp_public_messaging_'.$edit);
-		$pmpro_bp_send_friend_request = get_option('pmpro_bp_send_friend_request_'.$edit);
-		$pmpro_bp_group_automatic_add = get_option('pmpro_bp_group_automatic_add_'.$edit);
-		$pmpro_bp_group_can_request_invite = get_option('pmpro_bp_group_can_request_invite_'.$edit);
-		$pmpro_bp_member_types = get_option('pmpro_bp_member_types_'.$edit);
+		
+		$pmpro_bp_options = pmpro_bp_getLevelOptions($edit);
+		
+		$can_create_groups				= $pmpro_bp_options['pmpro_bp_group_creation'];
+		$can_view_single_group			= $pmpro_bp_options['pmpro_bp_group_single_viewing'];
+		$can_view_groups_page			= $pmpro_bp_options['pmpro_bp_groups_page_viewing'];
+		$can_join_groups				= $pmpro_bp_options['pmpro_bp_groups_join'];
+		$pmpro_bp_restrictions			= $pmpro_bp_options['pmpro_bp_restrictions'];
+		$pmpro_bp_private_messaging		= $pmpro_bp_options['pmpro_bp_private_messaging'];
+		$pmpro_bp_public_messaging		= $pmpro_bp_options['pmpro_bp_public_messaging'];
+		$pmpro_bp_send_friend_request		= $pmpro_bp_options['pmpro_bp_send_friend_request'];
+		$pmpro_bp_group_automatic_add		= $pmpro_bp_options['pmpro_bp_group_automatic_add'];
+		$pmpro_bp_group_can_request_invite = $pmpro_bp_options['pmpro_bp_group_can_request_invite'];
+		$pmpro_bp_member_types			= $pmpro_bp_options['pmpro_bp_member_types'];
 	}
 	else
 	{
@@ -280,10 +283,12 @@ add_action('pmpro_membership_level_after_other_settings','pmpro_bp_level_setting
 
 function pmpro_bp_pmpro_after_change_membership_level($level_id, $user_id, $cancel_level)
 {
+	$pmpro_bp_options = pmpro_bp_getLevelOptions($level_id);
+	
 	//Perform any group additions and removals
 	
 	//get their old level groups and remove them
-	$old_groups = get_option('pmpro_bp_group_automatic_add_'.$cancel_level);
+	$old_groups = $pmpro_bp_options['pmpro_bp_group_automatic_add'];
 	
 	if(empty($old_groups))
 		$old_groups = array();
@@ -294,7 +299,7 @@ function pmpro_bp_pmpro_after_change_membership_level($level_id, $user_id, $canc
 	}
 	
 	//then get their new level groups and add them
-	$new_groups = get_option('pmpro_bp_group_automatic_add_'.$level_id);
+	$new_groups = $pmpro_bp_options['pmpro_bp_group_automatic_add'];
 	
 	if(empty($new_groups))
 		$new_groups = array();
@@ -305,9 +310,10 @@ function pmpro_bp_pmpro_after_change_membership_level($level_id, $user_id, $canc
 	}
 	
 	//Update member types based on level
+	$pmpro_bp_old_level_options = pmpro_bp_getLevelOptions($cancel_level);
 	
-	$old_member_types = get_option('pmpro_bp_member_types_'.$cancel_level);
-	$new_member_types = get_option('pmpro_bp_member_types_'.$level_id);
+	$old_member_types = $pmpro_bp_old_level_options['pmpro_bp_member_types'];
+	$new_member_types = $pmpro_bp_options['pmpro_bp_member_types'];
 	
 	if(!empty($old_member_types) && !empty($new_member_types))
 	{
@@ -336,7 +342,7 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 	{
 		return;
 	}
-
+		
 	$can_create_groups = $_REQUEST['pmpro_bp_group_creation'];
 	$can_view_single_group = $_REQUEST['pmpro_bp_group_single_viewing'];
 	$can_view_groups_page = $_REQUEST['pmpro_bp_groups_page_viewing'];
@@ -345,20 +351,41 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 	$pmpro_bp_public_messaging = $_REQUEST['pmpro_bp_public_messaging'];
 	$pmpro_bp_private_messaging = $_REQUEST['pmpro_bp_private_messaging'];
 	$pmpro_bp_send_friend_request = $_REQUEST['pmpro_bp_send_friend_request'];
-	$pmpro_bp_group_automatic_add = $_REQUEST['pmpro_bp_group_automatic_add'];
-	$pmpro_bp_group_can_request_invite = $_REQUEST['pmpro_bp_group_can_request_invite'];
-	$pmpro_bp_member_types = $_REQUEST['pmpro_bp_member_types'];
 	
-	update_option('pmpro_bp_group_creation_'.$level_id, $can_create_groups);
-	update_option('pmpro_bp_group_single_viewing_'.$level_id, $can_view_single_group);
-	update_option('pmpro_bp_groups_page_viewing_'.$level_id, $can_view_groups_page);
-	update_option('pmpro_bp_groups_join_'.$level_id, $can_join_groups);
-	update_option('pmpro_bp_restrictions_'.$level_id, $pmpro_bp_restrictions);
-	update_option('pmpro_bp_private_messaging_'.$level_id, $pmpro_bp_private_messaging);
-	update_option('pmpro_bp_public_messaging_'.$level_id, $pmpro_bp_public_messaging);
-	update_option('pmpro_bp_send_friend_request_'.$level_id, $pmpro_bp_send_friend_request);
-	update_option('pmpro_bp_group_automatic_add_'.$level_id, $pmpro_bp_group_automatic_add);
-	update_option('pmpro_bp_group_can_request_invite_'.$level_id, $pmpro_bp_group_can_request_invite);
-	update_option('pmpro_bp_member_types_'.$level_id, $pmpro_bp_member_types);
+	if(isset($_REQUEST['pmpro_bp_group_automatic_add']))
+		$pmpro_bp_group_automatic_add = $_REQUEST['pmpro_bp_group_automatic_add'];
+	else
+		$pmpro_bp_group_automatic_add = false;
+	
+	if(isset($_REQUEST['pmpro_bp_group_can_request_invite']))
+		$pmpro_bp_group_can_request_invite = $_REQUEST['pmpro_bp_group_can_request_invite'];
+	else
+		$pmpro_bp_group_can_request_invite = false;
+	
+	if(isset($_REQUEST['pmpro_bp_member_types']))
+		$pmpro_bp_member_types = $_REQUEST['pmpro_bp_member_types'];
+	else
+		$pmpro_bp_member_types = false;
+		
+	$pmpro_bp_options = array(
+		'pmpro_bp_group_creation'		=> $can_create_groups,
+		'pmpro_bp_group_single_viewing'	=> $can_view_single_group,
+		'pmpro_bp_groups_page_viewing'	=> $can_view_groups_page,
+		'pmpro_bp_groups_join'			=> $can_join_groups,
+		'pmpro_bp_restrictions'			=> $pmpro_bp_restrictions,
+		'pmpro_bp_private_messaging'		=> $pmpro_bp_private_messaging,
+		'pmpro_bp_public_messaging'		=> $pmpro_bp_public_messaging,
+		'pmpro_bp_send_friend_request'	=> $pmpro_bp_send_friend_request,
+		'pmpro_bp_group_automatic_add'	=> $pmpro_bp_group_automatic_add,
+		'pmpro_bp_group_can_request_invite'=> $pmpro_bp_group_can_request_invite,
+		'pmpro_bp_member_types'			=> $pmpro_bp_member_types);
+	
+	update_option('pmpro_bp_options_'.$level_id, $pmpro_bp_options, 'no');
 }
 add_action('pmpro_save_membership_level','pmpro_bp_pmpro_save_membership_level', 10, 1);
+
+function pmpro_bp_getLevelOptions($level_id)
+{
+	$options = get_option('pmpro_bp_options_'.$level_id);	
+	return $options;
+}
