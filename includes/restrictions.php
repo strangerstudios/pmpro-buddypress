@@ -6,7 +6,7 @@
 /**
  * Check if a user can create groups.
  * @param int $user_id ID of the user to check. Defaults to current user.
- * @TODO: Consider adding a Settings page to account for behavior for Level 0. i.e. those who are logged in but don't have a membership level. Should they be allowed to create groups?
+ * @TODO: Consider adding a Settings page to account for behavior for Level 0. i.e. those who are logged in but don't have a membership level.
  */
 function pmpro_bp_user_can_create_groups( $user_id = NULL )
 {
@@ -25,9 +25,15 @@ function pmpro_bp_user_can_create_groups( $user_id = NULL )
 	//disable group creation for those with no membership level.
 	if(empty($level))
 		return false;
+	
+	$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);
 
-	//see if that level is allowed to create groups
-	$can_create = get_option('pmpro_bp_group_creation_'.$level->ID, false);	
+	//are they restricting BuddyPress at all?
+	if($pmpro_bp_options['pmpro_bp_restrictions'] == 0)
+		return true;
+	
+	//see if this level is allowed to create groups	
+	$can_create = $pmpro_bp_options['pmpro_bp_group_creation'];	
 	
 	return $can_create;
 }
@@ -43,8 +49,14 @@ function pmpro_bp_user_can_view_single_group()
 	if(empty($level))
 		return false;
 	
+	$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);
+	
+		//are they restricting BuddyPress at all?
+	if($pmpro_bp_options['pmpro_bp_restrictions'] == 0)
+		return true;
+	
 	//see if that level is allowed to view individual groups
-	$can_view = get_option('pmpro_bp_group_single_viewing_'.$level->ID);
+	$can_view = $pmpro_bp_options['pmpro_bp_group_single_viewing'];
 		
 	if ( $can_view == 1 && !empty($level))
 	{
@@ -65,8 +77,14 @@ function pmpro_bp_user_can_view_groups_page()
 	if(empty($level))
 		return false;
 
+	$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);
+	
+	//are they restricting BuddyPress at all?
+	if($pmpro_bp_options['pmpro_bp_restrictions'] == 0)
+		return true;
+	
 	//see if that level is allowed to create groups
-	$can_view = get_option('pmpro_bp_groups_page_viewing_'.$level->ID);
+	$can_view = $pmpro_bp_options['pmpro_bp_groups_page_viewing'];
 		
 	if ( $can_view == 1 && !empty($level))
 	{
@@ -87,8 +105,14 @@ function pmpro_bp_user_can_join_groups()
 	if(empty($level))
 		return false;
 
+	$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);
+	
+	//are they restricting BuddyPress at all?
+	if($pmpro_bp_options['pmpro_bp_restrictions'] == 0)
+		return true;
+	
 	//see if that level is allowed to create groups
-	$can_join = get_option('pmpro_bp_groups_join_'.$level->ID);
+	$can_join = $pmpro_bp_options['pmpro_bp_groups_join'];
 		
 	if ( $can_join == 1 && !empty($level))
 	{
@@ -133,23 +157,221 @@ add_action( 'template_redirect', 'pmpro_bp_restrict_group_viewing' );
 
 function pmpro_bp_restricted_message()
 {
-	//TODO: Either pull the content in from the Advanced Settings or
-	//make it dynamic ie: "Viewing individual groups is not permitted for your level
 	return "This content is restricted. ";
 }
 
 add_shortcode('pmpro_buddypress_restricted', 'pmpro_bp_restricted_message');
 
-
-add_filter( 'bp_get_group_join_button', 'pmpro_bp_bp_get_groups_join_button');
 function pmpro_bp_bp_get_groups_join_button($button_args)
 {
 	global $pmpro_pages;
 	
-	if(!pmpro_bp_user_can_join_groups())
-	{
+	$level = pmpro_getMembershipLevelForUser();
+	
+	if(empty($level))
 		$button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+
+	else
+	{
+
+		$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);
+
+		$pmpro_bp_group_can_request_invite = $pmpro_bp_options['pmpro_bp_group_can_request_invite'];
+		
+		$group_id = bp_get_group_id();
+		if($button_args['id'] == 'request_membership')
+		{
+			if(empty($pmpro_bp_group_can_request_invite) || !in_array($group_id, $pmpro_bp_group_can_request_invite))
+			{
+				$button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+			}
+		}
+	
+		if(!pmpro_bp_user_can_join_groups())
+		{
+			$button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+		}
 	}
 	
 	return $button_args;
 }
+add_filter( 'bp_get_group_join_button', 'pmpro_bp_bp_get_groups_join_button');
+
+function pmpro_bp_restrict_private_messaging() {
+	
+	global $current_user, $pmpro_pages;
+	
+	$user_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	
+	if($user_level)
+	{
+		$pmpro_bp_options = pmpro_bp_getLevelOptions($user_level->ID);
+		$pmpro_bp_private_messaging = $pmpro_bp_options['pmpro_bp_private_messaging'];
+	}
+	
+	if(empty($pmpro_bp_private_messaging) && bp_is_current_component('messages'))
+	{
+		wp_redirect(get_permalink($pmpro_pages['pmprobp_restricted']));
+		exit();
+	}
+}
+add_action('wp','pmpro_bp_restrict_private_messaging');
+
+function pmpro_bp_bp_get_send_message_button_args($args)
+{
+	global $current_user, $pmpro_pages;
+	
+	$user_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	
+	if(!empty($user_level))
+	{
+		$pmpro_bp_options = pmpro_bp_getLevelOptions($user_level->ID);
+		$pmpro_bp_private_messaging = $pmpro_bp_options['pmpro_bp_private_messaging'];
+		
+	}
+	
+	if(empty($pmpro_bp_private_messaging))
+	{
+		$args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+	}
+
+	return $args;
+}
+
+add_filter('bp_get_send_message_button_args', 'pmpro_bp_bp_get_send_message_button_args');
+
+function pmpro_bp_bp_get_send_public_message_button($args)
+{
+	global $current_user, $pmpro_pages;
+	
+	$user_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	
+	if(!empty($user_level))
+	{	
+		$pmpro_bp_options = pmpro_bp_getLevelOptions($user_level->ID);
+		$pmpro_bp_public_messaging = $pmpro_bp_options['pmpro_bp_public_messaging'];
+	}
+	
+	if(empty($pmpro_bp_public_messaging))
+	{
+		$args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+	}
+	
+	return $args;
+}
+
+add_filter('bp_get_send_public_message_button', 'pmpro_bp_bp_get_send_public_message_button');
+
+function pmpro_bp_bp_get_add_friend_button($button)
+{
+	global $current_user, $pmpro_pages;
+	
+	$user_level = pmpro_getMembershipLevelForUser($current_user->ID);
+	
+	if(empty($user_level))
+	{
+		$button['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+	}
+	
+	else
+	{
+		$pmpro_bp_options = pmpro_bp_getLevelOptions($user_level->ID);
+		
+		$pmpro_bp_send_friend_request = $pmpro_bp_options['pmpro_bp_send_friend_request'];
+	
+		if(empty($pmpro_bp_send_friend_request))
+		{
+			$button['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+		}
+	}
+	return $button;
+}
+
+add_filter('bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button');
+
+function pmpro_bp_lockdown_all_bp()
+{
+	global $pmpro_pages, $post;
+	
+	$bp_pages = get_option('bp-pages');
+
+	$level = pmpro_getMembershipLevelForUser();
+	
+	if(!empty($level))
+	{
+		$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);
+		$pmpro_bp_restrictions = $pmpro_bp_options['pmpro_bp_restrictions'];
+	}
+	else
+	{
+		$pmpro_bp_restrictions = null;	
+	}
+	
+	if(($pmpro_bp_restrictions == 1 && is_buddypress()))
+	{
+		wp_redirect(get_permalink($pmpro_pages['pmprobp_restricted']));
+		exit();
+	}
+}
+
+add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
+
+function pmpro_bp_buddypress_or_pmpro_registration()
+{
+	global $post, $pmpro_pages;
+	
+	$bp_pages = get_option('bp-pages');
+	
+	$pmpro_bp_register = get_option('pmpro_bp_registration_page');
+		
+	if(!empty($pmpro_bp_register) && $pmpro_bp_register == 'buddypress' && ($post->ID == $pmpro_pages['levels']))
+	{
+		//Use BuddyPress Register page
+		wp_redirect(get_permalink($bp_pages['register']));
+		exit;
+	}
+	elseif(!empty($pmpro_bp_register) && $pmpro_bp_register == 'pmpro' && bp_is_register_page())//($post->ID == $bp_pages['register']))
+	{
+		//use PMPro Levels page
+		$url = pmpro_url("levels");
+		wp_redirect($url);
+		exit;
+	}
+}
+
+add_action( 'template_redirect', 'pmpro_bp_buddypress_or_pmpro_registration', 70 );
+
+function pmpro_bp_show_level_on_bp_profile()
+{
+	$level = pmpro_getMembershipLevelForUser(bp_displayed_user_id());
+	
+	$show_level = get_option('pmpro_bp_show_level_on_bp_profile');
+	
+	if($show_level == 'yes' && $level)
+	{?>
+		<div class="pmpro_bp_show_level_on_bp_profile">
+			<strong>Membership Level: <?php echo $level->name; ?> </strong>
+		</div><?php
+	}
+}
+add_filter( 'bp_profile_header_meta', 'pmpro_bp_show_level_on_bp_profile' );
+
+function pmpro_bp_remove_request_membership_nav_link()
+{  
+	if ( ! bp_is_group() ) {
+		return;
+	}
+	
+	$slug = bp_get_current_group_slug();
+	$level = pmpro_getMembershipLevelForUser();
+	$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);
+
+	$pmpro_bp_group_can_request_invite = $pmpro_bp_options['pmpro_bp_group_can_request_invite'];
+	
+	if(empty($pmpro_bp_group_can_request_invite) || !in_array(bp_get_current_group_id(), $pmpro_bp_group_can_request_invite))
+	{
+		//remove the "Request Membership from the Nav menu.
+		bp_core_remove_subnav_item( $slug, 'request-membership' );
+	}
+}
+add_action( 'bp_actions', 'pmpro_bp_remove_request_membership_nav_link' );
