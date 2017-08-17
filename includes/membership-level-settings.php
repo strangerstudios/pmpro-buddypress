@@ -26,6 +26,7 @@ function pmpro_bp_level_settings()
 		$pmpro_bp_group_automatic_add		= $pmpro_bp_options['pmpro_bp_group_automatic_add'];
 		$pmpro_bp_group_can_request_invite = $pmpro_bp_options['pmpro_bp_group_can_request_invite'];
 		$pmpro_bp_member_types			= $pmpro_bp_options['pmpro_bp_member_types'];
+		$pmpro_bp_member_directory		= $pmpro_bp_options['pmpro_bp_member_directory'];
 	}
 	else
 	{
@@ -40,6 +41,7 @@ function pmpro_bp_level_settings()
 		$pmpro_bp_group_automatic_add = 0;
 		$pmpro_bp_group_can_request_invite = 0;
 		$pmpro_bp_member_types = 0;
+		$pmpro_bp_member_directory = 0;
 	}
 
 	?>
@@ -143,6 +145,16 @@ function pmpro_bp_level_settings()
 							<option value= '1' <?php if($pmpro_bp_send_friend_request == 1) echo "selected"; ?>>Yes</option>
 					</select>
 					<p class="description">Can members of this level send friend requests to other members?</p>
+					</td>
+				</tr>
+				<tr>
+				<th scope="row" valign="top"><label for="pmpro_bp_member_directory"><?php _e('Include in Member Directory', 'pmpro');?>:</label></th>
+				<td>
+					<select name="pmpro_bp_member_directory" id="pmpro_bp_send_friend_request">
+							<option value= '0' <?php if($pmpro_bp_member_directory == 0) echo "selected"; ?> >No</option>
+							<option value= '1' <?php if($pmpro_bp_member_directory == 1) echo "selected"; ?>>Yes</option>
+					</select>
+					<p class="description">Should members of this level be included in the BuddyPress member directory?</p>
 					</td>
 				</tr>
 		</tbody>
@@ -351,6 +363,7 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 	$pmpro_bp_public_messaging = $_REQUEST['pmpro_bp_public_messaging'];
 	$pmpro_bp_private_messaging = $_REQUEST['pmpro_bp_private_messaging'];
 	$pmpro_bp_send_friend_request = $_REQUEST['pmpro_bp_send_friend_request'];
+	$pmpro_bp_member_directory = $_REQUEST['pmpro_bp_member_directory'];
 	
 	if(isset($_REQUEST['pmpro_bp_group_automatic_add']))
 		$pmpro_bp_group_automatic_add = $_REQUEST['pmpro_bp_group_automatic_add'];
@@ -366,6 +379,11 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 		$pmpro_bp_member_types = $_REQUEST['pmpro_bp_member_types'];
 	else
 		$pmpro_bp_member_types = false;
+	
+	if(isset($_REQUEST['pmpro_bp_member_directory']))
+		$pmpro_bp_member_directory = $_REQUEST['pmpro_bp_member_directory'];
+	else
+		$pmpro_bp_member_directory = false;
 		
 	$pmpro_bp_options = array(
 		'pmpro_bp_group_creation'		=> $can_create_groups,
@@ -378,7 +396,8 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 		'pmpro_bp_send_friend_request'	=> $pmpro_bp_send_friend_request,
 		'pmpro_bp_group_automatic_add'	=> $pmpro_bp_group_automatic_add,
 		'pmpro_bp_group_can_request_invite'=> $pmpro_bp_group_can_request_invite,
-		'pmpro_bp_member_types'			=> $pmpro_bp_member_types);
+		'pmpro_bp_member_types'			=> $pmpro_bp_member_types,
+		'pmpro_bp_member_directory'		=> $pmpro_bp_member_directory);
 	
 	update_option('pmpro_bp_options_'.$level_id, $pmpro_bp_options, 'no');
 }
