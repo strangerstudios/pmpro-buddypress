@@ -16,20 +16,23 @@ function pmpro_bp_update_user_meta($meta_id, $user_id, $meta_key, $meta_value)
 	//see if the meta field is in the RH defined fields, and has the BuddyPress property set
 	global $pmprorh_registration_fields;
 	
-	foreach($pmprorh_registration_fields as $field_location)
+	if ($pmprorh_registration_field)
 	{
-		foreach($field_location as $rh_field)
+		foreach($pmprorh_registration_fields as $field_location)
 		{
-			if($rh_field->meta_key == $meta_key && !empty($rh_field->buddypress))
+			foreach($field_location as $rh_field)
 			{
-				//switch for type
+				if($rh_field->meta_key == $meta_key && !empty($rh_field->buddypress))
+				{
+					//switch for type
 				
-				$x_field = xprofile_get_field_id_from_name($rh_field->buddypress);
+					$x_field = xprofile_get_field_id_from_name($rh_field->buddypress);
 
-				if(!empty($x_field))
-					xprofile_set_field_data($x_field, $user_id, $meta_value);
-			}
+					if(!empty($x_field))
+						xprofile_set_field_data($x_field, $user_id, $meta_value);
+				}
 				
+			}
 		}
 	}
 }
