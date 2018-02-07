@@ -1,7 +1,7 @@
 <?php
-/*
-	Code to create a Memberships -> BuddyPress page with settings.
-*/
+/**
+ * Code to create a Memberships -> BuddyPress page with settings.
+ */
 
 function pmpro_bp_extra_page_settings( $pages ) {
 	$pages['pmprobp_restricted'] = array(

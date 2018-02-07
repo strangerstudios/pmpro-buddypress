@@ -1,7 +1,7 @@
 <?php
-/*
-	Code to lock down BuddyPress features based on level settings.
-*/
+/**
+ * Code to lock down BuddyPress features based on level settings.
+ */
 
 /**
  * Check if a user can create groups.
@@ -32,7 +32,7 @@ function pmpro_bp_user_can_create_groups( $user_id = null ) {
 	$pmpro_bp_options = pmpro_bp_getLevelOptions( $level->ID );
 
 	// are they restricting BuddyPress at all?
-	if ( $pmpro_bp_options['pmpro_bp_restrictions'] == 0 ) {
+	if ( 0 === $pmpro_bp_options['pmpro_bp_restrictions'] ) {
 		return true;
 	}
 
@@ -63,7 +63,7 @@ function pmpro_bp_user_can_view_single_group() {
 	// see if that level is allowed to view individual groups
 	$can_view = $pmpro_bp_options['pmpro_bp_group_single_viewing'];
 
-	if ( $can_view == 1 && ! empty( $level ) ) {
+	if ( 1 === $can_view && ! empty( $level ) ) {
 		return true;
 	}
 
@@ -91,7 +91,7 @@ function pmpro_bp_user_can_view_groups_page() {
 	// see if that level is allowed to create groups
 	$can_view = $pmpro_bp_options['pmpro_bp_groups_page_viewing'];
 
-	if ( $can_view == 1 && ! empty( $level ) ) {
+	if ( 1 === $can_view && ! empty( $level ) ) {
 		return true;
 	}
 
@@ -119,7 +119,7 @@ function pmpro_bp_user_can_join_groups() {
 	// see if that level is allowed to create groups
 	$can_join = $pmpro_bp_options['pmpro_bp_groups_join'];
 
-	if ( $can_join == 1 && ! empty( $level ) ) {
+	if ( 1 === $can_join && ! empty( $level ) ) {
 		return true;
 	}
 
@@ -281,7 +281,7 @@ function pmpro_bp_lockdown_all_bp() {
 		$pmpro_bp_restrictions = null;
 	}
 
-	if ( ($pmpro_bp_restrictions == 1 && is_buddypress()) ) {
+	if ( ( 1 === $pmpro_bp_restrictions && is_buddypress()) ) {
 		wp_redirect( get_permalink( $pmpro_pages['pmprobp_restricted'] ) );
 		exit();
 	}

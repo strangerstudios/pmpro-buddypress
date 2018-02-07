@@ -1,7 +1,7 @@
 <?php
-/*
-	Code to sync profile fields to PMPro Register Helper or edit profiles in general.
-*/
+/**
+ * Code to sync profile fields to PMPro Register Helper or edit profiles in general.
+ */
 
 add_action( 'update_user_meta', 'pmpro_bp_update_user_meta', 10, 4 );
 
