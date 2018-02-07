@@ -159,7 +159,7 @@ function pmpro_bp_level_settings()
 				</tr>
 		</tbody>
 		</table>
-	
+		<?php if ( class_exists( 'BP_Groups_Group' ) ): ?>
 		<h3 class="topborder"> <?php _e('BuddyPress Group Membership', 'pmpro');?></h3>
 
 		<?php 
@@ -240,6 +240,7 @@ function pmpro_bp_level_settings()
 			
 			</tbody>
 		</table>
+		<?php endif; ?>
 		<h3 class="topborder"> <?php _e('BuddyPress Member Types', 'pmpro');?></h3>
 		
 		<?php
