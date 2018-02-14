@@ -8,26 +8,26 @@
  * @param int $user_id ID of the user to check. Defaults to current user.
  * @TODO: Consider adding a Settings page to account for behavior for Level 0. i.e. those who are logged in but don't have a membership level.
  */
-function pmpro_bp_user_can_create_groups( $user_id = NULL )
-{
+function pmpro_bp_user_can_create_groups( $user_id = NULL ) {
 	//default to current user
-	global $current_user;			
-	if(empty($user_id))
+	if( empty( $user_id ) ) {
+		global $current_user;
 		$user_id = $current_user->ID;
+	}
 
 	//must have a user
-	if(empty($user_id))
+	if( empty( $user_id ) ) {
 		return false;
+	}
 	
-	//get the user's current level
-	$level = pmpro_getMembershipLevelForUser($user_id);
-	
-	//disable group creation for those with no membership level.
-	if(empty($level))
+	//must have a level
+	if( !function_exists( 'pmpro_hasMembershipLevel' ) || !pmpro_hasMembershipLevel( NULL, $user_id ) ) {
 		return false;
+	}
+		
+	$level = pmpro_getMembershipLevelForUser($user_id);			
+	$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);	
 	
-	$pmpro_bp_options = pmpro_bp_getLevelOptions($level->ID);
-
 	//are they restricting BuddyPress at all?
 	if($pmpro_bp_options['pmpro_bp_restrictions'] == 0)
 		return true;
