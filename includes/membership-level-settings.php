@@ -50,13 +50,13 @@ function pmpro_bp_level_settings()
 		<tbody>
 			<tr>
 				<th scope="row" valign="top">
-					<label for="pmpro_bp_restrictions"><?php _e('Lockdown BuddyPress?', 'pmpro');?>:</label>
+					<label for="pmpro_bp_restrictions"><?php _e('Unlock BuddyPress?', 'pmpro');?>:</label>
 				</th>
 			<td>
 				<select id="pmpro_bp_restrictions" name="pmpro_bp_restrictions" onchange="pmpro_updateBuddyPressTRs();">
 						<option value="0" <?php if(!$pmpro_bp_restrictions) { ?>selected="selected"<?php } ?>><?php _e('No', 'pmpro');?></option>
-						<option value="1" <?php if($pmpro_bp_restrictions == 1) { ?>selected="selected"<?php } ?>><?php _e('Yes - Lock down all of BuddyPress', 'pmpro');?></option>
-						<option value="2" <?php if($pmpro_bp_restrictions == 2) { ?>selected="selected"<?php } ?>><?php _e('Yes - Lock down specific features', 'pmpro');?></option>
+						<option value="1" <?php if($pmpro_bp_restrictions == 1) { ?>selected="selected"<?php } ?>><?php _e('Yes - Give members access to all of BuddyPress', 'pmpro');?></option>
+						<option value="2" <?php if($pmpro_bp_restrictions == 2) { ?>selected="selected"<?php } ?>><?php _e('Yes - Give members access to specific features', 'pmpro');?></option>
 				</select><br />
 				</td>
 			</tr>
@@ -70,8 +70,8 @@ function pmpro_bp_level_settings()
 				<th scope="row" valign="top"><label for="pmpro_bp_group_creation"><?php _e('Group Creation', 'pmpro');?>:</label></th>
 				<td>
 					<select name="pmpro_bp_group_creation" id="pmpro_bp_group_creation">
-							<option value= '0' <?php if($can_create_groups == 0) echo "selected"; ?> >No</option>
-							<option value= '1' <?php if($can_create_groups == 1) echo "selected"; ?>>Yes</option>
+							<option value= '0' <?php if($can_create_groups == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($can_create_groups == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 					</select>
 			
 					<p class="description">Can members of this level create BuddyPress Groups?</p>
@@ -83,8 +83,8 @@ function pmpro_bp_level_settings()
 				<th scope="row" valign="top"><label for="pmpro_bp_group_single_viewing"><?php _e('Single Group Viewing', 'pmpro');?>:</label></th>
 				<td>
 					<select name="pmpro_bp_group_single_viewing" id="pmpro_bp_group_single_viewing">
-							<option value= '0' <?php if($can_view_single_group == 0) echo "selected"; ?> >No</option>
-							<option value= '1' <?php if($can_view_single_group == 1) echo "selected"; ?>>Yes</option>
+							<option value= '0' <?php if($can_view_single_group == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($can_view_single_group == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 						</select>
 			
 						<p class="description">Can members of this level view individual BuddyPress Groups?</p>
@@ -96,8 +96,8 @@ function pmpro_bp_level_settings()
 				<th scope="row" valign="top"><label for="pmpro_bp_groups_page_viewing"><?php _e('Groups Page Viewing', 'pmpro');?>:</label></th>
 				<td>
 					<select name="pmpro_bp_groups_page_viewing" id="pmpro_bp_groups_page_viewing">
-							<option value= '0' <?php if($can_view_groups_page == 0) echo "selected"; ?> >No</option>
-							<option value= '1' <?php if($can_view_groups_page == 1) echo "selected"; ?>>Yes</option>
+							<option value= '0' <?php if($can_view_groups_page == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($can_view_groups_page == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 						</select>
 			
 						<p class="description">Can members of this level view the BuddyPress Groups page?</p>
@@ -109,8 +109,8 @@ function pmpro_bp_level_settings()
 				<th scope="row" valign="top"><label for="pmpro_bp_groups_join"><?php _e('Joining Groups', 'pmpro');?>:</label></th>
 				<td>
 					<select name="pmpro_bp_groups_join" id="pmpro_bp_groups_join">
-							<option value= '0' <?php if($can_join_groups == 0) echo "selected"; ?> >No</option>
-							<option value= '1' <?php if($can_join_groups == 1) echo "selected"; ?>>Yes</option>
+							<option value= '0' <?php if($can_join_groups == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($can_join_groups == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 					</select>
 			
 					<p class="description">Can members of this level join BuddyPress Groups?</p>
@@ -120,8 +120,8 @@ function pmpro_bp_level_settings()
 				<th scope="row" valign="top"><label for="pmpro_bp_public_messaging"><?php _e('Public Messaging', 'pmpro');?>:</label></th>
 				<td>
 					<select name="pmpro_bp_public_messaging" id="pmpro_bp_public_messaging">
-							<option value= '0' <?php if($pmpro_bp_public_messaging == 0) echo "selected"; ?> >No</option>
-							<option value= '1' <?php if($pmpro_bp_public_messaging == 1) echo "selected"; ?>>Yes</option>
+							<option value= '0' <?php if($pmpro_bp_public_messaging == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($pmpro_bp_public_messaging == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 					</select>
 					<p class="description">Can members of this level send public messages to other members?</p>
 					</td>
@@ -130,8 +130,8 @@ function pmpro_bp_level_settings()
 				<th scope="row" valign="top"><label for="pmpro_bp_private_messaging"><?php _e('Private Messaging', 'pmpro');?>:</label></th>
 				<td>
 					<select name="pmpro_bp_private_messaging" id="pmpro_bp_private_messaging">
-							<option value= '0' <?php if($pmpro_bp_private_messaging == 0) echo "selected"; ?> >No</option>
-							<option value= '1' <?php if($pmpro_bp_private_messaging == 1) echo "selected"; ?>>Yes</option>
+							<option value= '0' <?php if($pmpro_bp_private_messaging == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($pmpro_bp_private_messaging == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 					</select>
 					<p class="description">Can members of this level send private messages to other members?</p>
 					</td>
@@ -141,8 +141,8 @@ function pmpro_bp_level_settings()
 				<th scope="row" valign="top"><label for="pmpro_bp_send_friend_request"><?php _e('Send Friend Requests', 'pmpro');?>:</label></th>
 				<td>
 					<select name="pmpro_bp_send_friend_request" id="pmpro_bp_send_friend_request">
-							<option value= '0' <?php if($pmpro_bp_send_friend_request == 0) echo "selected"; ?> >No</option>
-							<option value= '1' <?php if($pmpro_bp_send_friend_request == 1) echo "selected"; ?>>Yes</option>
+							<option value= '0' <?php if($pmpro_bp_send_friend_request == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($pmpro_bp_send_friend_request == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 					</select>
 					<p class="description">Can members of this level send friend requests to other members?</p>
 					</td>
@@ -151,10 +151,10 @@ function pmpro_bp_level_settings()
 				<th scope="row" valign="top"><label for="pmpro_bp_member_directory"><?php _e('Include in Member Directory', 'pmpro');?>:</label></th>
 				<td>
 					<select name="pmpro_bp_member_directory" id="pmpro_bp_send_friend_request">
-							<option value= '0' <?php if($pmpro_bp_member_directory == 0) echo "selected"; ?> >No</option>
-							<option value= '1' <?php if($pmpro_bp_member_directory == 1) echo "selected"; ?>>Yes</option>
+							<option value= '0' <?php if($pmpro_bp_member_directory == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($pmpro_bp_member_directory == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 					</select>
-					<p class="description">Should members of this level be included in the BuddyPress member directory?</p>
+					<p class="description"><?php _e('Should members of this level be included in the BuddyPress member directory?', 'pmpro-buddypress');?></p>
 					</td>
 				</tr>
 		</tbody>
@@ -179,7 +179,7 @@ function pmpro_bp_level_settings()
 		<tbody>
 	
 			<tr>
-				<th scope="row" valign="top"><label for="pmpro_bp_group_automatic_add"><?php _e('Group Automatic Add', 'pmpro');?>:</label></th>
+				<th scope="row" valign="top"><label for="pmpro_bp_group_automatic_add"><?php _e('Add to These Groups', 'pmpro');?>:</label></th>
 				<td>
 					<div class="checkbox_box" <?php if(count($group_ids) > 30) { ?>style="height: 300px; overflow: auto;"<?php } ?>>
 						<?php
@@ -192,16 +192,6 @@ function pmpro_bp_level_settings()
 								}
 							} ?>
 					</div>
-					<script>
-						jQuery('.checkbox_box input').click(function(event) {
-							event.stopPropagation()
-						});
-						jQuery('.checkbox_box div.clickable').click(function() {
-							var checkbox = jQuery(this).find(':checkbox');
-							checkbox.attr('checked', !checkbox.attr('checked'));
-						});
-					</script>
-			
 				</td>
 			</tr>
 			
@@ -211,7 +201,7 @@ function pmpro_bp_level_settings()
 			?>
 			
 			<tr>
-				<th scope="row" valign="top"><label for="pmpro_bp_group_can_request_invite"><?php _e('Private Group Invite', 'pmpro');?>:</label></th>
+				<th scope="row" valign="top"><label for="pmpro_bp_group_can_request_invite"><?php _e('Invite to These Groups', 'pmpro');?>:</label></th>
 				<td>
 					<div class="checkbox_box" <?php if(count($group_ids) > 30) { ?>style="height: 300px; overflow: auto;"<?php } ?>>
 						<?php
@@ -224,54 +214,55 @@ function pmpro_bp_level_settings()
 								}
 							} ?>
 					</div>
-					
-					<script>
-						jQuery('.checkbox_box input').click(function(event) {
-							event.stopPropagation()
-						});
-						jQuery('.checkbox_box div.clickable').click(function() {
-							var checkbox = jQuery(this).find(':checkbox');
-							checkbox.attr('checked', !checkbox.attr('checked'));
-						});
-					</script>
-			
 				</td>
 			</tr>			
 			
 			</tbody>
 		</table>
 		<?php endif; ?>
+		
 		<h3 class="topborder"> <?php _e('BuddyPress Member Types', 'pmpro');?></h3>
 		
 		<?php
-		
-		$registered_member_type_objects = bp_get_member_types( array(), 'objects' );
-	
-		?>
-		
-		
-		<table id="member-types" class="form-table">
-		<tbody>
-	
-			<tr>
-				<th scope="row" valign="top"><label for="pmpro_bp_member_types"><?php _e('Member Types', 'pmpro');?>:</label></th>
-				<td>
+			$registered_member_type_objects = bp_get_member_types( array(), 'objects' );
+			if(empty($registered_member_type_objects)) {
+			?>
+				<div><?php _e('There are no member types defined.', 'pmpro-buddypress');?></div>
+			<?php
+			} else {
+			?>
+				<table id="member-types" class="form-table">
+				<tbody>
 			
-				<select multiple='yes' name='pmpro_bp_member_types[]'> 
-					<?php
+					<tr>
+						<th scope="row" valign="top"><label for="pmpro_bp_member_types"><?php _e('Member Types', 'pmpro');?>:</label></th>
+						<td>
 					
-					foreach($registered_member_type_objects as $member_type => $member_type_data)
-					{?>
-						<option value= "<?php echo $member_type;?>" <?php if(is_array($pmpro_bp_member_types) && in_array($member_type, $pmpro_bp_member_types)) echo " selected='selected'";?>" ><?php echo $member_type_data->labels['name'];?></option><?php
-					}
-					?>
-				</select>
-				</td>
-			</tr>
-			</tbody>
-		</table>	
+						<select multiple='yes' name='pmpro_bp_member_types[]'> 
+							<?php
+								foreach($registered_member_type_objects as $member_type => $member_type_data)
+								{?>
+									<option value= "<?php echo $member_type;?>" <?php if(is_array($pmpro_bp_member_types) && in_array($member_type, $pmpro_bp_member_types)) echo " selected='selected'";?>" ><?php echo $member_type_data->labels['name'];?></option><?php
+								}
+							?>
+						</select>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			<?php
+			}
+		?>	
 		
 		<script>
+			jQuery('.checkbox_box input').click(function(event) {
+				event.stopPropagation()
+			});
+			jQuery('.checkbox_box div.clickable').click(function() {
+				var checkbox = jQuery(this).find(':checkbox');
+				checkbox.attr('checked', !checkbox.attr('checked'));
+			});
+
 			function pmpro_updateBuddyPressTRs()
 			{
 				var specific_features = jQuery('#pmpro_bp_restrictions').val();
