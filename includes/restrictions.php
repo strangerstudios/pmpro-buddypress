@@ -146,7 +146,7 @@ function pmpro_bp_restrict_group_viewing()
 	}
 
 	//Group Viewing restrictions - which levels can view the groups page?
-	if(bp_is_current_component($bp->pages->groups->slug) && !bp_is_group() && !pmpro_bp_user_can_view_groups_page()) //&& can_view_groups_page
+	if(!empty($bp->pages->groups) && bp_is_current_component($bp->pages->groups->slug) && !bp_is_group() && !pmpro_bp_user_can_view_groups_page()) //&& can_view_groups_page
 	{
 		wp_redirect(get_permalink($pmpro_pages['pmprobp_restricted']));
 		exit();
