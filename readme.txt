@@ -1,5 +1,5 @@
 === Paid Memberships Pro - BuddyPress Add On ===
-Contributors: strangerstudios, ghmaster
+Contributors: strangerstudios, great-h-master
 Tags: paid memberships pro, pmpro, buddypress
 Requires at least: 3.5
 Tested up to: 4.7.1
