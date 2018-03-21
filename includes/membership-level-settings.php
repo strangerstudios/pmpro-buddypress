@@ -11,7 +11,7 @@ function pmpro_bp_level_settings()
 {	
 	if(isset($_REQUEST['edit']))
 	{
-		$edit = $_REQUEST['edit'];
+		$edit = intval( $_REQUEST['edit'] );
 		
 		$pmpro_bp_options = pmpro_bp_getLevelOptions($edit);
 		
@@ -188,7 +188,7 @@ function pmpro_bp_level_settings()
 									
 							while ( bp_groups() ) {
 								bp_the_group();?>
-								<div class="clickable"><input type="checkbox" id="pmpro_bp_group_automatic_add_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_automatic_add[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_automatic_add)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name. " (".$groups_template->group->status.")"?></div> <?php
+								<div class="clickable"><input type="checkbox" id="pmpro_bp_group_automatic_add_<?php echo esc_attr( $groups_template->group->id); ?>" name="pmpro_bp_group_automatic_add[]" value="<?php echo esc_attr( $groups_template->group->id); ?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_automatic_add)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name. " (".$groups_template->group->status.")"?></div> <?php
 							}
 						?>	
 					</div>
@@ -356,33 +356,36 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 		return;
 	}
 		
-	$can_create_groups = $_REQUEST['pmpro_bp_group_creation'];
-	$can_view_single_group = $_REQUEST['pmpro_bp_group_single_viewing'];
-	$can_view_groups_page = $_REQUEST['pmpro_bp_groups_page_viewing'];
-	$can_join_groups = $_REQUEST['pmpro_bp_groups_join'];
-	$pmpro_bp_restrictions = $_REQUEST['pmpro_bp_restrictions'];
-	$pmpro_bp_public_messaging = $_REQUEST['pmpro_bp_public_messaging'];
-	$pmpro_bp_private_messaging = $_REQUEST['pmpro_bp_private_messaging'];
-	$pmpro_bp_send_friend_request = $_REQUEST['pmpro_bp_send_friend_request'];
-	$pmpro_bp_member_directory = $_REQUEST['pmpro_bp_member_directory'];
+	$can_create_groups = intval( $_REQUEST['pmpro_bp_group_creation'] );
+	$can_view_single_group = intval( $_REQUEST['pmpro_bp_group_single_viewing'] );
+	$can_view_groups_page = intval( $_REQUEST['pmpro_bp_groups_page_viewing'] );
+	$can_join_groups = intval( $_REQUEST['pmpro_bp_groups_join'] );
+	$pmpro_bp_restrictions = intval( $_REQUEST['pmpro_bp_restrictions'] );
+	$pmpro_bp_public_messaging = intval( $_REQUEST['pmpro_bp_public_messaging'] );
+	$pmpro_bp_private_messaging = intval( $_REQUEST['pmpro_bp_private_messaging'] );
+	$pmpro_bp_send_friend_request = intval( $_REQUEST['pmpro_bp_send_friend_request'] );
+	$pmpro_bp_member_directory = intval( $_REQUEST['pmpro_bp_member_directory'] );
 	
-	if(isset($_REQUEST['pmpro_bp_group_automatic_add']))
-		$pmpro_bp_group_automatic_add = $_REQUEST['pmpro_bp_group_automatic_add'];
-	else
+	if( isset( $_REQUEST['pmpro_bp_group_automatic_add'] ) ) {
+		$pmpro_bp_group_automatic_add = array_map( 'sanitize_text_field', $_REQUEST['pmpro_bp_group_automatic_add'] );
+	} else {
 		$pmpro_bp_group_automatic_add = false;
+	}
 	
-	if(isset($_REQUEST['pmpro_bp_group_can_request_invite']))
-		$pmpro_bp_group_can_request_invite = $_REQUEST['pmpro_bp_group_can_request_invite'];
-	else
+	if( isset( $_REQUEST['pmpro_bp_group_can_request_invite'] ) ) {
+		$pmpro_bp_group_can_request_invite = array_map( 'sanitize_text_field', $_REQUEST['pmpro_bp_group_can_request_invite'] );
+	} else {
 		$pmpro_bp_group_can_request_invite = false;
+	}
 	
-	if(isset($_REQUEST['pmpro_bp_member_types']))
-		$pmpro_bp_member_types = $_REQUEST['pmpro_bp_member_types'];
-	else
+	if( isset( $_REQUEST['pmpro_bp_member_types'] ) ) {
+		$pmpro_bp_member_types = array_map( 'sanitize_text_field', $_REQUEST['pmpro_bp_member_types'] );
+	} else {
 		$pmpro_bp_member_types = false;
+	}
 	
-	if(isset($_REQUEST['pmpro_bp_member_directory']))
-		$pmpro_bp_member_directory = $_REQUEST['pmpro_bp_member_directory'];
+	if( isset( $_REQUEST['pmpro_bp_member_directory'] ) )
+		$pmpro_bp_member_directory = intval( $_REQUEST['pmpro_bp_member_directory'] );
 	else
 		$pmpro_bp_member_directory = false;
 		
