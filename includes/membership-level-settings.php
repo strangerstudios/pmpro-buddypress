@@ -181,17 +181,20 @@ function pmpro_bp_level_settings()
 			<tr>
 				<th scope="row" valign="top"><label for="pmpro_bp_group_automatic_add"><?php _e('Add to These Groups', 'pmpro');?>:</label></th>
 				<td>
+					<?php if ( bp_has_groups( $groups_args ) ) { ?>
 					<div class="checkbox_box" <?php if(count($group_ids) > 30) { ?>style="height: 300px; overflow: auto;"<?php } ?>>
 						<?php
 							global $groups_template;
-		
-							if ( bp_has_groups( $groups_args ) ) {
-								while ( bp_groups() ) {
-									bp_the_group();?>
-									<div class="clickable"><input type="checkbox" id="pmpro_bp_group_automatic_add_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_automatic_add[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_automatic_add)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name. " (".$groups_template->group->status.")"?></div> <?php
-								}
-							} ?>
+									
+							while ( bp_groups() ) {
+								bp_the_group();?>
+								<div class="clickable"><input type="checkbox" id="pmpro_bp_group_automatic_add_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_automatic_add[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_automatic_add)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name. " (".$groups_template->group->status.")"?></div> <?php
+							}
+						?>	
 					</div>
+					<?php } else { ?>
+						<p><?php _e( 'There are no groups defined.', 'pmpro-buddypress' ); ?></p>
+					<?php } ?>
 				</td>
 			</tr>
 			
@@ -203,17 +206,20 @@ function pmpro_bp_level_settings()
 			<tr>
 				<th scope="row" valign="top"><label for="pmpro_bp_group_can_request_invite"><?php _e('Invite to These Groups', 'pmpro');?>:</label></th>
 				<td>
+					<?php if ( bp_has_groups( $groups_args ) ) { ?>
 					<div class="checkbox_box" <?php if(count($group_ids) > 30) { ?>style="height: 300px; overflow: auto;"<?php } ?>>
 						<?php
 							global $groups_template;
-		
-							if ( bp_has_groups( $groups_args ) ) {
-								while ( bp_groups() ) {
-									bp_the_group();?>
-									<div class="clickable"><input type="checkbox" id="pmpro_bp_group_can_request_invite_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_can_request_invite[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_can_request_invite)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name. " (".$groups_template->group->status.")"?></div> <?php
-								}
-							} ?>
+									
+							while ( bp_groups() ) {
+								bp_the_group();?>
+								<div class="clickable"><input type="checkbox" id="pmpro_bp_group_can_request_invite_<?php echo $groups_template->group->id?>" name="pmpro_bp_group_can_request_invite[]" value="<?php echo $groups_template->group->id?>" <?php if(in_array($groups_template->group->id, $pmpro_bp_group_can_request_invite)) { ?>checked="checked"<?php } ?>> <?php echo $groups_template->group->name. " (".$groups_template->group->status.")"?></div> <?php
+							}
+						?>							
 					</div>
+					<?php } else { ?>
+						<p><?php _e( 'There are no groups defined.', 'pmpro-buddypress' ); ?></p>
+					<?php } ?>
 				</td>
 			</tr>			
 			
