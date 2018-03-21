@@ -86,9 +86,9 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 
 == Screenshots ==
 
-1. PMPro BuddyPress Settings Page
-2. Settings to Restrict BuddyPress by Membership Level 
-3. Settings to Add or Invite Members to Groups and Assign Member Types by Membership Level.
+1. **PMPro BuddyPress Settings** - Explore and manage the features of the integration plugin, including Page Settings, Membership Level Settings, and General Settings.
+2. **Membership Level Settings** - Define how you want to restrict BuddyPress for each  Membership Level under Memberships > Edit Level.
+3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Edit Level.
 
 == Changelog ==
 
