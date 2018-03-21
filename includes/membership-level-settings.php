@@ -243,15 +243,18 @@ function pmpro_bp_level_settings()
 					<tr>
 						<th scope="row" valign="top"><label for="pmpro_bp_member_types"><?php _e('Member Types', 'pmpro');?>:</label></th>
 						<td>
-					
-						<select multiple='yes' name='pmpro_bp_member_types[]'> 
+							<div class="checkbox_box" <?php if(count($registered_member_type_objects) > 30) { ?>style="height: 300px; overflow: auto;"<?php } ?>>							
 							<?php
 								foreach($registered_member_type_objects as $member_type => $member_type_data)
-								{?>
-									<option value= "<?php echo $member_type;?>" <?php if(is_array($pmpro_bp_member_types) && in_array($member_type, $pmpro_bp_member_types)) echo " selected='selected'";?>" ><?php echo $member_type_data->labels['name'];?></option><?php
+								{
+								?>
+								<div class="clickable">
+									<input type="checkbox" id="pmpro_bp_member_type_<?php echo $member_type_data->name;?>" name="pmpro_bp_member_types[]" value="<?php echo esc_attr($member_type_data->name);?>" <?php if(is_array($pmpro_bp_member_types) && in_array($member_type_data->name, $pmpro_bp_member_types)) echo " checked='checked'";?>"> <?php echo $member_type_data->labels['name'];?>
+								</div>
+								<?php
 								}
-							?>
-						</select>
+							?>	
+							</div>						
 						</td>
 					</tr>
 					</tbody>
