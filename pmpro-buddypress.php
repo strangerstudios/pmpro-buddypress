@@ -2,7 +2,7 @@
 /*
  Plugin Name: Paid Memberships Pro - BuddyPress Add On
  Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-buddypress
- Description: Allow individual BuddyPress functionality to be controlled by PMPro
+ Description: Manage access to your BuddyPress Community using Paid Memberships Pro.
  Version: 0.1
  Author: Paid Memberships Pro
  Author URI: https://www.paidmembershipspro.com
