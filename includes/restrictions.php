@@ -1,6 +1,11 @@
 <?php
 /*
 	Code to lock down BuddyPress features based on level settings.
+	
+	- When the plugin is activated, BuddyPress is still "unlocked" for all users.
+	- On the main settings page, you can "Lock" BuddyPress features (all or specific) for non-member users.
+	- On the level settings page, the level gives access to BuddyPress by default.
+	- OR you can "Lock" BuddyPress features (all or specific) for users of that level.
 */
 
 /**
