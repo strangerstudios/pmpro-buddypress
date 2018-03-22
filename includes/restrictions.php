@@ -11,7 +11,6 @@
 /**
  * Check if a user can create groups.
  * @param int $user_id ID of the user to check. Defaults to current user.
- * @TODO: Consider adding a Settings page to account for behavior for Level 0. i.e. those who are logged in but don't have a membership level.
  */
 function pmpro_bp_user_can_create_groups( $user_id = NULL ) {
 	//default to current user

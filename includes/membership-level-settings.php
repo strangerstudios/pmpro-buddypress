@@ -316,48 +316,7 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 	
 	<table id="specific_features" class="form-table">
 		<tbody>
-	
-			<tr>
-				<th scope="row" valign="top"><label for="pmpro_bp_group_creation"><?php _e('Group Creation', 'pmpro-buddypress');?>:</label></th>
-				<td>
-					<select name="pmpro_bp_group_creation" id="pmpro_bp_group_creation">
-							<option value= '0' <?php if($can_create_groups == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
-							<option value= '1' <?php if($can_create_groups == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
-					</select>
-			
-					<p class="description">
-					<?php
-						if( $level_id <> 0 ) {
-							_e( 'Can members of this level create BuddyPress Groups?', 'pmpro-buddypress' );
-						} else {
-							_e( 'Can non-member users create BuddyPress Groups?', 'pmpro-buddypress' );
-						}
-					?>
-					</p>
-				</td>
-			</tr>
 				
-			<?php //viewing an individual group setting ?>
-			<tr>
-			<th scope="row" valign="top"><label for="pmpro_bp_group_single_viewing"><?php _e('Single Group Viewing', 'pmpro-buddypress');?>:</label></th>
-			<td>
-				<select name="pmpro_bp_group_single_viewing" id="pmpro_bp_group_single_viewing">
-						<option value= '0' <?php if($can_view_single_group == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
-						<option value= '1' <?php if($can_view_single_group == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
-					</select>
-		
-					<p class="description">
-					<?php
-						if( $level_id <> 0 ) {
-							_e( 'Can members of this level view individual BuddyPress Groups?', 'pmpro-buddypress' );
-						} else {
-							_e( 'Can non-member users view individual BuddyPress Groups?', 'pmpro-buddypress' );
-						}
-					?>
-					</p>
-				</td>
-			</tr>
-			
 			<?php //viewing the groups page?>
 			<tr>
 			<th scope="row" valign="top"><label for="pmpro_bp_groups_page_viewing"><?php _e('Groups Page Viewing', 'pmpro-buddypress');?>:</label></th>
@@ -378,8 +337,29 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 					</p>
 				</td>
 			</tr>
-			
-			<?php //can members of this level join groups??>
+
+			<?php //viewing an individual group ?>
+			<tr>
+			<th scope="row" valign="top"><label for="pmpro_bp_group_single_viewing"><?php _e('Single Group Viewing', 'pmpro-buddypress');?>:</label></th>
+			<td>
+				<select name="pmpro_bp_group_single_viewing" id="pmpro_bp_group_single_viewing">
+						<option value= '0' <?php if($can_view_single_group == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+						<option value= '1' <?php if($can_view_single_group == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
+					</select>
+		
+					<p class="description">
+					<?php
+						if( $level_id <> 0 ) {
+							_e( 'Can members of this level view individual BuddyPress Groups?', 'pmpro-buddypress' );
+						} else {
+							_e( 'Can non-member users view individual BuddyPress Groups?', 'pmpro-buddypress' );
+						}
+					?>
+					</p>
+				</td>
+			</tr>
+
+			<?php //joining groups??>
 			<tr>
 			<th scope="row" valign="top"><label for="pmpro_bp_groups_join"><?php _e('Joining Groups', 'pmpro-buddypress');?>:</label></th>
 			<td>
@@ -399,6 +379,29 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 				</p>
 			</td>
 			</tr>
+
+			<?php //creating groups ?>
+			<tr>
+				<th scope="row" valign="top"><label for="pmpro_bp_group_creation"><?php _e('Group Creation', 'pmpro-buddypress');?>:</label></th>
+				<td>
+					<select name="pmpro_bp_group_creation" id="pmpro_bp_group_creation">
+							<option value= '0' <?php if($can_create_groups == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
+							<option value= '1' <?php if($can_create_groups == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
+					</select>
+			
+					<p class="description">
+					<?php
+						if( $level_id <> 0 ) {
+							_e( 'Can members of this level create BuddyPress Groups?', 'pmpro-buddypress' );
+						} else {
+							_e( 'Can non-member users create BuddyPress Groups?', 'pmpro-buddypress' );
+						}
+					?>
+					</p>
+				</td>
+			</tr>
+
+			<?php //sending public messages ?>
 			<tr>
 			<th scope="row" valign="top"><label for="pmpro_bp_public_messaging"><?php _e('Public Messaging', 'pmpro-buddypress');?>:</label></th>
 			<td>
@@ -417,6 +420,8 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 				</p>
 				</td>
 			</tr>
+			
+			<?php //private messages ?>
 			<tr>
 			<th scope="row" valign="top"><label for="pmpro_bp_private_messaging"><?php _e('Private Messaging', 'pmpro-buddypress');?>:</label></th>
 			<td>
@@ -436,6 +441,7 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 				</td>
 			</tr>
 			
+			<?php //friend requests ?>
 			<tr>
 			<th scope="row" valign="top"><label for="pmpro_bp_send_friend_request"><?php _e('Send Friend Requests', 'pmpro-buddypress');?>:</label></th>
 			<td>
@@ -454,10 +460,12 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 				</p>
 				</td>
 			</tr>
+			
+			<?php //member directory ?>
 			<tr>
 			<th scope="row" valign="top"><label for="pmpro_bp_member_directory"><?php _e('Include in Member Directory', 'pmpro-buddypress');?>:</label></th>
 			<td>
-				<select name="pmpro_bp_member_directory" id="pmpro_bp_send_friend_request">
+				<select name="pmpro_bp_member_directory" id="pmpro_bp_member_directory">
 						<option value= '0' <?php if($pmpro_bp_member_directory == 0) echo "selected"; ?> ><?php _e('No', 'pmpro-buddypress');?></option>
 						<option value= '1' <?php if($pmpro_bp_member_directory == 1) echo "selected"; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
 				</select>
