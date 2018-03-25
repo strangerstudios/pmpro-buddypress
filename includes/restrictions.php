@@ -143,16 +143,16 @@ function pmpro_bp_lockdown_all_bp()
 	global $current_user;
 	$user_id = $current_user->ID;
 	
-	if( empty( $user_id ) ) {
-		return;
+	if( !empty( $user_id ) ) {
+		$level = pmpro_getMembershipLevelForUser( $user_id );
 	}
 
-	$level = pmpro_getMembershipLevelForUser( $user_id );	
 	if( !empty( $level ) ) {
 		$level_id = $level->id;
 	} else {
 		$level_id = 0;	//non-member user
-	}	
+	}
+		
 	$pmpro_bp_options = pmpro_bp_getLevelOptions( $level_id );
 	
 	if( $pmpro_bp_options['pmpro_bp_restrictions'] == -1 ) {
