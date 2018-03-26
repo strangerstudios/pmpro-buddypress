@@ -55,22 +55,20 @@ add_filter( 'bp_get_group_create_button', 'pmpro_bp_bp_get_group_create_button',
 
 /**
  * Hide the Join Group button if joining groups is restricted
- * @TODO: Also check if the group is in the invited to groups list for the user's level
  */
-function pmpro_bp_bp_get_groups_join_button($button_args) {
-	if( !pmpro_bp_user_can( 'groups_join' ) ) {
+function pmpro_bp_bp_get_groups_join_button( $button_args, $group ) {			
+	if( ( $button_args['id'] === 'join_group' || $button_args['id'] === 'request_membership' ) && !pmpro_bp_user_can_join_group( $group->id ) ) {
 		global $pmpro_pages;
 		$button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
 	}
 
 	return $button_args;
 }
-add_filter( 'bp_get_group_join_button', 'pmpro_bp_bp_get_groups_join_button');
+add_filter( 'bp_get_group_join_button', 'pmpro_bp_bp_get_groups_join_button', 10, 2);
 
 /**
  * Remove Nav Link to request an invite
  * if user doesn't have access to.
- * @TODO: Fix this.
  */
 function pmpro_bp_remove_request_membership_nav_link()
 {  
@@ -78,7 +76,7 @@ function pmpro_bp_remove_request_membership_nav_link()
 		return;
 	}
 	
-	if( !pmpro_bp_user_can( 'groups_join' ) ) {
+	if( !pmpro_bp_user_can_join_group( bp_get_current_group_id() ) ) {
 		global $pmpro_pages;
 		$slug = bp_get_current_group_slug();
 		$button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);	

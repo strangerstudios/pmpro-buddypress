@@ -49,6 +49,32 @@ function pmpro_bp_getLevelOptions($level_id) {
 }
 
 /**
+ * Get options for a user based on their level.
+ */
+function pmpro_bp_get_user_options( $user_id = NULL ) {
+	if( empty( $user_id ) ) {
+		global $current_user;
+		$user_id = $current_user->ID;
+	}
+
+	if( !empty( $user_id ) ) {		
+		$level = pmpro_getMembershipLevelForUser( $user_id );		
+	}
+
+	if( !empty( $level ) ) {
+		$level_id = $level->id;
+	} else {
+		$level_id = 0;	//non-member user
+	}
+	
+	$pmpro_bp_options = pmpro_bp_getLevelOptions( $level_id );
+
+	$pmpro_bp_options = apply_filters( 'pmpro_bp_get_user_options', $pmpro_bp_options, $user_id );
+
+	return $pmpro_bp_options;
+}
+
+/**
  * Redirect to the Access Required page.
  */
 function pmpro_bp_redirect_to_access_required_page() {
@@ -66,19 +92,9 @@ function pmpro_bp_user_can( $check, $user_id = NULL ) {
 	if( empty( $user_id ) ) {
 		global $current_user;
 		$user_id = $current_user->ID;
-	}
-
-	if( !empty( $user_id ) ) {		
-		$level = pmpro_getMembershipLevelForUser( $user_id );		
-	}
-
-	if( !empty( $level ) ) {
-		$level_id = $level->id;
-	} else {
-		$level_id = 0;	//non-member user
-	}
+	}	
 	
-	$pmpro_bp_options = pmpro_bp_getLevelOptions( $level_id );
+	$pmpro_bp_options = pmpro_bp_get_user_options( $user_id );
 	if( strpos( $check, 'pmpro_bp_' ) === false ) {
 		$check = 'pmpro_bp_' . $check;
 	}
@@ -88,4 +104,31 @@ function pmpro_bp_user_can( $check, $user_id = NULL ) {
 	$can = apply_filters( 'pmpro_bp_user_can', $can, $check, $user_id );
 		
 	return $can;
+}
+
+/**
+ * Check if a user can join a specific group.
+ */
+function pmpro_bp_user_can_join_group( $group_id, $user_id = NULL ) {
+	if( empty( $user_id ) ) {
+		global $current_user;
+		$user_id = $current_user->ID;
+	}
+	
+	if( pmpro_bp_user_can( 'groups_join', $user_id ) ) {
+		// they can join any group
+		$can_join = true;
+	} else {
+		// check if they can joint his specific group
+		$can_join = false;
+		$pmpro_bp_options = pmpro_bp_get_user_options( $user_id );		
+		if( is_array( $pmpro_bp_options['pmpro_bp_group_automatic_add'] ) && in_array( $group_id, $pmpro_bp_options['pmpro_bp_group_automatic_add'] ) ) {
+			$can_join = true;
+		}
+		if( is_array( $pmpro_bp_options['pmpro_bp_group_can_request_invite'] ) && in_array( $group_id, $pmpro_bp_options['pmpro_bp_group_can_request_invite'] ) ) {
+			$can_join = true;
+		}
+	}
+
+	return $can_join;
 }
