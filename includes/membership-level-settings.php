@@ -10,7 +10,7 @@
 function pmpro_bp_level_settings( ) {
 	if( isset( $_REQUEST['edit'] ) ) {
 		$level_id = intval( $_REQUEST['edit'] );
-		$pmpro_bp_options = pmpro_bp_getLevelOptions( $level_id );
+		$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );
 		$pmpro_bp_group_automatic_add		= $pmpro_bp_options['pmpro_bp_group_automatic_add'];
 		$pmpro_bp_group_can_request_invite = $pmpro_bp_options['pmpro_bp_group_can_request_invite'];
 		$pmpro_bp_member_types = $pmpro_bp_options['pmpro_bp_member_types'];
@@ -147,7 +147,7 @@ add_action('pmpro_membership_level_after_other_settings','pmpro_bp_level_setting
 
 function pmpro_bp_pmpro_after_change_membership_level($level_id, $user_id, $cancel_level)
 {
-	$pmpro_bp_options = pmpro_bp_getLevelOptions($level_id);
+	$pmpro_bp_options = pmpro_bp_get_level_options($level_id);
 	
 	//Perform any group additions and removals
 	
@@ -174,7 +174,7 @@ function pmpro_bp_pmpro_after_change_membership_level($level_id, $user_id, $canc
 	}
 	
 	//Update member types based on level
-	$pmpro_bp_old_level_options = pmpro_bp_getLevelOptions($cancel_level);
+	$pmpro_bp_old_level_options = pmpro_bp_get_level_options($cancel_level);
 	
 	$old_member_types = $pmpro_bp_old_level_options['pmpro_bp_member_types'];
 	$new_member_types = $pmpro_bp_options['pmpro_bp_member_types'];
@@ -261,7 +261,7 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 		$level_id = -1;
 	}
 	
-	$pmpro_bp_options = pmpro_bp_getLevelOptions( $level_id );
+	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );
 	
 	$can_create_groups				= $pmpro_bp_options['pmpro_bp_group_creation'];
 	$can_view_single_group			= $pmpro_bp_options['pmpro_bp_group_single_viewing'];

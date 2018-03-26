@@ -7,7 +7,7 @@
  * Get the PMPro BuddyPress options for a specific level.
  * Level 0 contains options for non-member users.
  */
-function pmpro_bp_getLevelOptions($level_id) {
+function pmpro_bp_get_level_options($level_id) {
 	if( $level_id == -1 ) {
 		// defaults
 		$options = array(			
@@ -32,7 +32,7 @@ function pmpro_bp_getLevelOptions($level_id) {
 
 		// might be set to mirror non-member users
 		if( $options['pmpro_bp_restrictions'] == 0 ) {
-			$non_member_user_options = pmpro_bp_getLevelOptions( 0 );
+			$non_member_user_options = pmpro_bp_get_level_options( 0 );
 			$options['pmpro_bp_restrictions'] = $non_member_user_options['pmpro_bp_restrictions'];
 			$options['pmpro_bp_group_creation'] = $non_member_user_options['pmpro_bp_group_creation'];
 			$options['pmpro_bp_group_single_viewing'] = $non_member_user_options['pmpro_bp_group_single_viewing'];
@@ -67,7 +67,7 @@ function pmpro_bp_get_user_options( $user_id = NULL ) {
 		$level_id = 0;	//non-member user
 	}
 	
-	$pmpro_bp_options = pmpro_bp_getLevelOptions( $level_id );
+	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );
 
 	$pmpro_bp_options = apply_filters( 'pmpro_bp_get_user_options', $pmpro_bp_options, $user_id );
 

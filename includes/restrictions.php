@@ -163,7 +163,7 @@ function pmpro_bp_lockdown_all_bp()
 		$level_id = 0;	//non-member user
 	}
 		
-	$pmpro_bp_options = pmpro_bp_getLevelOptions( $level_id );
+	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );
 	
 	if( $pmpro_bp_options['pmpro_bp_restrictions'] == -1 ) {
 		pmpro_bp_redirect_to_access_required_page();

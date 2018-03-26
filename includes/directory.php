@@ -38,7 +38,7 @@ function pmpro_bp_get_members_in_directory()
 
 	foreach($pmpro_levels as $level)
 	{
-		$pmpro_bp_options = pmpro_bp_getLevelOptions($level->id);
+		$pmpro_bp_options = pmpro_bp_get_level_options($level->id);
 	
 		if($pmpro_bp_options['pmpro_bp_member_directory'] == 1)
 		{
