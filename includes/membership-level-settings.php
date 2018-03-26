@@ -483,17 +483,13 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 	</tbody>
 	</table>
 	<script>
-		function pmpro_updateBuddyPressTRs()
-		{
-			var specific_features = jQuery('#pmpro_bp_restrictions').val();
+		function pmpro_updateBuddyPressTRs() {
+			var specific_features = jQuery( '#pmpro_bp_restrictions' ).val();
 
-			if(specific_features == 2)
-			{
-				jQuery('#specific_features').show();
-			}
-			else
-			{
-				jQuery('#specific_features').hide();
+			if(specific_features == 2) {
+				jQuery( '#specific_features' ).show();
+			} else {
+				jQuery( '#specific_features' ).hide();
 			}
 		}
 		pmpro_updateBuddyPressTRs();

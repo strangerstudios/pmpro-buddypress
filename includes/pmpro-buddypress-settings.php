@@ -3,41 +3,33 @@
 	Code to create a Memberships -> BuddyPress page with settings.
 */
 
-function pmpro_bp_extra_page_settings($pages)
-{
-	$pages['pmprobp_restricted'] = array('title'=>'Access Restricted', 'content'=>'[pmpro_buddypress_restricted]', 'hint'=>'Include the shortcode [pmpro_buddypress_restricted].');
+function pmpro_bp_extra_page_settings( $pages ) {
+	$pages['pmprobp_restricted'] = array( 'title'=>'Access Restricted', 'content'=>'[pmpro_buddypress_restricted]', 'hint'=>'Include the shortcode [pmpro_buddypress_restricted].' );
 	return $pages;
 }
-add_action('pmpro_extra_page_settings', 'pmpro_bp_extra_page_settings', 10, 1);
+add_action( 'pmpro_extra_page_settings', 'pmpro_bp_extra_page_settings', 10, 1 );
 
-function pmpro_bp_add_admin_menu_page()
-{
-	add_submenu_page('pmpro-membershiplevels', __('PMPro BuddyPress', 'pmpro'), __('PMPro BuddyPress', 'pmpro'), 'manage_options', 'pmpro-buddypress', 'pmpro_bp_buddpress_admin_page');
+function pmpro_bp_add_admin_menu_page() {
+	add_submenu_page( 'pmpro-membershiplevels', __('PMPro BuddyPress', 'pmpro'), __('PMPro BuddyPress', 'pmpro'), 'manage_options', 'pmpro-buddypress', 'pmpro_bp_buddpress_admin_page' );
 }
-
-add_action('admin_menu', 'pmpro_bp_add_admin_menu_page');
+add_action( 'admin_menu', 'pmpro_bp_add_admin_menu_page' );
 
 //redirect the Register button from wp-login.php
-function pmpro_bp_registration_pmpro_to_bp_redirect($url)
-{
-	$bp_pages = get_option('bp-pages');
+function pmpro_bp_registration_pmpro_to_bp_redirect( $url ) {
+	$bp_pages = get_option( 'bp-pages' );
 	
-	$pmpro_bp_register = get_option('pmpro_bp_registration_page');
-	if(!empty($pmpro_bp_register) && $pmpro_bp_register == 'buddypress')
-	{
-		$url = get_permalink($bp_pages['register']);
+	$pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
+	if( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' ) {
+		$url = get_permalink( $bp_pages['register'] );
 	}
 	
 	return $url;
 }
+add_filter( 'pmpro_register_redirect', 'pmpro_bp_registration_pmpro_to_bp_redirect' );
 
-add_filter('pmpro_register_redirect', 'pmpro_bp_registration_pmpro_to_bp_redirect');
-
-function pmpro_bp_buddpress_admin_page()
-{
+function pmpro_bp_buddpress_admin_page() {
 	//get/set settings
-	if(!empty($_REQUEST['savesettings']))
-	{
+	if(!empty($_REQUEST['savesettings'])) {
 		// Non-member user Restrictions
 		$can_create_groups = intval( $_REQUEST['pmpro_bp_group_creation'] );
 		$can_view_single_group = intval( $_REQUEST['pmpro_bp_group_single_viewing'] );
@@ -65,18 +57,20 @@ function pmpro_bp_buddpress_admin_page()
 		update_option('pmpro_bp_options_users', $pmpro_bp_options, 'no');
 
 		// General Settings
-		update_option('pmpro_bp_registration_page', $_POST['pmpro_bp_register']);
-		update_option('pmpro_bp_show_level_on_bp_profile', $_POST['pmpro_bp_level_profile'], 'no') ;
+		update_option( 'pmpro_bp_registration_page', $_POST['pmpro_bp_register'] );
+		update_option( 'pmpro_bp_show_level_on_bp_profile', $_POST['pmpro_bp_level_profile'], 'no' ) ;
 	}
 	
-    $pmpro_bp_register = get_option('pmpro_bp_registration_page');
-    $pmpro_bp_level_profile = get_option('pmpro_bp_show_level_on_bp_profile');
+    $pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
+    $pmpro_bp_level_profile = get_option( 'pmpro_bp_show_level_on_bp_profile' );
     
-	if(empty($pmpro_bp_register))
+	if( empty( $pmpro_bp_register ) ) {
 		$pmpro_bp_register = 'pmpro'; //default to the PMPro Levels page 
+	}
     
-	if(empty($pmpro_bp_level_profile))
+	if( empty( $pmpro_bp_level_profile ) ) {
 		$pmpro_bp_level_profile = 'yes'; //default to showing Level on BuddyPress Profile 
+	}
 
 	require_once( PMPRO_DIR . '/adminpages/admin_header.php' ); ?>
 
