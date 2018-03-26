@@ -4,6 +4,18 @@
 */
 
 /**
+ * Make sure administrators can do everything
+ */
+function pmpro_bp_admins_can_do_everything( $can, $check, $user_id ) {
+	if( user_can( $user_id, 'manage_options') ) {
+		$can = true;
+	}
+
+	return $can;
+}
+add_filter( 'pmpro_bp_user_can', 'pmpro_bp_admins_can_do_everything', 10, 3 );
+
+/**
  * Restrict viewing of the groups page or individual
  * groups pages if the user doesn't have access.
  */
@@ -13,7 +25,7 @@ function pmpro_bp_restrict_group_viewing()
 	
 	//Group (Single) Viewing Restrictions - which levels can view individual groups?
 	if ( bp_is_group() 
-		&& !pmpro_bp_user_can( 'view_single_group' ) ) {
+		&& !pmpro_bp_user_can( 'group_single_viewing' ) ) {
 		pmpro_bp_redirect_to_access_required_page();
 	}
 
@@ -21,7 +33,7 @@ function pmpro_bp_restrict_group_viewing()
 	if( !empty( $bp->pages->groups ) 
 		&& bp_is_current_component( $bp->pages->groups->slug )
 		&& !bp_is_group()
-		&& !pmpro_bp_user_can( 'view_groups_page' ) ) {
+		&& !pmpro_bp_user_can( 'groups_page_viewing' ) ) {
 		pmpro_bp_redirect_to_access_required_page();
 	}
 }
@@ -34,7 +46,7 @@ function pmpro_bp_bp_get_group_create_button( $button_args )
 { 
 	global $pmpro_pages;
 	
-	if(!pmpro_bp_user_can( 'pmpro_bp_user_can_create_groups' ) )
+	if(!pmpro_bp_user_can( 'pmpro_bp_group_creation' ) )
 		$button_args['link_href'] =	get_permalink($pmpro_pages['pmprobp_restricted']);
 	
     return $button_args;

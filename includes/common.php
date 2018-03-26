@@ -68,12 +68,11 @@ function pmpro_bp_user_can( $check, $user_id = NULL ) {
 		$user_id = $current_user->ID;
 	}
 
-	if( empty( $user_id ) ) {
-		return false;
+	if( !empty( $user_id ) ) {		
+		$level = pmpro_getMembershipLevelForUser( $user_id );		
 	}
 	
-	$level = pmpro_getMembershipLevelForUser( $user_id );	
-	if( !empty( $level ) ) {
+	if( !empty( $level_id ) ) {
 		$level_id = $level->id;
 	} else {
 		$level_id = 0;	//non-member user
@@ -82,8 +81,10 @@ function pmpro_bp_user_can( $check, $user_id = NULL ) {
 	$pmpro_bp_options = pmpro_bp_getLevelOptions( $level_id );
 	if( strpos( $check, 'pmpro_bp_' ) === false ) {
 		$check = 'pmpro_bp_' . $check;
-	}
+	}	
 	$can = ( $pmpro_bp_options['pmpro_bp_restrictions'] == 1 || $pmpro_bp_options[ $check ] == 1 );
+
+	$can = apply_filters( 'pmpro_bp_user_can', $can, $check, $user_id );
 		
 	return $can;
 }
