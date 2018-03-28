@@ -72,6 +72,13 @@ This plugin redirects users to a specific page if they try to access restricted 
 
 Note that BuddyPress Member Types must be created through custom code. [This post explains how to add Member Types to BuddyPress](https://www.paidmembershipspro.com/apply-a-buddypress-member-type-on-membership-checkout-or-level-change/).
 
+= Non-member User Settings =
+Some of your WordPress users may not have a membership level in Paid Memberships Pro. This plugin allows you to set how BuddyPress should be locked down for these users without a membership level.
+
+1. Navigate to Memberships -> PMPro BuddyPress in the WP Dashboard.
+1. Under the "Non-member User Settings" section, change "Unlock BuddyPress?" to your desired option.
+1. You can choose to lock access to all of BuddyPress, give non-member users access to all of BuddyPress or choose specific features that they can access.
+
 = Use BuddyPress Registration Process =
 This plugin also allows you to use the BuddyPress user registration process (in place of the standard Paid Memberships Pro membership checkout process).
 
