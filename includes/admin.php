@@ -41,7 +41,7 @@ function pmpro_bp_plugin_action_links( $links ) {
 	}
 	return array_merge( $new_links, $links );
 }
-add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'pmpro_bp_plugin_action_links' );
+add_filter( 'plugin_action_links_' . PMPROBP_BASENAME, 'pmpro_bp_plugin_action_links' );
 
 /**
  * Function to add links to the plugin row meta
