@@ -8,7 +8,7 @@ function pmpro_bp_admin_notice_activation_hook() {
 	// Create transient data.
 	set_transient( 'pmpro-bp-admin-notice', true, 5 );
 }
-register_activation_hook( __FILE__, 'pmpro_bp_admin_notice_activation_hook' );
+register_activation_hook( PMPROBP_BASENAME, 'pmpro_bp_admin_notice_activation_hook' );
 
 /**
  * Admin Notice on Activation.

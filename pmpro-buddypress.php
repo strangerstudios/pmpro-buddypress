@@ -12,8 +12,8 @@
 /*
 	includes
 */
-define( 'PMPROBP_DIR', dirname(__file__) );
-define( 'PMPROBP_BASENAME', plugin_basename(__FILE__) );
+define( 'PMPROBP_DIR', dirname( __FILE__ ) );
+define( 'PMPROBP_BASENAME', plugin_basename( __FILE__ ) );
 
 require_once( PMPROBP_DIR . '/includes/common.php' );
 
