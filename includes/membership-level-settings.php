@@ -144,58 +144,6 @@ function pmpro_bp_level_settings( ) {
 }
 add_action('pmpro_membership_level_after_other_settings','pmpro_bp_level_settings');
 
-
-function pmpro_bp_pmpro_after_change_membership_level($level_id, $user_id, $cancel_level)
-{
-	$pmpro_bp_options = pmpro_bp_get_level_options($level_id);
-	
-	//Perform any group additions and removals
-	
-	//get their old level groups and remove them
-	$old_groups = $pmpro_bp_options['pmpro_bp_group_automatic_add'];
-	
-	if(empty($old_groups))
-		$old_groups = array();
-	
-	foreach($old_groups as $group_id)
-	{
-		groups_leave_group($group_id, $user_id);
-	}
-	
-	//then get their new level groups and add them
-	$new_groups = $pmpro_bp_options['pmpro_bp_group_automatic_add'];
-	
-	if(empty($new_groups))
-		$new_groups = array();
-	
-	foreach($new_groups as $group_id)
-	{
-		groups_accept_invite($user_id, $group_id);
-	}
-	
-	//Update member types based on level
-	$pmpro_bp_old_level_options = pmpro_bp_get_level_options($cancel_level);
-	
-	$old_member_types = $pmpro_bp_old_level_options['pmpro_bp_member_types'];
-	$new_member_types = $pmpro_bp_options['pmpro_bp_member_types'];
-	
-	if(!empty($old_member_types) && !empty($new_member_types))
-	{
-		foreach($old_member_types as $member_type)
-		{
-			bp_remove_member_type($user_id, $member_type);
-		}
-	
-		foreach($new_member_types as $member_type)
-		{
-			//make sure we can sign up for more than one member type
-			bp_set_member_type($user_id, $member_type, true);
-		}
-	}
-}
-
-add_action('pmpro_after_change_membership_level', 'pmpro_bp_pmpro_after_change_membership_level', 10, 3);
-
 /**
  * Save the settings on the edit membership page of the dashboard.
  * Fires on the 'pmpro_save_membership_level' hook.
