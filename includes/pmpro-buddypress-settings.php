@@ -78,7 +78,7 @@ function pmpro_bp_buddpress_admin_page() {
 		<form action="" method="post" enctype="multipart/form-data">
 
 		<h1><?php esc_attr_e( 'Paid Memberships Pro - BuddyPress Add On Settings', 'pmpro-buddypress' ); ?></h1>
-		<p><?php printf( __( 'Integrate and manage your BuddyPress Community using Paid Memberships Pro. <a href="%s" target="_blank">Read the documentation</a> for more information about this Add On.', 'pmpro-buddypress' ), 'https://www.paidmembershipspro.com/add-ons/pmpro-buddypress/' ); ?></p>
+		<p><?php printf( __( 'Integrate and manage your BuddyPress Community using Paid Memberships Pro. <a href="%s" target="_blank">Read the documentation</a> for more information about this Add On.', 'pmpro-buddypress' ), 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/' ); ?></p>
 
 		<h3 class="topborder"><?php esc_attr_e( 'Page Settings', 'pmpro-buddypress' ); ?></h3>
 		<p><?php esc_attr_e( 'This plugin redirects users to a specific page if they try to access restricted BuddyPress features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Page Settings.', 'pmpro-buddypress' ); ?></p>
@@ -97,7 +97,7 @@ function pmpro_bp_buddpress_admin_page() {
 		<p><a href="<?php echo admin_url('admin.php?page=pmpro-pagesettings');?>" class="button button-primary"><?php _e('Manage Page Settings', 'paid-memberships-pro' );?></a></p>
 
 		<h3 class="topborder"><?php esc_attr_e( 'Non-member User Settings', 'pmpro-buddypress' ); ?></h3>
-		<p><?php esc_attr_e( 'Set how BuddyPress should be locked down for non-member users.', 'pmpro-buddypress' ); ?></p>
+		<p><?php esc_attr_e( 'Set how BuddyPress should be locked down for users without a membership level.', 'pmpro-buddypress' ); ?></p>
 		<?php 
 			// Settings for Level 0 are for non-member users.
 			pmpro_bp_restriction_settings_form(0);
