@@ -75,6 +75,39 @@ function pmpro_bp_get_user_options( $user_id = NULL ) {
 }
 
 /**
+ * Get options for a user's "last" old level.
+ */
+function pmpro_bp_get_user_old_level_options( $user_id = NULL ) {
+	if( empty( $user_id ) ) {
+		global $current_user;
+		$user_id = $current_user->ID;
+	}
+
+	if( !empty( $user_id ) ) {		
+		$level = pmpro_getMembershipLevelForUser( $user_id );		
+	}
+
+	if( !empty( $level ) ) {
+		$level_id = $level->id;
+	} else {
+		$level_id = 0;	//non-member user
+	}
+
+	global $wpdb;
+
+	$sqlQuery = $wpdb->prepare("SELECT DISTINCT(membership_id) FROM $wpdb->pmpro_memberships_users WHERE user_id = %d AND membership_id NOT IN(%s) AND status IN('admin_changed', 'admin_cancelled', 'cancelled', 'changed', 'expired', 'inactive') AND modified > NOW() - INTERVAL 15 MINUTE ORDER BY id DESC LIMIT 1", $user_id, $level_id);
+	$old_level_id = $wpdb->get_var($sqlQuery);
+
+	if( empty( $old_level_id ) ) {
+		$old_level_id = 0;
+	}
+
+	$pmpro_bp_options = pmpro_bp_get_level_options( $old_level_id );
+
+	return $pmpro_bp_options;
+}
+
+/**
  * Redirect to the Access Required page.
  */
 function pmpro_bp_redirect_to_access_required_page() {

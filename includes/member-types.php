@@ -9,7 +9,12 @@
  */
 function pmpro_bp_set_member_types( $level_id, $user_id, $cancel_level ) {
 	$pmpro_bp_options = pmpro_bp_get_user_options( $user_id );
-	$pmpro_bp_old_level_options = pmpro_bp_get_level_options( $cancel_level );
+	
+	if( !empty( $cancel_level ) ) {
+		$pmpro_bp_old_level_options = pmpro_bp_get_level_options( $cancel_level );
+	} else {
+		$pmpro_bp_old_level_options = pmpro_bp_get_user_old_level_options( $user_id );
+	}
 	
 	$old_member_types = $pmpro_bp_old_level_options['pmpro_bp_member_types'];
 	$new_member_types = $pmpro_bp_options['pmpro_bp_member_types'];
