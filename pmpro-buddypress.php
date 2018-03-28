@@ -13,10 +13,14 @@
 	includes
 */
 define('PMPROBP_DIR', dirname(__file__));
+
 require_once(PMPROBP_DIR . '/includes/common.php');
+
 require_once(PMPROBP_DIR . '/includes/admin.php');
 require_once(PMPROBP_DIR . '/includes/pmpro-buddypress-settings.php');
 require_once(PMPROBP_DIR . '/includes/membership-level-settings.php');
-require_once(PMPROBP_DIR . '/includes/restrictions.php');
+
 require_once(PMPROBP_DIR . '/includes/directory.php');
 require_once(PMPROBP_DIR . '/includes/profiles.php');
+require_once(PMPROBP_DIR . '/includes/registration.php');
+require_once(PMPROBP_DIR . '/includes/restrictions.php');
