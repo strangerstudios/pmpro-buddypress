@@ -140,6 +140,11 @@ add_filter( 'bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button' );
  * Redirect away from any BuddyPress page if set to.
  */
 function pmpro_bp_lockdown_all_bp() {
+	
+	if ( !function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
+		return;
+	}
+	
 	if( !is_buddypress() ) {
 		return;
 	}
@@ -196,6 +201,11 @@ add_action( 'template_redirect', 'pmpro_bp_buddypress_or_pmpro_registration', 70
  * unless setting says not to
  */
 function pmpro_bp_show_level_on_bp_profile() {
+	
+	if ( !function_exists('pmpro_getMembershipLevelForUser') ) {
+		return;
+	}
+	
 	$level = pmpro_getMembershipLevelForUser(bp_displayed_user_id());
 	
 	$show_level = get_option('pmpro_bp_show_level_on_bp_profile');
