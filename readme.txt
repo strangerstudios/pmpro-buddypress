@@ -99,5 +99,8 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 
 == Changelog ==
 
+= 1.0.1 =
+* Fixed bug where logged in users were being redirected to the BuddyPress registration page even though logged in users can't register.
+
 = 1.0 =
 * Initial WP.org release.
