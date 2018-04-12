@@ -1,20 +1,7 @@
 <?php
 /*
-	Code to edit the BuddyPress directory.
+	Code to edit the BuddyPress members directory and search.
 */
-
-function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
-	global $pmpro_bp_members_in_directory;
-	
-	$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
-}
-
-add_action( 'bp_before_directory_members', 'pmpro_bp_bp_before_directory_members' );
-
-function pmpro_bp_bp_get_total_member_count() {
-	global $pmpro_bp_members_in_directory;
-	return count($pmpro_bp_members_in_directory);
-}
 
 function pmpro_bp_bp_before_directory_members() {
 	global $pmpro_bp_members_in_directory;
@@ -22,6 +9,18 @@ function pmpro_bp_bp_before_directory_members() {
 	
 	add_action( 'bp_pre_user_query_construct', 'pmpro_bp_bp_pre_user_query_construct', 1, 1 );
 	add_filter( 'bp_get_total_member_count', 'pmpro_bp_bp_get_total_member_count' );
+}
+add_action( 'bp_before_directory_members', 'pmpro_bp_bp_before_directory_members' );
+
+function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
+	global $pmpro_bp_members_in_directory;		
+	$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
+}
+
+function pmpro_bp_bp_get_total_member_count($count) {
+	global $pmpro_bp_members_in_directory;
+	$count = count($pmpro_bp_members_in_directory);
+	return $count;
 }
 
 function pmpro_bp_get_members_in_directory() {
@@ -34,7 +33,7 @@ function pmpro_bp_get_members_in_directory() {
 
 	foreach($pmpro_levels as $level) {
 		$pmpro_bp_options = pmpro_bp_get_level_options( $level->id );
-	
+
 		if( $pmpro_bp_options['pmpro_bp_member_directory'] == 1 ) {
 			$include_levels[] = $level->id;
 		}

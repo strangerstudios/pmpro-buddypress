@@ -21,10 +21,11 @@ add_filter( 'pmpro_bp_user_can', 'pmpro_bp_admins_can_do_everything', 10, 3 );
  */
 function pmpro_bp_restrict_group_viewing() {
 	global $bp, $pmpro_pages;
-	
+
 	//Group (Single) Viewing Restrictions - which levels can view individual groups?
 	if ( bp_is_group() 
-		&& !pmpro_bp_user_can( 'group_single_viewing' ) ) {
+		&& !pmpro_bp_user_can( 'group_single_viewing' ) 
+		&& !pmpro_bp_user_can_join_group( $bp->groups->current_group->id ) ) {		
 		pmpro_bp_redirect_to_access_required_page();
 	}
 
