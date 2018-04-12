@@ -160,8 +160,28 @@ function pmpro_bp_user_can_join_group( $group_id, $user_id = NULL ) {
 		}
 		if( is_array( $pmpro_bp_options['pmpro_bp_group_can_request_invite'] ) && in_array( $group_id, $pmpro_bp_options['pmpro_bp_group_can_request_invite'] ) ) {
 			$can_join = true;
-		}
+		}		
 	}
 
 	return $can_join;
+}
+
+/**
+ * Check if a user can join a specific group.
+ */
+function pmpro_bp_user_can_view_group( $group_id, $user_id = NULL ) {
+	if( empty( $user_id ) ) {
+		global $current_user;
+		$user_id = $current_user->ID;
+	}
+
+	if( pmpro_bp_user_can( 'group_single_viewing', $user_id ) 
+		|| pmpro_bp_user_can_join_group( $group_id, $user_id ) 
+		|| groups_is_user_member( $user_id, $group_id ) ) {		
+		$can_view = true;
+	} else {
+		$can_view = false;
+	}
+
+	return $can_view;
 }
