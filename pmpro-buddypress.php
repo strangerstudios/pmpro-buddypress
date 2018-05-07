@@ -19,12 +19,12 @@ add_action( 'plugins_loaded', 'check_for_buddypress_before_init' );
  */
 function check_for_buddypress_before_init() {
 	if ( ! defined( 'BP_REQUIRED_PHP_VERSION' ) ) {
-		$notice = 'You need to activate BuddyPress for this Add On to run properly.';
+		$notice = 'You need to activate BuddyPress for the PMPro BuddyPress Add On to run properly.';
 		pmpro_bp_admin_notice__error( $notice );
 		return;
 	}
 	if ( ! defined( 'PMPRO_BASE_FILE' ) ) {
-		$notice = 'You need to activate Paid Memberships Pro for this Add On to run properly.';
+		$notice = 'You need to activate Paid Memberships Pro for the PMPro BuddyPress Add On to run properly.';
 		pmpro_bp_admin_notice__error( $notice );
 		return;
 	}
