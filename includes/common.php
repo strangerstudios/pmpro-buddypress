@@ -169,7 +169,6 @@ function pmpro_bp_user_can( $check, $user_id = null ) {
 	}
 	$pmpro_bp_options = pmpro_bp_get_user_options( $user_id );
 
-	d( $pmpro_bp_options );
 	if ( null !== $pmpro_bp_options['pmpro_bp_restrictions'] ) {
 
 		$can = ( $pmpro_bp_options['pmpro_bp_restrictions'] == 1 || $pmpro_bp_options[ $check ] == 1 );
