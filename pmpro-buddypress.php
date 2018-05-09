@@ -11,13 +11,13 @@
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
-add_action( 'plugins_loaded', 'check_for_buddypress_before_init' );
+add_action( 'init', 'check_for_buddypress_on_init' );
 /**
  * Check for PMPro and BuddyPress first before engaging the Add On.
  *
  * @return [type] [description]
  */
-function check_for_buddypress_before_init() {
+function check_for_buddypress_on_init() {
 	if ( ! defined( 'BP_REQUIRED_PHP_VERSION' ) ) {
 		$notice = 'You need to activate BuddyPress for the PMPro BuddyPress Add On to run properly.';
 		pmpro_bp_admin_notice__error( $notice );
