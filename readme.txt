@@ -46,7 +46,7 @@ The plugin requires BuddyPress and Paid Memberships Pro to be installed and acti
 = Page Settings =
 This plugin redirects users to a specific page if they try to access restricted BuddyPress features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Page Settings.
 
-1. Navigate to Memberships -> Page Settings and choose (or generate) a page for the "Access Restricted" page. 
+1. Navigate to Memberships -> Page Settings and choose (or generate) a page for the "Access Restricted" page.
 1. Be sure to include the [pmpro_buddypress_restricted] shortcode in the page content.
 1. Save Settings
 
@@ -100,6 +100,7 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 == Changelog ==
 
 = 1.0.1 =
+* Fixed bug where the members directory was not being filtered correctly.
 * Fixed bug where logged in users were being redirected to the BuddyPress registration page even though logged in users can't register.
 
 = 1.0 =
