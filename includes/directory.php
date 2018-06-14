@@ -3,17 +3,16 @@
 	Code to edit the BuddyPress members directory and search.
 */
 
-function pmpro_bp_bp_before_directory_members() {
+function pmpro_bp_directory_init() {
 	global $pmpro_bp_members_in_directory;
 	$pmpro_bp_members_in_directory = pmpro_bp_get_members_in_directory();
-	
 	add_action( 'bp_pre_user_query_construct', 'pmpro_bp_bp_pre_user_query_construct', 1, 1 );
 	add_filter( 'bp_get_total_member_count', 'pmpro_bp_bp_get_total_member_count' );
 }
-add_action( 'bp_before_directory_members', 'pmpro_bp_bp_before_directory_members' );
+add_action('init', 'pmpro_bp_directory_init');
 
 function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
-	global $pmpro_bp_members_in_directory;		
+	global $pmpro_bp_members_in_directory;
 	$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
 }
 
@@ -25,7 +24,7 @@ function pmpro_bp_bp_get_total_member_count($count) {
 
 function pmpro_bp_get_members_in_directory() {
 	global $wpdb, $pmpro_levels;
-		
+
 	$pmpro_levels = pmpro_getAllLevels(false, true);
 
 	//see if we should include them in the member directory.
@@ -34,7 +33,7 @@ function pmpro_bp_get_members_in_directory() {
 	foreach($pmpro_levels as $level) {
 		$pmpro_bp_options = pmpro_bp_get_level_options( $level->id );
 
-		if( $pmpro_bp_options['pmpro_bp_member_directory'] == 1 ) {
+		if( $pmpro_bp_options['pmpro_bp_member_directory'] == 1 || $pmpro_bp_options['pmpro_bp_restrictions'] == 1) {
 			$include_levels[] = $level->id;
 		}
 	}
@@ -43,6 +42,6 @@ function pmpro_bp_get_members_in_directory() {
 
 	$wpdb->flush();
 	$include_users = $wpdb->get_col($sql);
-	
+
 	return $include_users;
 }
