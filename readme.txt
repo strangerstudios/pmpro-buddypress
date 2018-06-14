@@ -100,6 +100,8 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 == Changelog ==
 
 = 1.0.1 =
+* Fixed fatal errors when PMPro or BuddyPress isn't activated.
+* Fixed bug where membership level changes were creating fatal errors if Groups is not active.
 * Fixed bug where the members directory was not being filtered correctly.
 * Fixed bug where logged in users were being redirected to the BuddyPress registration page even though logged in users can't register.
 
