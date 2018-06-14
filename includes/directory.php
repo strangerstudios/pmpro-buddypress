@@ -9,11 +9,14 @@ function pmpro_bp_directory_init() {
 	add_action( 'bp_pre_user_query_construct', 'pmpro_bp_bp_pre_user_query_construct', 1, 1 );
 	add_filter( 'bp_get_total_member_count', 'pmpro_bp_bp_get_total_member_count' );
 }
-add_action('init', 'pmpro_bp_directory_init');
+add_action('init', 'pmpro_bp_directory_init', 20);
 
 function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 	global $pmpro_bp_members_in_directory;
-	$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
+	if(!empty($pmpro_bp_members_in_directory))
+		$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
+	else
+		$query_array->query_vars['include'] = array(0);
 }
 
 function pmpro_bp_bp_get_total_member_count($count) {
