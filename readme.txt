@@ -1,9 +1,9 @@
 === Paid Memberships Pro - BuddyPress Add On ===
 Contributors: strangerstudios, great-h-master
 Tags: paid memberships pro, pmpro, buddypress
-Requires at least: 3.5
-Tested up to: 4.9.4
-Stable tag: 1.0
+Requires at least: 4
+Tested up to: 4.9.7
+Stable tag: 1.1
 
 Manage access to your BuddyPress Community using Paid Memberships Pro
 
@@ -99,7 +99,7 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.1 =
 * BUG FIX: Fixed fatal errors when PMPro or BuddyPress isn't activated.
 * BUG FIX: Fixed bug where membership level changes were creatinig fatal errors if Groups was not active.
 * BUG FIX: Fixed bug where the members directory was not being filtered correctly.
