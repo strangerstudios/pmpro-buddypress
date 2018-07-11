@@ -96,7 +96,11 @@ function pmpro_bp_level_settings( ) {
 		<h3 class="topborder"> <?php _e('BuddyPress Member Types', 'pmpro-buddypress');?></h3>
 		
 		<?php
-			$registered_member_type_objects = bp_get_member_types( array(), 'objects' );
+			if( function_exists( 'bp_get_member_types' ) ) {
+				$registered_member_type_objects = bp_get_member_types( array(), 'objects' );
+			} else {
+				$registered_member_type_objects = array();
+			}
 			if(empty($registered_member_type_objects)) {
 			?>
 				<div><?php _e('There are no member types defined.', 'pmpro-buddypress');?></div>
