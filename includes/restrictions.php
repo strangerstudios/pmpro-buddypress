@@ -22,6 +22,11 @@ add_filter( 'pmpro_bp_user_can', 'pmpro_bp_admins_can_do_everything', 10, 3 );
 function pmpro_bp_restrict_group_viewing() {
 	global $bp, $pmpro_pages;
 
+	//If BuddyPress is not active, don't worry
+	if( empty( $bp ) ) {
+		return;
+	}
+
 	//Group (Single) Viewing Restrictions - which levels can view individual groups?
 	if ( bp_is_group() 
 		&& !pmpro_bp_user_can( 'group_single_viewing' ) 
@@ -89,7 +94,7 @@ add_action( 'bp_actions', 'pmpro_bp_remove_request_membership_nav_link' );
  * doesn't have access to it.
  */
 function pmpro_bp_restrict_private_messaging() {
-	if( bp_is_current_component('messages') && !pmpro_bp_user_can( 'private_messaging' ) ) {
+	if( function_exists( 'bp_is_current_component' ) && bp_is_current_component('messages') && !pmpro_bp_user_can( 'private_messaging' ) ) {
 		pmpro_bp_redirect_to_access_required_page();
 	}
 }
@@ -146,7 +151,7 @@ function pmpro_bp_lockdown_all_bp() {
 		return;
 	}
 	
-	if( !is_buddypress() ) {
+	if( !function_exists( 'is_buddypress') || !is_buddypress() ) {
 		return;
 	}
 		
@@ -178,6 +183,11 @@ add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
 function pmpro_bp_buddypress_or_pmpro_registration() {
 	global $post, $pmpro_pages;
 	
+	//If BP or PMPro are not active, ignore
+	if( !function_exists( 'bp_is_register_page' ) || !function_exists( 'pmpro_url' ) ) {
+		return;
+	}
+
 	$bp_pages = get_option( 'bp-pages' );
 	
 	$pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
