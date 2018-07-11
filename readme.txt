@@ -100,10 +100,11 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 == Changelog ==
 
 = 1.0.1 =
-* Fixed fatal errors when PMPro or BuddyPress isn't activated.
-* Fixed bug where membership level changes were creatinig fatal errors if Groups was not active.
-* Fixed bug where the members directory was not being filtered correctly.
-* Fixed bug where logged in users were being redirected to the BuddyPress registration page even though logged in users can't register.
+* BUG FIX: Fixed fatal errors when PMPro or BuddyPress isn't activated.
+* BUG FIX: Fixed bug where membership level changes were creatinig fatal errors if Groups was not active.
+* BUG FIX: Fixed bug where the members directory was not being filtered correctly.
+* BUG FIX: Fixed bug where logged in users were being redirected to the BuddyPress registration page even though logged in users can't register.
+* ENHANCEMENT: Doublechecking pmpro_hasMembershipLevel so plugins like PMPro Approvals can still filter which levels are included when calculating restrictions.
 
 = 1.0 =
 * Initial WP.org release.
