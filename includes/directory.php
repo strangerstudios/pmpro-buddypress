@@ -4,6 +4,11 @@
 */
 
 function pmpro_bp_directory_init() {
+	// Don't do this if PMPro is deactivated
+	if( !defined( 'PMPRO_VERSION' ) ) {
+		return;
+	}
+
 	global $pmpro_bp_members_in_directory;
 	$pmpro_bp_members_in_directory = pmpro_bp_get_members_in_directory();
 	add_action( 'bp_pre_user_query_construct', 'pmpro_bp_bp_pre_user_query_construct', 1, 1 );
@@ -27,6 +32,10 @@ function pmpro_bp_bp_get_total_member_count($count) {
 
 function pmpro_bp_get_members_in_directory() {
 	global $wpdb, $pmpro_levels;
+
+	if( !function_exists( 'pmpro_getAllLevels' ) ) {
+		return array();
+	}
 
 	$pmpro_levels = pmpro_getAllLevels(false, true);
 
