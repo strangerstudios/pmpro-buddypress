@@ -148,7 +148,14 @@ function pmpro_bp_redirect_to_access_required_page() {
 	do_action( 'pmpro_bp_redirect_to_access_required_page' );
 
 	global $pmpro_pages;
-	wp_redirect( get_permalink( $pmpro_pages['pmprobp_restricted'] ) );
+	if( !empty( $pmpro_pages['pmprobp_restricted'] ) ) {
+		$redirect_to = get_permalink( $pmpro_pages['pmprobp_restricted'] );
+	} elseif ( !empty( $pmpro_pages['levels'] ) ) {
+		$redirect_to = get_permalink( $pmpro_pages['levels'] );
+	} else {
+		$redirect_to = home_url();
+	}
+	wp_redirect( $redirect_to );
 	exit;
 }
 
