@@ -60,7 +60,18 @@ function pmpro_bp_get_user_options( $user_id = NULL ) {
 	if( !empty( $user_id ) ) {		
 		$levels = pmpro_getMembershipLevelsForUser( $user_id );
 	}
-	
+
+	// Add Ons like PMPro Approvals filter pmpro_hasMembershipLevel, so let's double check
+	$new_levels = array();
+	foreach( $levels as $level ) {
+		if( pmpro_hasMembershipLevel( $level->id, $user_id ) ) {
+			$new_levels[] = $level;
+		}
+	}
+	unset( $level );
+	$levels = $new_levels;
+
+	// we need the ids in a separate array
 	if( !empty( $levels ) ) {
 		$level_ids = array();
 		foreach( $levels as $level ) {
@@ -70,7 +81,7 @@ function pmpro_bp_get_user_options( $user_id = NULL ) {
 		$level_ids = null;	//non-member user
 	}
 	
-	$pmpro_bp_all_options = pmpro_bp_get_level_options(0);	
+	$pmpro_bp_all_options = pmpro_bp_get_level_options(0);
 
 	if( !empty( $level_ids ) ) {
 		foreach( $level_ids as $level_id ) {		
