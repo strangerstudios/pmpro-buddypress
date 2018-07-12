@@ -17,11 +17,29 @@ function pmpro_bp_directory_init() {
 add_action('init', 'pmpro_bp_directory_init', 20);
 
 function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
+	// If no setting is locking the member directory, let's bail.
+	if( !pmpro_bp_is_member_directory_locked() ) {
+		return;
+	}
+
 	global $pmpro_bp_members_in_directory;
-	if(!empty($pmpro_bp_members_in_directory))
-		$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
-	else
+	if( !empty( $pmpro_bp_members_in_directory ) ) {
+		// If an include value was already set, make sure it's in array form.
+		if( !empty( $query_array->query_vars['include'] ) && !is_array( $query_array->query_vars['include']) ) {
+			$query_array->query_vars['include'] = explode( ',', $query_array->query_vars['include'] );
+		}
+
+		if( is_array( $query_array->query_vars['include'] ) ) {
+			// Compute the intersect of members and include value.
+			$query_array->query_vars['include'] = array_intersect( $query_array->query_vars['include'], $pmpro_bp_members_in_directory );	
+		} else {
+			// Only include members in the directory.
+			$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
+		}
+	} else {
+		// No members, block the directory.
 		$query_array->query_vars['include'] = array(0);
+	}
 }
 
 function pmpro_bp_bp_get_total_member_count($count) {
@@ -56,4 +74,14 @@ function pmpro_bp_get_members_in_directory() {
 	$include_users = $wpdb->get_col($sql);
 
 	return $include_users;
+}
+
+function pmpro_bp_is_member_directory_locked() {
+	$non_user_options = pmpro_bp_get_level_options( 0 );
+
+	if( !$non_user_options['pmpro_bp_member_directory'] ) {
+		return true;
+	} else {
+		return false;
+	}
 }
