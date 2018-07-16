@@ -44,6 +44,7 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 
 function pmpro_bp_bp_get_total_member_count($count) {
 	global $pmpro_bp_members_in_directory;
+
 	$count = count($pmpro_bp_members_in_directory);
 	return $count;
 }
