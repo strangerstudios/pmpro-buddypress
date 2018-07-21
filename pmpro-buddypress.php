@@ -3,7 +3,7 @@
  Plugin Name: Paid Memberships Pro - BuddyPress Add On
  Plugin URI: https://www.paidmembershipspro.com/add-ons/buddypress-integration
  Description: Manage access to your BuddyPress Community using Paid Memberships Pro.
- Version: 1.1.1
+ Version: 1.2
  Author: Paid Memberships Pro
  Author URI: https://www.paidmembershipspro.com
  Text Domain: pmpro-buddypress
@@ -21,6 +21,7 @@ require_once( PMPROBP_DIR . '/includes/admin.php' );
 require_once( PMPROBP_DIR . '/includes/pmpro-buddypress-settings.php' );
 require_once( PMPROBP_DIR . '/includes/membership-level-settings.php' );
 
+require_once( PMPROBP_DIR . '/includes/approvals.php' );
 require_once( PMPROBP_DIR . '/includes/directory.php' );
 require_once( PMPROBP_DIR . '/includes/groups.php' );
 require_once( PMPROBP_DIR . '/includes/member-types.php' );
