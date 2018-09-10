@@ -63,16 +63,18 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 		if ( ! empty( $user_id ) ) {
 			$levels = pmpro_getMembershipLevelsForUser( $user_id );
 		}
-
-		// Add Ons like PMPro Approvals filter pmpro_hasMembershipLevel, so let's double check
-		$new_levels = array();
-		foreach ( $levels as $level ) {
-			if ( pmpro_hasMembershipLevel( $level->id, $user_id ) ) {
-				$new_levels[] = $level;
+		// check for level because Admins often don't think to give themselves a level
+		if ( ! empty( $levels ) ) {
+			// Add Ons like PMPro Approvals filter pmpro_hasMembershipLevel, so let's double check
+			$new_levels = array();
+			foreach ( $levels as $level ) {
+				if ( pmpro_hasMembershipLevel( $level->id, $user_id ) ) {
+					$new_levels[] = $level;
+				}
 			}
+			unset( $level );
+			$levels = $new_levels;
 		}
-		unset( $level );
-		$levels = $new_levels;
 	}
 
 	// we need the ids in a separate array
@@ -83,6 +85,7 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 		}
 	} else {
 		$level_ids = null;  // non-member user
+		return;
 	}
 
 	$pmpro_bp_all_options = pmpro_bp_get_level_options( 0 );
@@ -98,7 +101,7 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 			}
 
 			// module restrictions
-			$pmpro_bp_all_options['pmpro_bp_group_creation'] = max( $pmpro_bp_all_options['pmpro_bp_group_creation'], $pmpro_bp_options['pmpro_bp_group_creation'] );
+			$pmpro_bp_all_options['pmpro_bp_group_creation'] = max( 0, $pmpro_bp_all_options['pmpro_bp_group_creation'], $pmpro_bp_options['pmpro_bp_group_creation'] );
 			$pmpro_bp_all_options['pmpro_bp_group_single_viewing'] = max( $pmpro_bp_all_options['pmpro_bp_group_single_viewing'], $pmpro_bp_options['pmpro_bp_group_single_viewing'] );
 			$pmpro_bp_all_options['pmpro_bp_groups_page_viewing'] = max( $pmpro_bp_all_options['pmpro_bp_groups_page_viewing'], $pmpro_bp_options['pmpro_bp_groups_page_viewing'] );
 			$pmpro_bp_all_options['pmpro_bp_groups_join'] = max( $pmpro_bp_all_options['pmpro_bp_groups_join'], $pmpro_bp_options['pmpro_bp_groups_join'] );
@@ -197,11 +200,11 @@ function pmpro_bp_user_can( $check, $user_id = null ) {
 	}
 
 	$pmpro_bp_options = pmpro_bp_get_user_options( $user_id );
-	if ( strpos( $check, 'pmpro_bp_' ) === false ) {
+	if ( false === strpos( $check, 'pmpro_bp_' ) ) {
 		$check = 'pmpro_bp_' . $check;
 	}
 
-	$can = ( $pmpro_bp_options['pmpro_bp_restrictions'] == 1 || $pmpro_bp_options[ $check ] == 1 );
+	$can = ( 1 === $pmpro_bp_options['pmpro_bp_restrictions'] || 1 === $pmpro_bp_options[ $check ] );
 
 	$can = apply_filters( 'pmpro_bp_user_can', $can, $check, $user_id );
 
