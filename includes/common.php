@@ -83,6 +83,7 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 		}
 	} else {
 		$level_ids = null;  // non-member user
+		return;
 	}
 
 	$pmpro_bp_all_options = pmpro_bp_get_level_options( 0 );
@@ -98,7 +99,7 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 			}
 
 			// module restrictions
-			$pmpro_bp_all_options['pmpro_bp_group_creation'] = max( $pmpro_bp_all_options['pmpro_bp_group_creation'], $pmpro_bp_options['pmpro_bp_group_creation'] );
+			$pmpro_bp_all_options['pmpro_bp_group_creation'] = max( 0, $pmpro_bp_all_options['pmpro_bp_group_creation'], $pmpro_bp_options['pmpro_bp_group_creation'] );
 			$pmpro_bp_all_options['pmpro_bp_group_single_viewing'] = max( $pmpro_bp_all_options['pmpro_bp_group_single_viewing'], $pmpro_bp_options['pmpro_bp_group_single_viewing'] );
 			$pmpro_bp_all_options['pmpro_bp_groups_page_viewing'] = max( $pmpro_bp_all_options['pmpro_bp_groups_page_viewing'], $pmpro_bp_options['pmpro_bp_groups_page_viewing'] );
 			$pmpro_bp_all_options['pmpro_bp_groups_join'] = max( $pmpro_bp_all_options['pmpro_bp_groups_join'], $pmpro_bp_options['pmpro_bp_groups_join'] );
@@ -197,11 +198,11 @@ function pmpro_bp_user_can( $check, $user_id = null ) {
 	}
 
 	$pmpro_bp_options = pmpro_bp_get_user_options( $user_id );
-	if ( strpos( $check, 'pmpro_bp_' ) === false ) {
+	if ( false === strpos( $check, 'pmpro_bp_' ) ) {
 		$check = 'pmpro_bp_' . $check;
 	}
 
-	$can = ( $pmpro_bp_options['pmpro_bp_restrictions'] == 1 || $pmpro_bp_options[ $check ] == 1 );
+	$can = ( 1 === $pmpro_bp_options['pmpro_bp_restrictions'] || 1 === $pmpro_bp_options[ $check ] );
 
 	$can = apply_filters( 'pmpro_bp_user_can', $can, $check, $user_id );
 
