@@ -21,6 +21,10 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 	if( !pmpro_bp_is_member_directory_locked() ) {
 		return;
 	}
+	
+	if( bp_current_component() == 'friends' ) {
+		return;
+	}
 
 	global $pmpro_bp_members_in_directory;
 	if( !empty( $pmpro_bp_members_in_directory ) ) {
