@@ -6,8 +6,15 @@
  * @param  int $user_id      ID of the user being given the level.
  * @param  int $cancel_level ID of the level being cancelled if specified
  * @return void
+ *
+ * @since 1.4 - BUG FIX: Fatal error when BuddyPress is inactive/not installed
  */
 function pmpro_bp_set_member_types( $level_id, $user_id, $cancel_level ) {
+	
+	// Exit if BuddyPress isn't active
+	if ( ! function_exists( 'bp_set_member_type' ) ) {
+		return;
+	}
 	$pmpro_bp_options = pmpro_bp_get_user_options( $user_id );
 	
 	if( !empty( $cancel_level ) ) {
