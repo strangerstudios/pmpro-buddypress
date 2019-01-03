@@ -56,7 +56,7 @@ function pmpro_bp_get_members_in_directory() {
 		return array();
 	}
 
-	$pmpro_levels = pmpro_getAllLevels(false, true);
+	$pmpro_levels = pmpro_getAllLevels(true, true);
 
 	//see if we should include them in the member directory.
 	$include_levels = array();
