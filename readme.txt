@@ -101,6 +101,8 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 = 1.2.1 =
 * BUG FIX: Added check that BuddyPress is active before trying to update member types when levels change.
 * BUG FIX: Removed echo statement that was causing errors when syncing profile fields.
+* BUG FIX: Fixed warnings related to default options on level settings.
+* BUG FIX: Fixed issue where you couldn't choose "use non-member settings" on the level settings.
 
 = 1.2 =
 * ENHANCEMENT: Further integration with PMPro Approvals. If you have PMPro Approvals v1.1 or higher installed, users will have their groups and member types adjusted when they are approved, denied, or reset from the approvals table.
