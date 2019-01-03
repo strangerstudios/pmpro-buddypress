@@ -2,8 +2,8 @@
 Contributors: strangerstudios, great-h-master
 Tags: paid memberships pro, pmpro, buddypress
 Requires at least: 4
-Tested up to: 4.9.8
-Stable tag: 1.2
+Tested up to: 5.0.2
+Stable tag: 1.2.1
 
 Manage access to your BuddyPress Community using Paid Memberships Pro
 
@@ -98,6 +98,10 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Edit Level.
 
 == Changelog ==
+= 1.2.1 =
+* BUG FIX: Added check that BuddyPress is active before trying to update member types when levels change.
+* BUG FIX: Removed echo statement that was causing errors when syncing profile fields.
+
 = 1.2 =
 * ENHANCEMENT: Further integration with PMPro Approvals. If you have PMPro Approvals v1.1 or higher installed, users will have their groups and member types adjusted when they are approved, denied, or reset from the approvals table.
 

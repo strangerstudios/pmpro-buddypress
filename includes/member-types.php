@@ -7,7 +7,7 @@
  * @param  int $cancel_level ID of the level being cancelled if specified
  * @return void
  *
- * @since 1.4 - BUG FIX: Fatal error when BuddyPress is inactive/not installed
+ * @since 1.2.1 - BUG FIX: Fatal error when BuddyPress is inactive/not installed
  */
 function pmpro_bp_set_member_types( $level_id, $user_id, $cancel_level ) {
 	
