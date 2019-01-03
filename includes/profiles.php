@@ -53,7 +53,6 @@ function pmpro_bp_xprofile_updated_profile( $user_id, $posted_field_ids, $errors
 	if ( empty( $errors ) ) {
 		foreach( $posted_field_ids as $xprofile_field_id ) {
 			$xprofile_field = new BP_XProfile_Field( $xprofile_field_id );
-			echo $xprofile_field->name;
 			
 			foreach( $pmprorh_registration_fields as $field_location ) {
 				foreach( $field_location as $rh_field ) {
