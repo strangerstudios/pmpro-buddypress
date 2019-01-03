@@ -8,33 +8,34 @@
  * Level 0 contains options for non-member users.
  */
 function pmpro_bp_get_level_options( $level_id ) {
+	$default_options = array(
+		'pmpro_bp_restrictions'             => 0,
+		'pmpro_bp_group_creation'           => 0,
+		'pmpro_bp_group_single_viewing'     => 0,
+		'pmpro_bp_groups_page_viewing'      => 0,
+		'pmpro_bp_groups_join'              => 0,
+		'pmpro_bp_private_messaging'        => 0,
+		'pmpro_bp_public_messaging'         => 0,
+		'pmpro_bp_send_friend_request'      => 0,
+		'pmpro_bp_member_directory'         => 0,
+		'pmpro_bp_group_automatic_add'      => array(),
+		'pmpro_bp_group_can_request_invite' => array(),
+		'pmpro_bp_member_types'             => array(),
+	);
+	
 	if ( $level_id == -1 ) {
 		// defaults
-		$options = array(
-			'pmpro_bp_restrictions'             => 0,
-			'pmpro_bp_group_creation'           => 0,
-			'pmpro_bp_group_single_viewing'     => 0,
-			'pmpro_bp_groups_page_viewing'      => 0,
-			'pmpro_bp_groups_join'              => 0,
-			'pmpro_bp_private_messaging'        => 0,
-			'pmpro_bp_public_messaging'         => 0,
-			'pmpro_bp_send_friend_request'      => 0,
-			'pmpro_bp_member_directory'         => 0,
-			'pmpro_bp_group_automatic_add'      => array(),
-			'pmpro_bp_group_can_request_invite' => array(),
-			'pmpro_bp_member_types'             => array(),
-		);
+		$options = $default_options;
 	} elseif ( $level_id == 0 ) {
 		// non-member users
-		$options = get_option( 'pmpro_bp_options_users' );
+		$options = get_option( 'pmpro_bp_options_users', $default_options );
 	} else {
 		// level options
-		$options = get_option( 'pmpro_bp_options_' . $level_id );
+		$options = get_option( 'pmpro_bp_options_' . $level_id, $default_options );
 
 		// might be set to mirror non-member users
 		if ( $options['pmpro_bp_restrictions'] == 0 ) {
 			$non_member_user_options = pmpro_bp_get_level_options( 0 );
-			$options['pmpro_bp_restrictions'] = $non_member_user_options['pmpro_bp_restrictions'];
 			$options['pmpro_bp_group_creation'] = $non_member_user_options['pmpro_bp_group_creation'];
 			$options['pmpro_bp_group_single_viewing'] = $non_member_user_options['pmpro_bp_group_single_viewing'];
 			$options['pmpro_bp_groups_page_viewing'] = $non_member_user_options['pmpro_bp_groups_page_viewing'];
@@ -45,6 +46,9 @@ function pmpro_bp_get_level_options( $level_id ) {
 			$options['pmpro_bp_member_directory'] = $non_member_user_options['pmpro_bp_member_directory'];
 		}
 	}
+	
+	// Fill in defaults
+	$options = array_merge( $default_options, $options );
 
 	return $options;
 }

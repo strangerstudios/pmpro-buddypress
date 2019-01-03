@@ -198,7 +198,8 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 		'pmpro_bp_member_directory'			=> $pmpro_bp_member_directory,
 		'pmpro_bp_group_automatic_add'		=> $pmpro_bp_group_automatic_add,
 		'pmpro_bp_group_can_request_invite'	=> $pmpro_bp_group_can_request_invite,
-		'pmpro_bp_member_types'				=> $pmpro_bp_member_types);	
+		'pmpro_bp_member_types'				=> $pmpro_bp_member_types);
+		
 	update_option('pmpro_bp_options_'.$level_id, $pmpro_bp_options, 'no');
 }
 add_action('pmpro_save_membership_level','pmpro_bp_pmpro_save_membership_level', 10, 1);
@@ -224,7 +225,6 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 	$pmpro_bp_public_messaging		= $pmpro_bp_options['pmpro_bp_public_messaging'];
 	$pmpro_bp_send_friend_request		= $pmpro_bp_options['pmpro_bp_send_friend_request'];		
 	$pmpro_bp_member_directory		= $pmpro_bp_options['pmpro_bp_member_directory'];
-
 	?>
 	<?php if( $level_id <> 0 ) { ?>
 		<h3 class="topborder"> <?php _e('BuddyPress Restrictions', 'pmpro-buddypress');?></h3>
