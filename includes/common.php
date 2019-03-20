@@ -22,7 +22,7 @@ function pmpro_bp_get_level_options( $level_id ) {
 		'pmpro_bp_group_can_request_invite' => array(),
 		'pmpro_bp_member_types'             => array(),
 	);
-	
+
 	if ( $level_id == -1 ) {
 		// defaults
 		$options = $default_options;
@@ -46,7 +46,7 @@ function pmpro_bp_get_level_options( $level_id ) {
 			$options['pmpro_bp_member_directory'] = $non_member_user_options['pmpro_bp_member_directory'];
 		}
 	}
-	
+
 	// Fill in defaults
 	$options = array_merge( $default_options, $options );
 
@@ -89,7 +89,6 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 		}
 	} else {
 		$level_ids = null;  // non-member user
-		return;
 	}
 
 	$pmpro_bp_all_options = pmpro_bp_get_level_options( 0 );
@@ -153,14 +152,14 @@ function pmpro_bp_get_user_old_level_options( $user_id = null ) {
 
 	$sqlQuery = $wpdb->prepare(
 		"
-		SELECT DISTINCT(membership_id) 
-		FROM $wpdb->pmpro_memberships_users 
-		WHERE user_id = %d AND membership_id NOT 
-		IN(%s) 
-		AND status 
-		IN('admin_changed', 'admin_cancelled', 'cancelled', 'changed', 'expired', 'inactive') 
-		AND modified > NOW() - INTERVAL 15 MINUTE 
-		ORDER BY id 
+		SELECT DISTINCT(membership_id)
+		FROM $wpdb->pmpro_memberships_users
+		WHERE user_id = %d AND membership_id NOT
+		IN(%s)
+		AND status
+		IN('admin_changed', 'admin_cancelled', 'cancelled', 'changed', 'expired', 'inactive')
+		AND modified > NOW() - INTERVAL 15 MINUTE
+		ORDER BY id
 		DESC LIMIT 1
 		",
 		$user_id, $level_id
