@@ -14,6 +14,11 @@
 */
 define( 'PMPROBP_DIR', dirname( __FILE__ ) );
 define( 'PMPROBP_BASENAME', plugin_basename( __FILE__ ) );
+define( 'PMPROBP_LOCK_ALL_ACCESS', -1);
+define( 'PMPROBP_USE_NON_MEMBER_SETTINGS', 0);
+define( 'PMPROBP_GIVE_ALL_ACCESS', 1);
+define( 'PMPROBP_SPECIFIC_FEATURES', 2);
+
 
 require_once( PMPROBP_DIR . '/includes/common.php' );
 

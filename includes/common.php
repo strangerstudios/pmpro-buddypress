@@ -22,7 +22,7 @@ function pmpro_bp_get_level_options( $level_id ) {
 		'pmpro_bp_group_can_request_invite' => array(),
 		'pmpro_bp_member_types'             => array(),
 	);
-	
+
 	if ( $level_id == -1 ) {
 		// defaults
 		$options = $default_options;
@@ -34,7 +34,7 @@ function pmpro_bp_get_level_options( $level_id ) {
 		$options = get_option( 'pmpro_bp_options_' . $level_id, $default_options );
 
 		// might be set to mirror non-member users
-		if ( $options['pmpro_bp_restrictions'] == 0 ) {
+		if ( $options['pmpro_bp_restrictions'] == PMPROBP_USE_NON_MEMBER_SETTINGS ) {
 			$non_member_user_options = pmpro_bp_get_level_options( 0 );
 			$options['pmpro_bp_group_creation'] = $non_member_user_options['pmpro_bp_group_creation'];
 			$options['pmpro_bp_group_single_viewing'] = $non_member_user_options['pmpro_bp_group_single_viewing'];
@@ -46,7 +46,7 @@ function pmpro_bp_get_level_options( $level_id ) {
 			$options['pmpro_bp_member_directory'] = $non_member_user_options['pmpro_bp_member_directory'];
 		}
 	}
-	
+
 	// Fill in defaults
 	$options = array_merge( $default_options, $options );
 
@@ -100,8 +100,8 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 
 			// pmpro_bp_restrictions
 			$pmpro_bp_all_options['pmpro_bp_restrictions'] = max( $pmpro_bp_all_options['pmpro_bp_restrictions'], $pmpro_bp_options['pmpro_bp_restrictions'] );
-			if ( $pmpro_bp_all_options['pmpro_bp_restrictions'] == 1 || $pmpro_bp_options['pmpro_bp_restrictions'] == 1 ) {
-				$pmpro_bp_all_options['pmpro_bp_restrictions'] = 1;
+			if ( $pmpro_bp_all_options['pmpro_bp_restrictions'] == PMPROBP_GIVE_ALL_ACCESS || $pmpro_bp_options['pmpro_bp_restrictions'] == PMPROBP_GIVE_ALL_ACCESS ) {
+				$pmpro_bp_all_options['pmpro_bp_restrictions'] = PMPROBP_GIVE_ALL_ACCESS;
 			}
 
 			// module restrictions
@@ -153,14 +153,14 @@ function pmpro_bp_get_user_old_level_options( $user_id = null ) {
 
 	$sqlQuery = $wpdb->prepare(
 		"
-		SELECT DISTINCT(membership_id) 
-		FROM $wpdb->pmpro_memberships_users 
-		WHERE user_id = %d AND membership_id NOT 
-		IN(%s) 
-		AND status 
-		IN('admin_changed', 'admin_cancelled', 'cancelled', 'changed', 'expired', 'inactive') 
-		AND modified > NOW() - INTERVAL 15 MINUTE 
-		ORDER BY id 
+		SELECT DISTINCT(membership_id)
+		FROM $wpdb->pmpro_memberships_users
+		WHERE user_id = %d AND membership_id NOT
+		IN(%s)
+		AND status
+		IN('admin_changed', 'admin_cancelled', 'cancelled', 'changed', 'expired', 'inactive')
+		AND modified > NOW() - INTERVAL 15 MINUTE
+		ORDER BY id
 		DESC LIMIT 1
 		",
 		$user_id, $level_id
@@ -208,7 +208,7 @@ function pmpro_bp_user_can( $check, $user_id = null ) {
 		$check = 'pmpro_bp_' . $check;
 	}
 
-	$can = ( 1 === $pmpro_bp_options['pmpro_bp_restrictions'] || 1 === $pmpro_bp_options[ $check ] );
+	$can = ( PMPROBP_GIVE_ALL_ACCESS === $pmpro_bp_options['pmpro_bp_restrictions'] || 1 === $pmpro_bp_options[ $check ] );
 
 	$can = apply_filters( 'pmpro_bp_user_can', $can, $check, $user_id );
 
