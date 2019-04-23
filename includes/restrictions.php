@@ -169,9 +169,8 @@ function pmpro_bp_lockdown_all_bp() {
 	}
 		
 	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );
-	
-	if( $pmpro_bp_options['pmpro_bp_restrictions'] == -1 ) {
-		pmpro_bp_redirect_to_access_required_page();
+		
+	if( $pmpro_bp_options['pmpro_bp_restrictions'] == -1 && !bp_is_register_page() ) {		pmpro_bp_redirect_to_access_required_page();
 	}
 }
 add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
