@@ -154,6 +154,12 @@ function pmpro_bp_lockdown_all_bp() {
 	if( !function_exists( 'is_buddypress') || !is_buddypress() ) {
 		return;
 	}
+	
+	// Don't redirect away from the Register or Activate pages if using BuddyPress registration.
+	$register_page = get_option( 'pmpro_bp_registration_page' );
+	if ( 'buddypress' == $register_page && in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
+		return;
+	}
 		
 	global $current_user;
 	$user_id = $current_user->ID;
