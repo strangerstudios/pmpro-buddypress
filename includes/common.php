@@ -27,8 +27,15 @@ function pmpro_bp_get_level_options( $level_id ) {
 		// defaults
 		$options = $default_options;
 	} elseif ( $level_id == 0 ) {
+		
 		// non-member users
 		$options = get_option( 'pmpro_bp_options_users', $default_options );
+		
+		// Non-members might be locked down.
+		if ( PMPROBP_LOCK_ALL_ACCESS == $options['pmpro_bp_restrictions'] ) {
+			$options = $default_options;
+		}
+		
 	} else {
 		// level options
 		$options = get_option( 'pmpro_bp_options_' . $level_id, $default_options );
