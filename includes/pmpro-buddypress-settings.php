@@ -10,7 +10,15 @@ function pmpro_bp_extra_page_settings( $pages ) {
 add_action( 'pmpro_extra_page_settings', 'pmpro_bp_extra_page_settings', 10, 1 );
 
 function pmpro_bp_add_admin_menu_page() {
-	add_submenu_page( 'pmpro-membershiplevels', __('PMPro BuddyPress', 'pmpro'), __('PMPro BuddyPress', 'pmpro'), 'manage_options', 'pmpro-buddypress', 'pmpro_bp_buddpress_admin_page' );
+	if ( ! defined( 'PMPRO_VERSION' ) ) {
+		return;
+	}
+	if( version_compare( PMPRO_VERSION, '2.0' ) >= 0 ) {
+		$parent_page = 'pmpro-dashboard';
+	} else {
+		$parent_page = 'pmpro-membershiplevels';
+	}
+	add_submenu_page( $parent_page, __('PMPro BuddyPress', 'pmpro'), __('PMPro BuddyPress', 'pmpro'), 'manage_options', 'pmpro-buddypress', 'pmpro_bp_buddpress_admin_page' );
 }
 add_action( 'admin_menu', 'pmpro_bp_add_admin_menu_page' );
 
