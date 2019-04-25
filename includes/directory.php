@@ -21,8 +21,9 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 	if( !pmpro_bp_is_member_directory_locked() ) {
 		return;
 	}
-
-	if( bp_current_component() == 'friends' ) {
+	
+	// Only apply this to the directory.
+	if ( 'members' != bp_current_component() ) {
 		return;
 	}
 
