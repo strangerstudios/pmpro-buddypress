@@ -106,8 +106,7 @@ add_action( 'wp','pmpro_bp_restrict_private_messaging' );
  */
 function pmpro_bp_bp_get_send_message_button_args($args) {
 	if( !pmpro_bp_user_can( 'private_messaging' ) ) {	
-		global $pmpro_pages;
-		$args['link_href'] = get_permalink( $pmpro_pages['pmprobp_restricted'] );
+		$args = false;
 	}
 
 	return $args;
@@ -120,8 +119,7 @@ add_filter( 'bp_get_send_message_button_args', 'pmpro_bp_bp_get_send_message_but
  */
 function pmpro_bp_bp_get_send_public_message_button($args) {
 	if( !pmpro_bp_user_can( 'public_messaging' ) ) {	
-		global $pmpro_pages;
-		$args['link_href'] = get_permalink( $pmpro_pages['pmprobp_restricted'] );
+		$args = false;
 	}
 	
 	return $args;
@@ -134,8 +132,7 @@ add_filter( 'bp_get_send_public_message_button', 'pmpro_bp_bp_get_send_public_me
  */
 function pmpro_bp_bp_get_add_friend_button($args) {
 	if( !pmpro_bp_user_can( 'send_friend_request' ) ) {	
-		global $pmpro_pages;
-		$args['link_href'] = get_permalink( $pmpro_pages['pmprobp_restricted'] );
+		$args = false;
 	}
 
 	return $args;
