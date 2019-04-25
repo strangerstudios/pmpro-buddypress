@@ -22,7 +22,8 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 		return;
 	}
 	
-	if( bp_current_component() == 'friends' ) {
+	// Only apply this to the directory.
+	if ( 'members' != bp_current_component() ) {
 		return;
 	}
 
