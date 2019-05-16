@@ -21,7 +21,7 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 	if( !pmpro_bp_is_member_directory_locked() ) {
 		return;
 	}
-	
+
 	if( bp_current_component() == 'friends' ) {
 		return;
 	}
@@ -35,7 +35,7 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 
 		if( is_array( $query_array->query_vars['include'] ) ) {
 			// Compute the intersect of members and include value.
-			$query_array->query_vars['include'] = array_intersect( $query_array->query_vars['include'], $pmpro_bp_members_in_directory );	
+			$query_array->query_vars['include'] = array_intersect( $query_array->query_vars['include'], $pmpro_bp_members_in_directory );
 		} else {
 			// Only include members in the directory.
 			$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
@@ -68,7 +68,7 @@ function pmpro_bp_get_members_in_directory() {
 	foreach($pmpro_levels as $level) {
 		$pmpro_bp_options = pmpro_bp_get_level_options( $level->id );
 
-		if( $pmpro_bp_options['pmpro_bp_member_directory'] == 1 || $pmpro_bp_options['pmpro_bp_restrictions'] == 1) {
+		if( $pmpro_bp_options['pmpro_bp_member_directory'] == 1 || $pmpro_bp_options['pmpro_bp_restrictions'] == PMPROBP_GIVE_ALL_ACCESS) {
 			$include_levels[] = $level->id;
 		}
 	}
