@@ -2,7 +2,7 @@
 Contributors: strangerstudios, great-h-master
 Tags: paid memberships pro, pmpro, buddypress
 Requires at least: 4
-Tested up to: 5.1.1
+Tested up to: 5.2
 Stable tag: 1.2.3
 
 Manage access to your BuddyPress Community using Paid Memberships Pro
