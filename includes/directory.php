@@ -77,6 +77,10 @@ function pmpro_bp_get_members_in_directory() {
 			$include_levels[] = $level->id;
 		}
 	}
+	
+	if ( empty( $include_levels ) ) {
+		return array();
+	}
 
 	$sql = "SELECT DISTINCT user_id FROM $wpdb->pmpro_memberships_users WHERE membership_id IN (" . implode(",", array_map("intval", $include_levels)) . ") AND status = 'active'";
 
