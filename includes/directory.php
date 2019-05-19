@@ -89,7 +89,8 @@ function pmpro_bp_get_members_in_directory() {
 function pmpro_bp_is_member_directory_locked() {
 	$non_user_options = pmpro_bp_get_level_options( 0 );
 
-	if( !$non_user_options['pmpro_bp_member_directory'] ) {
+	if( $non_user_options['pmpro_bp_restrictions'] != PMPROBP_GIVE_ALL_ACCESS
+	 	&& ! $non_user_options['pmpro_bp_member_directory'] ) {
 		return true;
 	} else {
 		return false;
