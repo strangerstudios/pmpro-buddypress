@@ -27,15 +27,8 @@ function pmpro_bp_get_level_options( $level_id ) {
 		// defaults
 		$options = $default_options;
 	} elseif ( $level_id == 0 ) {
-		
 		// non-member users
 		$options = get_option( 'pmpro_bp_options_users', $default_options );
-		
-		// Non-members might be locked down.
-		if ( PMPROBP_LOCK_ALL_ACCESS == $options['pmpro_bp_restrictions'] ) {
-			$options = $default_options;
-		}
-		
 	} else {
 		// level options
 		$options = get_option( 'pmpro_bp_options_' . $level_id, $default_options );
@@ -43,6 +36,7 @@ function pmpro_bp_get_level_options( $level_id ) {
 		// might be set to mirror non-member users
 		if ( $options['pmpro_bp_restrictions'] == PMPROBP_USE_NON_MEMBER_SETTINGS ) {
 			$non_member_user_options = pmpro_bp_get_level_options( 0 );
+			$options['pmpro_bp_restrictions'] = $non_member_user_options['pmpro_bp_restrictions'];
 			$options['pmpro_bp_group_creation'] = $non_member_user_options['pmpro_bp_group_creation'];
 			$options['pmpro_bp_group_single_viewing'] = $non_member_user_options['pmpro_bp_group_single_viewing'];
 			$options['pmpro_bp_groups_page_viewing'] = $non_member_user_options['pmpro_bp_groups_page_viewing'];
