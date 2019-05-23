@@ -99,6 +99,9 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 
 == Changelog ==
 
+= 1.2.4 =
+* BUG FIX: Fixed issue where the 'restrict all of BuddyPress' setting wasn't being applied correctly when levels were set to use non-member settings.
+
 = 1.2.3 =
 * BUG FIX: Only getting members in directory if membership levels exist.
 * BUG FIX: Now locking down all of BuddyPress when a level's settings are set to use non-member settings and BuddyPress is locked down for non-members.
