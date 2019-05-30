@@ -134,7 +134,7 @@ function pmpro_bp_buddpress_admin_page() {
 		</tbody>
 		</table>		
 		<p class="submit">
-			<input name="savesettings" type="submit" class="button button-primary" value="<?php esc_html_e('Save All Settings', 'pmpro');?>" />
+			<input name="savesettings" type="submit" class="button button-primary" value="<?php esc_attr_e('Save All Settings', 'pmpro');?>" />
 		</p>
 
 		</form>
