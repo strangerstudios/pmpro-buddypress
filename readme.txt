@@ -100,6 +100,7 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 == Changelog ==
 
 = 1.2.4 =
+* ENHANCEMENT: Better sanitization and escaping throughout the plugin.
 * BUG FIX: Fixed issue where the 'restrict all of BuddyPress' setting wasn't being applied correctly when levels were set to use non-member settings.
 
 = 1.2.3 =
