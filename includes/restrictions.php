@@ -227,7 +227,7 @@ function pmpro_bp_show_level_on_bp_profile() {
 	if( $show_level == 'yes' && !empty( $level ) ) {
 	?>
 	<div class="pmpro_bp_show_level_on_bp_profile">
-		<strong><?php _e( 'Membership Level', 'pmpro-buddypress' );?>: <?php echo $level->name; ?> </strong>
+		<strong><?php esc_html_e( 'Membership Level', 'pmpro-buddypress' );?>: <?php echo $level->name; ?> </strong>
 	</div>
 	<?php
 	}
@@ -238,6 +238,6 @@ add_filter( 'bp_profile_header_meta', 'pmpro_bp_show_level_on_bp_profile' );
  * Restricted message shortcode.
  */
 function pmpro_bp_restricted_message() {
-	return __('This content is restricted.', 'pmpro-buddypress' ) . ' ';
+	return esc_html__('This content is restricted.', 'pmpro-buddypress' ) . ' ';
 }
 add_shortcode( 'pmpro_buddypress_restricted', 'pmpro_bp_restricted_message' );

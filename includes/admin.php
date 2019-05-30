@@ -19,7 +19,7 @@ function pmpro_bp_admin_notice() {
 	// Check transient, if available display notice.
 	if ( get_transient( 'pmpro-bp-admin-notice' ) ) { ?>
 		<div class="updated notice is-dismissible">
-			<p><?php printf( __( 'Thank you for activating. <a href="%s">Visit the settings page</a> to get started with the BuddyPress Add On.', 'pmpro-buddypress' ), get_admin_url( null, 'admin.php?page=pmpro-buddypress' ) ); ?></p>
+			<p><?php printf( wp_kses_post( __( 'Thank you for activating. <a href="%s">Visit the settings page</a> to get started with the BuddyPress Add On.', 'pmpro-buddypress' ) ), get_admin_url( null, 'admin.php?page=pmpro-buddypress' ) ); ?></p>
 		</div>
 		<?php
 		// Delete transient, only display this notice once.
@@ -36,7 +36,7 @@ add_action( 'admin_notices', 'pmpro_bp_admin_notice' );
 function pmpro_bp_plugin_action_links( $links ) {
 	if ( current_user_can( 'manage_options' ) ) {
 		$new_links = array(
-			'<a href="' . get_admin_url( null, 'admin.php?page=pmpro-buddypress' ) . '">' . __( 'Settings', 'pmpro-buddypress' ) . '</a>',
+			'<a href="' . get_admin_url( null, 'admin.php?page=pmpro-buddypress' ) . '">' . esc_html__( 'Settings', 'pmpro-buddypress' ) . '</a>',
 		);
 	}
 	return array_merge( $new_links, $links );
@@ -52,8 +52,8 @@ add_filter( 'plugin_action_links_' . PMPROBP_BASENAME, 'pmpro_bp_plugin_action_l
 function pmpro_bp_plugin_row_meta( $links, $file ) {
 	if ( strpos( $file, 'pmpro-buddypress.php' ) !== false ) {
 		$new_links = array(
-			'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/' ) . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro-buddypress' ) . '</a>',
-			'<a href="' . esc_url( 'https://www.paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro-buddypress' ) . '</a>',
+			'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/' ) . '" title="' . esc_attr__( 'View Documentation', 'pmpro' ) . '">' . esc_html__( 'Docs', 'pmpro-buddypress' ) . '</a>',
+			'<a href="' . esc_url( 'https://www.paidmembershipspro.com/support/' ) . '" title="' . esc_attr__( 'Visit Customer Support Forum', 'pmpro' ) . '">' . esc_html__( 'Support', 'pmpro-buddypress' ) . '</a>',
 		);
 		$links = array_merge( $links, $new_links );
 	}
