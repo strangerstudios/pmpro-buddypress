@@ -72,11 +72,11 @@ function pmpro_bp_buddpress_admin_page() {
 	<div id="poststuff">
 		<form action="" method="post" enctype="multipart/form-data">
 
-		<h1><?php esc_attr_e( 'Paid Memberships Pro - BuddyPress Add On Settings', 'pmpro-buddypress' ); ?></h1>
+		<h1><?php esc_html_e( 'Paid Memberships Pro - BuddyPress Add On Settings', 'pmpro-buddypress' ); ?></h1>
 		<p><?php printf( wp_kses_post( __( 'Integrate and manage your BuddyPress Community using Paid Memberships Pro. <a href="%s" target="_blank">Read the documentation</a> for more information about this Add On.', 'pmpro-buddypress' ) ), 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/' ); ?></p>
 
-		<h3 class="topborder"><?php esc_attr_e( 'Page Settings', 'pmpro-buddypress' ); ?></h3>
-		<p><?php esc_attr_e( 'This plugin redirects users to a specific page if they try to access restricted BuddyPress features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Page Settings.', 'pmpro-buddypress' ); ?></p>
+		<h3 class="topborder"><?php esc_html_e( 'Page Settings', 'pmpro-buddypress' ); ?></h3>
+		<p><?php esc_html_e( 'This plugin redirects users to a specific page if they try to access restricted BuddyPress features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Page Settings.', 'pmpro-buddypress' ); ?></p>
 		<?php
 			global $pmpro_pages;
 			$pmprobp_restricted_page = $pmpro_pages['pmprobp_restricted'];
@@ -88,11 +88,11 @@ function pmpro_bp_buddpress_admin_page() {
 				$msgc = '#a00';
 			}
 		?>
-		<p><strong style="color: <?php echo $msgc; ?>"><?php esc_html( $msgt ) ; ?></strong></p>
+		<p><strong style="color: <?php echo $msgc; ?>"><?php echo esc_html( $msgt ) ; ?></strong></p>
 		<p><a href="<?php echo admin_url('admin.php?page=pmpro-pagesettings');?>" class="button button-primary"><?php esc_html_e('Manage Page Settings', 'paid-memberships-pro' );?></a></p>
 
-		<h3 class="topborder"><?php esc_attr_e( 'Non-member User Settings', 'pmpro-buddypress' ); ?></h3>
-		<p><?php esc_attr_e( 'Set how BuddyPress should be locked down for users without a membership level.', 'pmpro-buddypress' ); ?></p>
+		<h3 class="topborder"><?php esc_html_e( 'Non-member User Settings', 'pmpro-buddypress' ); ?></h3>
+		<p><?php esc_html_e( 'Set how BuddyPress should be locked down for users without a membership level.', 'pmpro-buddypress' ); ?></p>
 		<?php 
 			// Settings for Level 0 are for non-member users.
 			pmpro_bp_restriction_settings_form(0);
@@ -101,11 +101,11 @@ function pmpro_bp_buddpress_admin_page() {
 			<input name="savesettings" type="submit" class="button button-primary" value="<?php esc_html_e('Save All Settings', 'pmpro');?>" />
 		</p>
 
-		<h3 class="topborder"><?php esc_attr_e( 'Membership Level Settings', 'pmpro-buddypress' ); ?></h3>
-		<p><?php esc_attr_e( 'Edit your membership levels to set level-specific restrictions on BuddyPress features.', 'pmpro-buddypress' ); ?></p>
+		<h3 class="topborder"><?php esc_html_e( 'Membership Level Settings', 'pmpro-buddypress' ); ?></h3>
+		<p><?php esc_html_e( 'Edit your membership levels to set level-specific restrictions on BuddyPress features.', 'pmpro-buddypress' ); ?></p>
 		<p><a href="<?php echo admin_url('admin.php?page=pmpro-membershiplevels');?>" class="button button-primary"><?php esc_html_e('Edit Membership Levels', 'paid-memberships-pro' );?></a></p>
 		
-		<h3 class="topborder"><?php esc_attr_e( 'General Settings', 'pmpro-buddypress' ); ?></h3>
+		<h3 class="topborder"><?php esc_html_e( 'General Settings', 'pmpro-buddypress' ); ?></h3>
 		<table class="form-table">
 		<tbody>
 			<tr>
