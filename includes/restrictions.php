@@ -16,6 +16,11 @@ function pmpro_bp_admins_can_do_everything( $can, $check, $user_id ) {
 add_filter( 'pmpro_bp_user_can', 'pmpro_bp_admins_can_do_everything', 10, 3 );
 
 /**
+* Stop BuddyPress from doing canonical redirects so we don't get a redirect loop
+*/
+add_filter( 'bp_do_redirect_canonical', "__return_false" );
+
+/**
  * Restrict viewing of the groups page or individual
  * groups pages if the user doesn't have access.
  */
