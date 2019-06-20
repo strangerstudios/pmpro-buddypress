@@ -258,3 +258,22 @@ function pmpro_bp_init_edit_profile_url() {
 	}
 }
 add_action( 'init', 'pmpro_bp_init_edit_profile_url' );
+
+/**
+ * Remove "Extended Profile" tab based on user's BuddyPress access.
+ * 
+ * @since 1.2.4
+ */
+function pmpro_bp_profile_nav() {
+	
+	global $current_user, $bp;
+	
+	$user_options = pmpro_bp_get_user_options( $current_user->ID );
+	
+	if ( PMPROBP_LOCK_ALL_ACCESS == $user_options['pmpro_bp_restrictions'] ) {
+		remove_action( 'edit_user_profile', array( $bp->members->admin, 'profile_nav' ), 99, 1 );
+		remove_action( 'show_user_profile', array( $bp->members->admin, 'profile_nav' ), 99, 1 );
+	}
+}
+add_action( 'edit_user_profile', 'pmpro_bp_profile_nav' );
+add_action( 'show_user_profile', 'pmpro_bp_profile_nav' );
