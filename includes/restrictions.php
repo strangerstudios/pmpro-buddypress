@@ -241,3 +241,20 @@ function pmpro_bp_restricted_message() {
 	return esc_html__('This content is restricted.', 'pmpro-buddypress' ) . ' ';
 }
 add_shortcode( 'pmpro_buddypress_restricted', 'pmpro_bp_restricted_message' );
+
+/**
+ * Filter edit profile link based on user's BuddyPress access.
+ *
+ * @since 1.2.4
+ */
+function pmpro_bp_init_edit_profile_url() {
+	
+	global $current_user;
+	
+	$user_options = pmpro_bp_get_user_options( $current_user->ID );
+	
+	if ( PMPROBP_LOCK_ALL_ACCESS == $user_options['pmpro_bp_restrictions'] ) {
+		remove_filter( 'edit_profile_url', 'bp_members_edit_profile_url', 10, 3 );
+	}
+}
+add_action( 'init', 'pmpro_bp_init_edit_profile_url' );
