@@ -18,14 +18,11 @@ add_filter( 'pmpro_bp_user_can', 'pmpro_bp_admins_can_do_everything', 10, 3 );
 /**
  * Restrict viewing of the groups page or individual
  * groups pages if the user doesn't have access.
+ *
+ * @since 1.2.4 Using the bp_template_redirect hook to avoid conflicts.
  */
 function pmpro_bp_restrict_group_viewing() {
 	global $bp, $pmpro_pages;
-
-	//If BuddyPress is not active, don't worry
-	if( empty( $bp ) ) {
-		return;
-	}
 
 	//Group (Single) Viewing Restrictions - which levels can view individual groups?
 	if ( bp_is_group() 
@@ -42,7 +39,7 @@ function pmpro_bp_restrict_group_viewing() {
 		pmpro_bp_redirect_to_access_required_page();
 	}
 }
-add_action( 'template_redirect', 'pmpro_bp_restrict_group_viewing' );
+add_action( 'bp_template_redirect', 'pmpro_bp_restrict_group_viewing', 20 );
 
 /**
  * Hide the Create Group button if group creation is restricted
@@ -141,6 +138,8 @@ add_filter( 'bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button' );
 
 /**
  * Redirect away from any BuddyPress page if set to.
+ *
+ * @since 1.2.4 Using the bp_template_redirect hook to avoid conflicts.
  */
 function pmpro_bp_lockdown_all_bp() {
 	
@@ -177,11 +176,13 @@ function pmpro_bp_lockdown_all_bp() {
 		pmpro_bp_redirect_to_access_required_page();
 	}
 }
-add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
+add_action( 'bp_template_redirect', 'pmpro_bp_lockdown_all_bp', 30 );
 
 /**
  * Redirect BuddyPress registration to PMPro
  * unless setting says not to.
+ *
+ * @since 1.2.4 Using bp_template_redirect hook to avoid conflicts.
  */
 function pmpro_bp_buddypress_or_pmpro_registration() {
 	global $post, $pmpro_pages;
@@ -208,7 +209,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 		exit;
 	}
 }
-add_action( 'template_redirect', 'pmpro_bp_buddypress_or_pmpro_registration', 70 );
+add_action( 'bp_template_redirect', 'pmpro_bp_buddypress_or_pmpro_registration', 40 );
 
 /**
  * Show level on BuddyPress profile
