@@ -52,8 +52,8 @@ function pmpro_bp_buddpress_admin_page() {
 		update_option('pmpro_bp_options_users', $pmpro_bp_options, 'no');
 
 		// General Settings
-		update_option( 'pmpro_bp_registration_page', sanitize_option( $_POST['pmpro_bp_register'] ) );
-		update_option( 'pmpro_bp_show_level_on_bp_profile', sanitize_option( $_POST['pmpro_bp_level_profile'] ), 'no' ) ;
+		update_option( 'pmpro_bp_registration_page', sanitize_key( $_POST['pmpro_bp_register'] ) );
+		update_option( 'pmpro_bp_show_level_on_bp_profile', sanitize_key( $_POST['pmpro_bp_level_profile'] ), 'no' ) ;
 	}
 	
     $pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
