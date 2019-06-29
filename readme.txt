@@ -99,7 +99,7 @@ This plugin also allows you to use the BuddyPress user registration process (in 
 
 == Changelog ==
 
-= 1.2.4 =
+= 1.2.4 - 2019-06-28 =
 * BUG FIX: Fixed issue where the WP profile was still being restricted from users without access to BP.
 * BUG FIX: Fixed issue where the 'restrict all of BuddyPress' setting wasn't being applied correctly when levels were set to use non-member settings.
 
