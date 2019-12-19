@@ -194,13 +194,13 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 	$bp_pages = get_option( 'bp-pages' );
 	
 	$pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
-		
+	
 	if( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] && !is_user_logged_in() ) {
 		//Use BuddyPress Register page
 		wp_redirect( get_permalink( $bp_pages['register'] ) );
 		exit;
 	}
-	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() )
+	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && $post->ID != $pmpro_pages['levels'] )
 	{
 		//use PMPro Levels page
 		$url = pmpro_url("levels");
