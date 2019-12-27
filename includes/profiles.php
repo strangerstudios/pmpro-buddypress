@@ -93,6 +93,10 @@ function pmpro_bp_profile_nav() {
 	
 	global $current_user, $bp;
 	
+	if ( empty( $bp ) ) {
+		return;
+	}
+	
 	$user_options = pmpro_bp_get_user_options( $current_user->ID );
 	
 	if ( PMPROBP_LOCK_ALL_ACCESS == $user_options['pmpro_bp_restrictions'] ) {
