@@ -10,7 +10,7 @@
 function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level ) {
 
 	// Make sure Groups are activated.
-	if ( ! function_exists( 'groups_accept_invite' ) ) {
+	if ( ! function_exists( 'groups_create_group' ) ) {
 		return;
 	}
 
@@ -22,6 +22,7 @@ function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level ) {
 		$pmpro_bp_old_level_options = pmpro_bp_get_user_old_level_options( $user_id );
 	}
 
+	// Add to groups
 	$old_groups = $pmpro_bp_old_level_options['pmpro_bp_group_automatic_add'];
 	$new_groups = $pmpro_bp_options['pmpro_bp_group_automatic_add'];
 
@@ -33,7 +34,7 @@ function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level ) {
 
 	if ( ! empty( $new_groups ) ) {
 		foreach ( $new_groups as $group_id ) {
-			groups_accept_invite( $user_id, $group_id );
+			groups_join_group( $group_id, $user_id );
 		}
 	}
 }
