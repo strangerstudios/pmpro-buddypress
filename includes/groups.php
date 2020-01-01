@@ -37,5 +37,31 @@ function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level ) {
 			groups_join_group( $group_id, $user_id );
 		}
 	}
+
+	// Invite to groups
+	$old_groups_invite = $pmpro_bp_old_level_options['pmpro_bp_group_can_request_invite'];
+	$new_groups_invite = $pmpro_bp_options['pmpro_bp_group_can_request_invite'];
+
+	if ( ! empty( $old_groups_invite ) ) {
+		foreach ( $old_groups_invite as $group_id ) {
+			groups_uninvite_user( $user_id, $group_id );
+		}
+	}
+
+	if ( ! empty( $new_groups_invite ) ) {
+		foreach ( $new_groups_invite as $group_id ) {
+			$group = groups_get_group( array( 'group_id' => $group_id ) );
+			groups_invite_user(
+				array(
+					'user_id'       => $user_id,
+					'group_id'      => $group_id,
+					'inviter_id'    => $group->creator_id,
+					'date_modified' => bp_core_current_time(),
+					'send_invite'   => 1,
+				)
+			);
+		}
+	}
+
 }
 add_action( 'pmpro_after_change_membership_level', 'pmpro_bp_set_member_groups', 10, 3 );
