@@ -143,7 +143,7 @@ add_filter( 'bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button' );
  * Redirect away from any BuddyPress page if set to.
  */
 function pmpro_bp_lockdown_all_bp() {
-	
+		
 	if ( !function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
 		return;
 	}
@@ -157,7 +157,12 @@ function pmpro_bp_lockdown_all_bp() {
 	if ( 'buddypress' == $register_page && in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
 		return;
 	}
-		
+	
+	// Don't redirect awawy from BuddyPress profile pages.
+	if ( bp_is_my_profile() ) {
+		return;
+	}
+
 	global $current_user;
 	$user_id = $current_user->ID;
 	
