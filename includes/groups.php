@@ -44,8 +44,13 @@ function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level ) {
 
 	if ( ! empty( $old_groups_invite ) ) {
 		foreach ( $old_groups_invite as $group_id ) {
-			groups_uninvite_user( $user_id, $group_id );
-			// remove user from group as well
+			// Don't remove them, if we're about to add them back in.
+			if ( in_array( $group_id, $new_groups_invite ) ) {
+				continue;
+			}
+			
+			// Uninvite and remove from group.
+			groups_uninvite_user( $user_id, $group_id );			
 			groups_leave_group( $group_id, $user_id );
 		}
 	}
