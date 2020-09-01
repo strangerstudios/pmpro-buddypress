@@ -13,6 +13,10 @@ function pmpro_bp_update_user_meta( $meta_id, $user_id, $meta_key, $meta_value )
 	if( empty( $pmprorh_registration_fields ) ) {
 		return;
 	}
+	
+	if ( ! defined( 'xprofile_get_field_id_from_name' ) ) {
+		return;
+	}
 
 	foreach( $pmprorh_registration_fields as $field_location )
 	{
