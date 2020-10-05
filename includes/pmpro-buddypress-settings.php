@@ -23,6 +23,9 @@ function pmpro_bp_add_admin_menu_page() {
 add_action( 'admin_menu', 'pmpro_bp_add_admin_menu_page' );
 
 function pmpro_bp_buddpress_admin_page() {
+
+	global $pmpro_pages, $msg, $msgt;
+
 	//get/set settings
 	if(!empty($_REQUEST['savesettings'])) {
 		// Non-member user Restrictions
@@ -54,6 +57,10 @@ function pmpro_bp_buddpress_admin_page() {
 		// General Settings
 		update_option( 'pmpro_bp_registration_page', $_POST['pmpro_bp_register'] );
 		update_option( 'pmpro_bp_show_level_on_bp_profile', $_POST['pmpro_bp_level_profile'], 'no' ) ;
+
+		// Assume Success
+		$msg = 1;
+		$msgt = __( 'Your settings have been updated.', 'pmpro-buddypress' );
 	}
 	
     $pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
@@ -76,9 +83,8 @@ function pmpro_bp_buddpress_admin_page() {
 		<p><?php printf( __( 'Integrate and manage your BuddyPress Community using Paid Memberships Pro. <a href="%s" target="_blank">Read the documentation</a> for more information about this Add On.', 'pmpro-buddypress' ), 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/' ); ?></p>
 
 		<h3 class="topborder"><?php esc_attr_e( 'Page Settings', 'pmpro-buddypress' ); ?></h3>
-		<p><?php esc_attr_e( 'This plugin redirects users to a specific page if they try to access restricted BuddyPress features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Page Settings.', 'pmpro-buddypress' ); ?></p>
+		<p><?php esc_attr_e( 'This plugin redirects users to a specific page if they try to access restricted BuddyPress features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Settings > Page Settings.', 'pmpro-buddypress' ); ?></p>
 		<?php
-			global $pmpro_pages;
 			$pmprobp_restricted_page = $pmpro_pages['pmprobp_restricted'];
 			if ( ! empty( $pmprobp_restricted_page ) ) {
 				$msgt = '<span class="dashicons dashicons-yes"></span>' . esc_attr( '"Access Restricted" page is configured.', 'pmpro-buddypress' );
