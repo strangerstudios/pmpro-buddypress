@@ -227,16 +227,19 @@ function pmpro_bp_user_can_join_group( $group_id, $user_id = null ) {
 	if ( pmpro_bp_user_can( 'groups_join', $user_id ) ) {
 		// they can join any group
 		$can_join = true;
-	} else {
-		// check if they can joint his specific group
+	} elseif ( ! empty( $group_id ) ) {
+		// check if they can join this specific group
 		$can_join = false;
 		$pmpro_bp_options = pmpro_bp_get_user_options( $user_id );
+		
 		if ( is_array( $pmpro_bp_options['pmpro_bp_group_automatic_add'] ) && in_array( $group_id, $pmpro_bp_options['pmpro_bp_group_automatic_add'] ) ) {
 			$can_join = true;
 		}
 		if ( is_array( $pmpro_bp_options['pmpro_bp_group_can_request_invite'] ) && in_array( $group_id, $pmpro_bp_options['pmpro_bp_group_can_request_invite'] ) ) {
 			$can_join = true;
 		}
+	} else {
+		$can_join = false;
 	}
 
 	return $can_join;
