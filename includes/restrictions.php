@@ -52,6 +52,7 @@ function pmpro_bp_bp_get_group_create_button( $button_args ) {
 	
 	if(!pmpro_bp_user_can( 'pmpro_bp_group_creation' ) ) {
 		$button_args['link_href'] =	get_permalink($pmpro_pages['pmprobp_restricted']);
+		$button_args['button_element'] = 'a';
 	}
 	
     return $button_args;
@@ -59,17 +60,45 @@ function pmpro_bp_bp_get_group_create_button( $button_args ) {
 add_filter( 'bp_get_group_create_button', 'pmpro_bp_bp_get_group_create_button', 10, 1 );
 
 /**
+ * Prevent users from creating groups
+ * if their level doesn't allow it.
+ */
+function pmpro_bp_bp_user_can_create_groups( $can_create, $restricted ) {
+	if ( $can_create && ! pmpro_bp_user_can( 'pmpro_bp_group_creation' ) && ! current_user_can( 'manage_options' ) ) {
+		$can_create = false;
+	}
+	
+	return $can_create;
+}
+add_filter( 'bp_user_can_create_groups', 'pmpro_bp_bp_user_can_create_groups', 10, 2);
+
+/**
  * Hide the Join Group button if joining groups is restricted
  */
-function pmpro_bp_bp_get_groups_join_button( $button_args, $group ) {			
-	if( ( $button_args['id'] === 'join_group' || $button_args['id'] === 'request_membership' ) && !pmpro_bp_user_can_join_group( $group->id ) ) {
+function pmpro_bp_disable_group_buttons( $button_args, $group ) {			
+	if( ( $button_args['id'] === 'join_group' || $button_args['id'] === 'request_membership' || $button_args['id'] === 'group_membership' ) && !pmpro_bp_user_can_join_group( $group->id ) ) {
 		global $pmpro_pages;
 		$button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+		$button_args['link_class'] = str_replace( 'join-group', '', $button_args['link_class'] );
+		$button_args['button_element'] = 'a';
 	}
 
 	return $button_args;
 }
-add_filter( 'bp_get_group_join_button', 'pmpro_bp_bp_get_groups_join_button', 10, 2);
+add_filter( 'bp_get_group_join_button', 'pmpro_bp_disable_group_buttons', 10, 2);
+
+/**
+ * With the Nouveau theme, some attributes get overwritten,
+ * so we need to filter them again later.
+ */
+function pmpro_bp_disable_nouveau_group_buttons( $buttons, $group ) {
+	foreach( $buttons as &$button ) {
+		$button = pmpro_bp_disable_group_buttons( $button, $group );
+	}
+	
+	return $buttons;
+}
+add_filter( 'bp_nouveau_get_groups_buttons', 'pmpro_bp_disable_nouveau_group_buttons', 10, 2 );
 
 /**
  * Remove Nav Link to request an invite
