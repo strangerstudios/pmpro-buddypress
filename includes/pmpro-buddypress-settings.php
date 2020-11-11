@@ -18,7 +18,7 @@ function pmpro_bp_add_admin_menu_page() {
 	} else {
 		$parent_page = 'pmpro-membershiplevels';
 	}
-	add_submenu_page( $parent_page, __('PMPro BuddyPress', 'pmpro'), __('PMPro BuddyPress', 'pmpro'), 'manage_options', 'pmpro-buddypress', 'pmpro_bp_buddpress_admin_page' );
+	add_submenu_page( $parent_page, __('PMPro BuddyPress', 'pmpro-buddypress'), __('PMPro BuddyPress', 'pmpro-buddypress'), 'manage_options', 'pmpro-buddypress', 'pmpro_bp_buddpress_admin_page' );
 }
 add_action( 'admin_menu', 'pmpro_bp_add_admin_menu_page' );
 
@@ -116,31 +116,31 @@ function pmpro_bp_buddpress_admin_page() {
 		<tbody>
 			<tr>
 				<th scope="row" valign="top">
-					<label for="pmpro_bp_register"><?php _e("Registration Page", 'pmpro');?></label>
+					<label for="pmpro_bp_register"><?php _e("Registration Page", 'pmpro-buddypress');?></label>
 				</th>
 				<td>
 					<select id="pmpro_bp_register" name="pmpro_bp_register">
-						<option value="pmpro" <?php if($pmpro_bp_register == 'pmpro') { ?>selected="selected"<?php } ?>><?php _e('Use PMPro Levels Page', 'pmpro');?></option>
-						<option value="buddypress" <?php if($pmpro_bp_register == 'buddypress') { ?>selected="selected"<?php } ?>><?php _e('Use BuddyPress Registration Page', 'pmpro');?></option>
+						<option value="pmpro" <?php if($pmpro_bp_register == 'pmpro') { ?>selected="selected"<?php } ?>><?php _e('Use PMPro Levels Page', 'pmpro-buddypress');?></option>
+						<option value="buddypress" <?php if($pmpro_bp_register == 'buddypress') { ?>selected="selected"<?php } ?>><?php _e('Use BuddyPress Registration Page', 'pmpro-buddypress');?></option>
 					</select>
 				</td>
 			</tr>
 			
 			<tr>
 				<th scope="row" valign="top">
-					<label for="pmpro_bp_level_profile"><?php _e("Show Membership Level on BuddyPress Profile?", 'pmpro');?></label>
+					<label for="pmpro_bp_level_profile"><?php _e("Show Membership Level on BuddyPress Profile?", 'pmpro-buddypress');?></label>
 				</th>
 				<td>
 					<select id="pmpro_bp_level_profile" name="pmpro_bp_level_profile">
-						<option value="yes" <?php if($pmpro_bp_level_profile == 'yes') { ?>selected="selected"<?php } ?>><?php _e('Yes', 'pmpro');?></option>
-						<option value="no" <?php if($pmpro_bp_level_profile == 'no') { ?>selected="selected"<?php } ?>><?php _e('No', 'pmpro');?></option>
+						<option value="yes" <?php if($pmpro_bp_level_profile == 'yes') { ?>selected="selected"<?php } ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
+						<option value="no" <?php if($pmpro_bp_level_profile == 'no') { ?>selected="selected"<?php } ?>><?php _e('No', 'pmpro-buddypress');?></option>
 					</select>
 				</td>
 			</tr>
 		</tbody>
 		</table>		
 		<p class="submit">
-			<input name="savesettings" type="submit" class="button button-primary" value="<?php _e('Save All Settings', 'pmpro');?>" />
+			<input name="savesettings" type="submit" class="button button-primary" value="<?php _e('Save All Settings', 'pmpro-buddypress');?>" />
 		</p>
 
 		</form>
