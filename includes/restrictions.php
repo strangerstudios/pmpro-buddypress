@@ -76,7 +76,7 @@ add_filter( 'bp_user_can_create_groups', 'pmpro_bp_bp_user_can_create_groups', 1
  * Hide the Join Group button if joining groups is restricted
  */
 function pmpro_bp_disable_group_buttons( $button_args, $group ) {			
-	if( ! empty( $button_args['id'] ) || ( $button_args['id'] === 'join_group' || $button_args['id'] === 'request_membership' || $button_args['id'] === 'group_membership' ) && !pmpro_bp_user_can_join_group( $group->id ) ) {
+	if( ! isset( $button_args['id'] ) || ( $button_args['id'] === 'join_group' || $button_args['id'] === 'request_membership' || $button_args['id'] === 'group_membership' ) && !pmpro_bp_user_can_join_group( $group->id ) ) {
 		global $pmpro_pages;
 		$button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
 		$button_args['link_class'] = str_replace( 'join-group', '', $button_args['link_class'] );
@@ -229,7 +229,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 	
 	$pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
 	
-	if( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] && !is_user_logged_in() ) {
+	if( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' && isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] && !is_user_logged_in() ) {
 		//Use BuddyPress Register page
 		wp_redirect( get_permalink( $bp_pages['register'] ) );
 		exit;
