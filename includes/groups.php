@@ -7,7 +7,7 @@
  * @param  int $cancel_level ID of the level being cancelled if specified
  * @return void
  */
-function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level ) {
+function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level = NULL ) {
 
 	// Make sure Groups are activated.
 	if ( ! function_exists( 'groups_create_group' ) ) {
