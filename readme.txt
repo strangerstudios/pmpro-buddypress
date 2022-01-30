@@ -1,8 +1,8 @@
 === Paid Memberships Pro - BuddyPress Add On ===
 Contributors: strangerstudios, great-h-master
 Tags: paid memberships pro, pmpro, buddypress
-Requires at least: 4
-Tested up to: 5.8
+Requires at least: 5.2
+Tested up to: 5.9
 Stable tag: 1.2.6
 
 Manage access to your BuddyPress Community using Paid Memberships Pro
