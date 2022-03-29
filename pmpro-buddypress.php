@@ -10,10 +10,13 @@
  Domain Path: /languages
  */
 
+/**
+ * Load the languages folder for translations.
+ */
 function pmpro_bp_load_plugin_text_domain() {
-	load_plugin_textdomain( 'pmpro-buddypress', false, basename( dirname( __FILE__ ) ) . '/languages' ); 
+    load_plugin_textdomain( 'pmpro-buddypress', false, basename( dirname( __FILE__ ) ) . '/languages' );
 }
-add_action( 'plugins_loaded', 'pmpro_bp_load_plugin_text_domain');
+add_action( 'plugins_loaded', 'pmpro_bp_load_plugin_text_domain' );
 
 /*
     includes
