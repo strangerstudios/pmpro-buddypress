@@ -104,7 +104,7 @@ function pmpro_bp_buddpress_admin_page() {
 			pmpro_bp_restriction_settings_form(0);
 		?>
 		<p class="submit">
-			<input name="savesettings" type="submit" class="button button-primary" value="<?php _e('Save All Settings', 'pmpro');?>" />
+			<input name="savesettings" type="submit" class="button button-primary" value="<?php _e('Save All Settings', 'pmpro-buddypress' );?>" />
 		</p>
 
 		<h3 class="topborder"><?php esc_attr_e( 'Membership Level Settings', 'pmpro-buddypress' ); ?></h3>
