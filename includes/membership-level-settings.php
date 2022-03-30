@@ -26,8 +26,11 @@ function pmpro_bp_level_settings( ) {
 
 	// Group Settings
 	if ( class_exists( 'BP_Groups_Group' ) ): ?>
-		<h3 class="topborder"> <?php _e('BuddyPress Group Membership', 'pmpro-buddypress');?></h3>
-
+		<hr />
+		<h3><?php _e('BuddyPress Group Membership', 'pmpro-buddypress');?></h3>
+		<?php if ( defined( 'BP_PLATFORM_VERSION' ) ) { ?>
+			<p class="description"><?php esc_html_e( 'Note: These settings apply to sites running BuddyPress or BuddyBoss.', 'pmpro-buddypress' ); ?></p>
+		<?php } ?>
 		<?php 
 		//get groups by status
 		$group_type_ids = BP_Groups_Group::get_group_type_ids();	
@@ -92,9 +95,11 @@ function pmpro_bp_level_settings( ) {
 			</tbody>
 		</table>
 		<?php endif; ?>
-		
-		<h3 class="topborder"> <?php _e('BuddyPress Member Types', 'pmpro-buddypress');?></h3>
-		
+		<hr />
+		<h3><?php _e('BuddyPress Member Types', 'pmpro-buddypress');?></h3>
+		<?php if ( defined( 'BP_PLATFORM_VERSION' ) ) { ?>
+			<p class="description"><?php esc_html_e( 'Note: These settings apply to sites running BuddyPress or BuddyBoss.', 'pmpro-buddypress' ); ?></p>
+		<?php } ?>		
 		<?php
 			if( function_exists( 'bp_get_member_types' ) ) {
 				$registered_member_type_objects = bp_get_member_types( array(), 'objects' );
@@ -227,9 +232,12 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 	$pmpro_bp_member_directory		= $pmpro_bp_options['pmpro_bp_member_directory'];
 	?>
 	<?php if( $level_id <> 0 ) { ?>
-		<h3 class="topborder"> <?php _e('BuddyPress Restrictions', 'pmpro-buddypress');?></h3>
+		<hr />
+		<h3> <?php _e('BuddyPress Restrictions', 'pmpro-buddypress');?></h3>
 	<?php } ?>
-
+	<?php if ( defined( 'BP_PLATFORM_VERSION' ) ) { ?>
+		<p class="description"><?php esc_html_e( 'Note: These settings apply to sites running BuddyPress or BuddyBoss.', 'pmpro-buddypress' ); ?></p>
+	<?php } ?>
 	<table class="form-table">
 		<tbody>
 			<tr>
@@ -281,9 +289,9 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 					<p class="description">
 					<?php
 						if( $level_id <> 0 ) {
-							_e( 'Can members of this level view the BuddyPress Groups page?', 'pmpro-buddypress' );
+							_e( 'Can members of this level view the Groups page?', 'pmpro-buddypress' );
 						} else {
-							_e( 'Can non-member users view the BuddyPress Groups page?', 'pmpro-buddypress' );
+							_e( 'Can non-member users view the Groups page?', 'pmpro-buddypress' );
 						}
 					?>
 					</p>
@@ -302,9 +310,9 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 					<p class="description">
 					<?php
 						if( $level_id <> 0 ) {
-							_e( 'Can members of this level view individual BuddyPress Groups?', 'pmpro-buddypress' );
+							_e( 'Can members of this level view individual Groups?', 'pmpro-buddypress' );
 						} else {
-							_e( 'Can non-member users view individual BuddyPress Groups?', 'pmpro-buddypress' );
+							_e( 'Can non-member users view individual Groups?', 'pmpro-buddypress' );
 						}
 					?>
 					</p>
@@ -323,9 +331,9 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 				<p class="description">
 				<?php
 					if( $level_id <> 0 ) {
-						_e( 'Can members of this level join BuddyPress Groups?', 'pmpro-buddypress' );
+						_e( 'Can members of this level join Groups?', 'pmpro-buddypress' );
 					} else {
-						_e( 'Can non-member users join BuddyPress Groups?', 'pmpro-buddypress' );
+						_e( 'Can non-member users join Groups?', 'pmpro-buddypress' );
 					}
 				?>
 				</p>
@@ -344,9 +352,9 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 					<p class="description">
 					<?php
 						if( $level_id <> 0 ) {
-							_e( 'Can members of this level create BuddyPress Groups?', 'pmpro-buddypress' );
+							_e( 'Can members of this level create Groups?', 'pmpro-buddypress' );
 						} else {
-							_e( 'Can non-member users create BuddyPress Groups?', 'pmpro-buddypress' );
+							_e( 'Can non-member users create Groups?', 'pmpro-buddypress' );
 						}
 					?>
 					</p>
@@ -424,9 +432,9 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 				<p class="description">
 					<?php
 						if( $level_id <> 0 ) {
-							_e( 'Should members of this level be included in the BuddyPress member directory?', 'pmpro-buddypress');
+							_e( 'Should members of this level be included in the Members page?', 'pmpro-buddypress');
 						} else {
-							_e( 'Should non-member users be included in the BuddyPress member directory?', 'pmpro-buddypress');
+							_e( 'Should non-member users be included in the Members page?', 'pmpro-buddypress');
 						}
 					?>
 				</p>

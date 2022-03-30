@@ -79,11 +79,11 @@ function pmpro_bp_buddpress_admin_page() {
 	<div id="poststuff">
 		<form action="" method="post" enctype="multipart/form-data">
 
-		<h1><?php esc_attr_e( 'Paid Memberships Pro - BuddyPress Add On Settings', 'pmpro-buddypress' ); ?></h1>
-		<p><?php printf( __( 'Integrate and manage your BuddyPress Community using Paid Memberships Pro. <a href="%s" target="_blank">Read the documentation</a> for more information about this Add On.', 'pmpro-buddypress' ), 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/' ); ?></p>
-
-		<h3 class="topborder"><?php esc_attr_e( 'Page Settings', 'pmpro-buddypress' ); ?></h3>
-		<p><?php esc_attr_e( 'This plugin redirects users to a specific page if they try to access restricted BuddyPress features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Settings > Page Settings.', 'pmpro-buddypress' ); ?></p>
+		<h1><?php esc_attr_e( 'Paid Memberships Pro - BuddyPress & BuddyBoss Add On Settings', 'pmpro-buddypress' ); ?></h1>
+		<p><?php printf( __( 'Restrict access to communities in BuddyPress and BuddyBoss for free or premium members with the Paid Memberships Pro. <strong>This plugin is compatible with both BuddyPress and BuddyBoss.</strong> <a href="%s" target="_blank">Read the documentation</a> for more information about this Add On.', 'pmpro-buddypress' ), 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/?utm_source=plugin&utm_medium=pmpro-buddpress-settings&utm_campaign=pmpro-buddypress' ); ?></p>
+		<hr />
+		<h3><?php esc_attr_e( 'Page Settings', 'pmpro-buddypress' ); ?></h3>
+		<p><?php esc_attr_e( 'This plugin redirects users to a specific page if they try to access restricted features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Settings > Page Settings.', 'pmpro-buddypress' ); ?></p>
 		<?php
 			$pmprobp_restricted_page = $pmpro_pages['pmprobp_restricted'];
 			if ( ! empty( $pmprobp_restricted_page ) ) {
@@ -96,8 +96,8 @@ function pmpro_bp_buddpress_admin_page() {
 		?>
 		<p><strong style="color: <?php echo $msgc; ?>"><?php echo $msgt; ?></strong></p>
 		<p><a href="<?php echo admin_url('admin.php?page=pmpro-pagesettings');?>" class="button button-primary"><?php _e('Manage Page Settings', 'paid-memberships-pro' );?></a></p>
-
-		<h3 class="topborder"><?php esc_attr_e( 'Non-member User Settings', 'pmpro-buddypress' ); ?></h3>
+		<hr />
+		<h3><?php esc_attr_e( 'Non-member User Settings', 'pmpro-buddypress' ); ?></h3>
 		<p><?php esc_attr_e( 'Set how BuddyPress should be locked down for users without a membership level.', 'pmpro-buddypress' ); ?></p>
 		<?php 
 			// Settings for Level 0 are for non-member users.
@@ -106,12 +106,15 @@ function pmpro_bp_buddpress_admin_page() {
 		<p class="submit">
 			<input name="savesettings" type="submit" class="button button-primary" value="<?php _e('Save All Settings', 'pmpro-buddypress' );?>" />
 		</p>
-
-		<h3 class="topborder"><?php esc_attr_e( 'Membership Level Settings', 'pmpro-buddypress' ); ?></h3>
-		<p><?php esc_attr_e( 'Edit your membership levels to set level-specific restrictions on BuddyPress features.', 'pmpro-buddypress' ); ?></p>
+		<hr />
+		<h3><?php esc_attr_e( 'Membership Level Settings', 'pmpro-buddypress' ); ?></h3>
+		<p><?php esc_attr_e( 'Edit your membership levels to set level-specific restrictions on community features.', 'pmpro-buddypress' ); ?></p>
 		<p><a href="<?php echo admin_url('admin.php?page=pmpro-membershiplevels');?>" class="button button-primary"><?php _e('Edit Membership Levels', 'paid-memberships-pro' );?></a></p>
-		
-		<h3 class="topborder"><?php esc_attr_e( 'General Settings', 'pmpro-buddypress' ); ?></h3>
+		<hr />		
+		<h3><?php esc_attr_e( 'General Settings', 'pmpro-buddypress' ); ?></h3>
+		<?php if ( defined( 'BP_PLATFORM_VERSION' ) ) { ?>
+			<p class="description"><?php esc_html_e( 'Note: These settings apply to sites running BuddyPress or BuddyBoss.', 'pmpro-buddypress' ); ?></p>
+		<?php } ?>
 		<table class="form-table">
 		<tbody>
 			<tr>
@@ -128,7 +131,7 @@ function pmpro_bp_buddpress_admin_page() {
 			
 			<tr>
 				<th scope="row" valign="top">
-					<label for="pmpro_bp_level_profile"><?php _e("Show Membership Level on BuddyPress Profile?", 'pmpro-buddypress');?></label>
+					<label for="pmpro_bp_level_profile"><?php _e("Show Membership Level on Profiles?", 'pmpro-buddypress');?></label>
 				</th>
 				<td>
 					<select id="pmpro_bp_level_profile" name="pmpro_bp_level_profile">
