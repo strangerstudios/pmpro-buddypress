@@ -1,13 +1,22 @@
 <?php
 /*
- Plugin Name: Paid Memberships Pro - BuddyPress Add On
+ Plugin Name: Paid Memberships Pro - BuddyPress & BuddyBoss Add On
  Plugin URI: https://www.paidmembershipspro.com/add-ons/buddypress-integration
- Description: Manage access to your BuddyPress Community using Paid Memberships Pro.
- Version: 1.2.6
+ Description: Restrict access to your BuddyPress or BuddyBoss Community using Paid Memberships Pro
+ Version: 1.2.7
  Author: Paid Memberships Pro
  Author URI: https://www.paidmembershipspro.com
  Text Domain: pmpro-buddypress
+ Domain Path: /languages
  */
+
+/**
+ * Load the languages folder for translations.
+ */
+function pmpro_bp_load_plugin_text_domain() {
+    load_plugin_textdomain( 'pmpro-buddypress', false, basename( dirname( __FILE__ ) ) . '/languages' );
+}
+add_action( 'plugins_loaded', 'pmpro_bp_load_plugin_text_domain' );
 
 /*
     includes
