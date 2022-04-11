@@ -26,15 +26,16 @@ function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level = NULL )
 	$old_groups = $pmpro_bp_old_level_options['pmpro_bp_group_automatic_add'];
 	$new_groups = $pmpro_bp_options['pmpro_bp_group_automatic_add'];
 
+
 	if ( ! empty( $old_groups ) ) {
 		foreach ( $old_groups as $group_id ) {
-			groups_leave_group( $group_id, $user_id );
+			groups_leave_group( intval( $group_id ), $user_id );
 		}
 	}
 
 	if ( ! empty( $new_groups ) ) {
 		foreach ( $new_groups as $group_id ) {
-			groups_join_group( $group_id, $user_id );
+			groups_join_group( intval( $group_id ), $user_id );
 		}
 	}
 
@@ -51,7 +52,7 @@ function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level = NULL )
 			
 			// Uninvite and remove from group.
 			groups_uninvite_user( $user_id, $group_id );			
-			groups_leave_group( $group_id, $user_id );
+			groups_leave_group( intval( $group_id ), $user_id );
 		}
 	}
 
@@ -61,7 +62,7 @@ function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level = NULL )
 			groups_invite_user(
 				array(
 					'user_id'       => $user_id,
-					'group_id'      => $group_id,
+					'group_id'      => intval( $group_id ),
 					'inviter_id'    => $group->creator_id,
 					'date_modified' => bp_core_current_time(),
 					'send_invite'   => 1,
