@@ -14,7 +14,7 @@ function pmpro_bp_update_user_meta( $meta_id, $user_id, $meta_key, $meta_value )
 		return;
 	}
 	
-	if ( ! defined( 'xprofile_get_field_id_from_name' ) ) {
+	if ( ! function_exists( 'xprofile_get_field_id_from_name' ) ) {
 		return;
 	}
 
