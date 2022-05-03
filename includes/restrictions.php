@@ -240,7 +240,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 	
 	$pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
 	
-	if( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' && isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] && !is_user_logged_in() ) {
+	if( ! empty( $bp_pages['register'] ) && ! empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' && isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] && ! is_user_logged_in() ) {
 		// Some cases the BuddyPress/BuddyBoss register page is set to same permalink - causes an error.
 		if ( empty( $bp_pages['register'] ) || get_permalink( $bp_pages['register'] ) === get_permalink( $pmpro_pages['levels'] ) ) {
 			return;
