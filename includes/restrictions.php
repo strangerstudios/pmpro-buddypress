@@ -172,29 +172,25 @@ add_filter( 'bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button' );
  * Redirect away from any BuddyPress page if set to.
  */
 function pmpro_bp_lockdown_all_bp() {
-	global $pmpro_pages;
-	
-	if ( !function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
-		return;
-	}
-	
-	if( !function_exists( 'is_buddypress') || !is_buddypress() ) {
-		return;
-	}
-	
-	// Don't redirect away from the Register or Activate pages if using BuddyPress registration.
-	$register_page = get_option( 'pmpro_bp_registration_page' );
-	if ( 'buddypress' == $register_page && in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
-		return;
-	}
-	
-	// Fixes an issue with BuddyBoss configuration if registration page is set to PMPro + BuddyBoss registration page is set to Levels page.
-	if ( 'pmpro' == $register_page && isset( $pmpro_pages['levels'] ) && is_page( $pmpro_pages['levels'] ) ) {
-		return;
-	}
+	global $current_user, $pmpro_pages;
 
-	// If the registration page is set to use PMPro's and user tries to visit BuddyPress Register/Active just bail and let the redirect to registration function fire.
-	if ( 'pmpro' == $register_page && in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
+	// Make sure PMPro is active.
+	if ( ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
+		return;
+	}
+	
+	// Make sure BuddyPress is active.
+	if( ! function_exists( 'is_buddypress') || !is_buddypress() ) {
+		return;
+	}
+	
+	// Don't lockdown the BuddyPress Register or Activate pages. The pmpro_bp_buddypress_or_pmpro_registration() will redirect if needed.
+	if ( in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
+		return;
+	}
+	
+	// Make sure we don't lock down the PMPro levels page. The pmpro_bp_buddypress_or_pmpro_registration() will redirect if needed.
+	if ( isset( $pmpro_pages['levels'] ) && is_page( $pmpro_pages['levels'] ) ) {
 		return;
 	}
 	
@@ -202,22 +198,20 @@ function pmpro_bp_lockdown_all_bp() {
 	if ( bp_is_my_profile() ) {
 		return;
 	}
-
-	global $current_user;
-	$user_id = $current_user->ID;
 	
+	// Get the user's level.
+	$user_id = $current_user->ID;
 	if( !empty( $user_id ) ) {
 		$level = pmpro_getMembershipLevelForUser( $user_id );
 	}
-
 	if( !empty( $level ) ) {
 		$level_id = $level->id;
 	} else {
 		$level_id = 0;	//non-member user
 	}
-		
-	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );
-	
+
+	// Check PMPro BuddyPress options.
+	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );	
 	if( $pmpro_bp_options['pmpro_bp_restrictions'] == -1 ) {
 		pmpro_bp_redirect_to_access_required_page();
 	}
