@@ -192,6 +192,11 @@ function pmpro_bp_lockdown_all_bp() {
 	if ( 'pmpro' == $register_page && is_page( $pmpro_pages['levels'] ) ) {
 		return;
 	}
+
+	// If the registration page is set to use PMPro's and user tries to visit BuddyPress Register/Active just bail and let the redirect to registration function fire.
+	if ( 'pmpro' == $register_page && in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
+		return;
+	}
 	
 	// Don't redirect awawy from BuddyPress profile pages.
 	if ( bp_is_my_profile() ) {
@@ -245,7 +250,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 		wp_redirect( get_permalink( $bp_pages['register'] ) );
 		exit;
 	}
-	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && ( ! is_page( $pmpro_pages['levels'] ) || $post->ID != $pmpro_pages['levels'] ) )
+	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && ! is_page( $pmpro_pages['levels'] ) )
 	{
 		//use PMPro Levels page
 		$url = pmpro_url("levels");
