@@ -252,6 +252,10 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 	}
 	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && ! is_page( $pmpro_pages['levels'] ) )
 	{
+		// Check one last time to make sure the POST ID isn't the same as the levels page.
+		if ( isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] ) {
+			return;
+		}
 		//use PMPro Levels page
 		$url = pmpro_url("levels");
 		wp_redirect($url);
