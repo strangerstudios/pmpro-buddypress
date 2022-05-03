@@ -189,7 +189,7 @@ function pmpro_bp_lockdown_all_bp() {
 	}
 	
 	// Fixes an issue with BuddyBoss configuration if registration page is set to PMPro + BuddyBoss registration page is set to Levels page.
-	if ( 'pmpro' == $register_page && is_page( $pmpro_pages['levels'] ) ) {
+	if ( 'pmpro' == $register_page && isset( $pmpro_pages['levels'] ) && is_page( $pmpro_pages['levels'] ) ) {
 		return;
 	}
 
@@ -240,7 +240,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 	
 	$pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
 	
-	if( ! empty( $bp_pages['register'] ) && ! empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' && isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] && ! is_user_logged_in() ) {
+	if( ! empty( $bp_pages['register'] ) && ! empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' && isset( $pmpro_pages['levels'] ) && isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] && ! is_user_logged_in() ) {
 		// Some cases the BuddyPress/BuddyBoss register page is set to same permalink - causes an error.
 		if ( empty( $bp_pages['register'] ) || get_permalink( $bp_pages['register'] ) === get_permalink( $pmpro_pages['levels'] ) ) {
 			return;
@@ -250,7 +250,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 		wp_redirect( get_permalink( $bp_pages['register'] ) );
 		exit;
 	}
-	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && ! is_page( $pmpro_pages['levels'] ) )
+	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && isset( $pmpro_pages['levels'] ) && ! is_page( $pmpro_pages['levels'] ) )
 	{
 		// Check one last time to make sure the POST ID isn't the same as the levels page.
 		if ( isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] ) {
