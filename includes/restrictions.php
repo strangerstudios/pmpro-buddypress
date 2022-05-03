@@ -172,7 +172,8 @@ add_filter( 'bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button' );
  * Redirect away from any BuddyPress page if set to.
  */
 function pmpro_bp_lockdown_all_bp() {
-		
+	global $pmpro_pages;
+	
 	if ( !function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
 		return;
 	}
@@ -184,6 +185,11 @@ function pmpro_bp_lockdown_all_bp() {
 	// Don't redirect away from the Register or Activate pages if using BuddyPress registration.
 	$register_page = get_option( 'pmpro_bp_registration_page' );
 	if ( 'buddypress' == $register_page && in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
+		return;
+	}
+	
+	// Fixes an issue with BuddyBoss configuration if registration page is set to PMPro + BuddyBoss registration page is set to Levels page.
+	if ( 'pmpro' == $register_page && is_page( $pmpro_pages['levels'] ) ) {
 		return;
 	}
 	
@@ -234,12 +240,12 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 		if ( empty( $bp_pages['register'] ) || get_permalink( $bp_pages['register'] ) === get_permalink( $pmpro_pages['levels'] ) ) {
 			return;
 		}
-		
+
 		//Use BuddyPress Register page
 		wp_redirect( get_permalink( $bp_pages['register'] ) );
 		exit;
 	}
-	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && $post->ID != $pmpro_pages['levels'] )
+	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && ( ! is_page( $pmpro_pages['levels'] ) || $post->ID != $pmpro_pages['levels'] ) )
 	{
 		//use PMPro Levels page
 		$url = pmpro_url("levels");
