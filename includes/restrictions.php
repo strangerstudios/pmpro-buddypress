@@ -232,7 +232,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 	}
 
 	// What is our Registration Page setting?
-	$page_setting = get_option( 'pmpro_bp_registration_page' );
+	$page_setting = get_option( 'pmpro_bp_registration_page', 'pmpro' );
 	
 	// Are we on the BuddyPress register/activate page?
 	$on_bp_register = bp_is_register_page();
@@ -245,18 +245,21 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 		return;
 	}
 	
-	// Figure out where to redirect.
-	if ( $page_setting === 'pmpro' ) {
+	// Do we need to redirect to PMPro Levels?
+	if ( $page_setting === 'pmpro' && $on_bp_register ) {
 		// Use PMPro Levels page.
-		$url = pmpro_url( 'levels' );		
-	} else {
+		$url = pmpro_url( 'levels' );
+	}
+
+	// Do we need to redirect to BuddyPress registration?
+	if ( $page_setting === 'buddypress' && $on_pmpro_levels ) {
 		// Use the BuddyPress Register page.
 		$bp_pages = get_option( 'bp-pages' );
 		if ( ! empty( $bp_pages['register'] ) ) {
 			$url = get_permalink( $bp_pages['register'] );
 		} else {
 			$url = '';
-		}	
+		}
 	}
 
 	// Redirect only if the URL was set.
