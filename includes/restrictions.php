@@ -172,29 +172,25 @@ add_filter( 'bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button' );
  * Redirect away from any BuddyPress page if set to.
  */
 function pmpro_bp_lockdown_all_bp() {
-	global $pmpro_pages;
-	
-	if ( !function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
-		return;
-	}
-	
-	if( !function_exists( 'is_buddypress') || !is_buddypress() ) {
-		return;
-	}
-	
-	// Don't redirect away from the Register or Activate pages if using BuddyPress registration.
-	$register_page = get_option( 'pmpro_bp_registration_page' );
-	if ( 'buddypress' == $register_page && in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
-		return;
-	}
-	
-	// Fixes an issue with BuddyBoss configuration if registration page is set to PMPro + BuddyBoss registration page is set to Levels page.
-	if ( 'pmpro' == $register_page && isset( $pmpro_pages['levels'] ) && is_page( $pmpro_pages['levels'] ) ) {
-		return;
-	}
+	global $current_user, $pmpro_pages;
 
-	// If the registration page is set to use PMPro's and user tries to visit BuddyPress Register/Active just bail and let the redirect to registration function fire.
-	if ( 'pmpro' == $register_page && in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
+	// Make sure PMPro is active.
+	if ( ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
+		return;
+	}
+	
+	// Make sure BuddyPress is active.
+	if( ! function_exists( 'is_buddypress') || !is_buddypress() ) {
+		return;
+	}
+	
+	// Don't lockdown the BuddyPress Register or Activate pages. The pmpro_bp_buddypress_or_pmpro_registration() will redirect if needed.
+	if ( in_array( bp_current_component(), array( 'register', 'activate' ) ) ) {
+		return;
+	}
+	
+	// Make sure we don't lock down the PMPro levels page. The pmpro_bp_buddypress_or_pmpro_registration() will redirect if needed.
+	if ( isset( $pmpro_pages['levels'] ) && is_page( $pmpro_pages['levels'] ) ) {
 		return;
 	}
 	
@@ -202,22 +198,20 @@ function pmpro_bp_lockdown_all_bp() {
 	if ( bp_is_my_profile() ) {
 		return;
 	}
-
-	global $current_user;
-	$user_id = $current_user->ID;
 	
+	// Get the user's level.
+	$user_id = $current_user->ID;
 	if( !empty( $user_id ) ) {
 		$level = pmpro_getMembershipLevelForUser( $user_id );
 	}
-
 	if( !empty( $level ) ) {
 		$level_id = $level->id;
 	} else {
 		$level_id = 0;	//non-member user
 	}
-		
-	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );
-	
+
+	// Check PMPro BuddyPress options.
+	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );	
 	if( $pmpro_bp_options['pmpro_bp_restrictions'] == -1 ) {
 		pmpro_bp_redirect_to_access_required_page();
 	}
@@ -226,39 +220,51 @@ add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
 
 /**
  * Redirect BuddyPress registration to PMPro
- * unless setting says not to.
+ * or redirect PMPro to BuddyPress depending on the
+ * "Registration Page" setting.
  */
 function pmpro_bp_buddypress_or_pmpro_registration() {
-	global $post, $pmpro_pages;
+	global $pmpro_pages;
 	
-	//If BP or PMPro are not active, ignore
-	if( !function_exists( 'bp_is_register_page' ) || !function_exists( 'pmpro_url' ) ) {
+	// Make sure BuddyPress and PMPro are active.
+	if( ! function_exists( 'bp_is_register_page' ) || ! function_exists( 'pmpro_url' ) ) {
 		return;
 	}
 
-	$bp_pages = get_option( 'bp-pages' );
+	// What is our Registration Page setting?
+	$page_setting = get_option( 'pmpro_bp_registration_page', 'pmpro' );
 	
-	$pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
+	// Are we on the BuddyPress register/activate page?
+	$on_bp_register = bp_is_register_page();
 	
-	if( ! empty( $bp_pages['register'] ) && ! empty( $pmpro_bp_register ) && $pmpro_bp_register == 'buddypress' && isset( $pmpro_pages['levels'] ) && isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] && ! is_user_logged_in() ) {
-		// Some cases the BuddyPress/BuddyBoss register page is set to same permalink - causes an error.
-		if ( empty( $bp_pages['register'] ) || get_permalink( $bp_pages['register'] ) === get_permalink( $pmpro_pages['levels'] ) ) {
-			return;
-		}
-
-		//Use BuddyPress Register page
-		wp_redirect( get_permalink( $bp_pages['register'] ) );
-		exit;
+	// Are we on the PMPro levels page?
+	$on_pmpro_levels = ( ! empty( $pmpro_pages['levels'] ) && is_page( $pmpro_pages['levels'] ) );
+	
+	// Avoid the loop when the BP Register Page is set to the PMPro Levels page.
+	if ( $on_bp_register && $on_pmpro_levels ) {
+		return;
 	}
-	elseif( !empty( $pmpro_bp_register ) && $pmpro_bp_register == 'pmpro' && bp_is_register_page() && isset( $pmpro_pages['levels'] ) && ! is_page( $pmpro_pages['levels'] ) )
-	{
-		// Check one last time to make sure the POST ID isn't the same as the levels page.
-		if ( isset( $post->ID ) && $post->ID != 0 && $post->ID == $pmpro_pages['levels'] ) {
-			return;
+	
+	// Do we need to redirect to PMPro Levels?
+	if ( $page_setting === 'pmpro' && $on_bp_register ) {
+		// Use PMPro Levels page.
+		$url = pmpro_url( 'levels' );
+	}
+
+	// Do we need to redirect to BuddyPress registration?
+	if ( $page_setting === 'buddypress' && $on_pmpro_levels ) {
+		// Use the BuddyPress Register page.
+		$bp_pages = get_option( 'bp-pages' );
+		if ( ! empty( $bp_pages['register'] ) ) {
+			$url = get_permalink( $bp_pages['register'] );
+		} else {
+			$url = '';
 		}
-		//use PMPro Levels page
-		$url = pmpro_url("levels");
-		wp_redirect($url);
+	}
+
+	// Redirect only if the URL was set.
+	if ( ! empty( $url ) ) {
+		wp_redirect( $url );
 		exit;
 	}
 }
