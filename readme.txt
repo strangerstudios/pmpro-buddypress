@@ -141,6 +141,11 @@ Navigate to Memberships > Settings > PMPro BuddyPress and locate the "Non-member
 
 == Changelog ==
 
+= 1.2.8 - 2022-05-05 =
+* BUG FIX: Fixes various issue with registration redirects. Improves handling incomplete setups for registration and tidied up logic around this code. (Thanks @ideadude)
+* BUG FIX: Fixes an issue where the xprofile fields were not syncing correctly. (Thanks @ipokkel)
+* BUG FIX: Fixes an issue with group invites not working on level change.
+
 = 1.2.7 - 2022-03-31 =
 * ENHANCEMENT: Escape and localized strings to allow for translations and additional locales.
 * ENHANCEMENT: Now showing messages where settings also apply for BuddyBoss if the plugin is active.
