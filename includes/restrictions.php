@@ -255,7 +255,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 	if ( $page_setting === 'buddypress' && $on_pmpro_levels ) {
 		// Use the BuddyPress Register page.
 		$bp_pages = get_option( 'bp-pages' );
-		if ( ! empty( $bp_pages['register'] ) ) {
+		if ( ! empty( $bp_pages['register'] ) && ! is_user_logged_in() ) {
 			$url = get_permalink( $bp_pages['register'] );
 		} else {
 			$url = '';
