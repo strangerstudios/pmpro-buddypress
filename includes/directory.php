@@ -82,7 +82,27 @@ function pmpro_bp_get_members_in_directory() {
 		return array();
 	}
 
-	$sql = "SELECT DISTINCT user_id FROM $wpdb->pmpro_memberships_users WHERE membership_id IN (" . implode(",", array_map("intval", $include_levels)) . ") AND status = 'active'";
+	$sql = "SELECT DISTINCT m.user_id FROM $wpdb->pmpro_memberships_users as m ";
+
+	if( class_exists( 'PMPro_Approvals' ) ) {
+
+		$sql .= " 
+		LEFT JOIN {$wpdb->usermeta} umm 
+		ON umm.meta_key = CONCAT('pmpro_approval_', m.membership_id) 
+		AND umm.meta_key != 'pmpro_approval_log' 
+		AND m.user_id = umm.user_id ";
+
+		$sql .= " 
+		WHERE m.membership_id IN (" . implode( ",", array_map( "intval", $include_levels ) ) . ") 
+		AND ( umm.meta_value LIKE '%approved%' OR umm.meta_value IS NULL ) ";
+
+	} else {
+
+		$sql .= " WHERE m.membership_id IN (" . implode( ",", array_map( "intval", $include_levels ) ) . ") ";
+
+	}
+
+	$sql .= " AND m.status = 'active'";
 
 	$wpdb->flush();
 	$include_users = $wpdb->get_col($sql);
