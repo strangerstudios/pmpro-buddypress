@@ -88,11 +88,11 @@ function pmpro_bp_get_members_in_directory() {
 	 * Adding in empty keys for supported array args
 	 */
 
-	$sql_parts['SELECT'] = "SELECT DISTINCT user_id FROM $wpdb->pmpro_memberships_users";
+	$sql_parts['SELECT'] = "SELECT DISTINCT m.user_id FROM $wpdb->pmpro_memberships_users as m";
 
 	$sql_parts['JOIN'] = "";
 
-	$sql_parts['WHERE'] = " WHERE membership_id IN (" . implode(",", array_map("intval", $include_levels)) . ") AND status = 'active'";
+	$sql_parts['WHERE'] = " WHERE m.membership_id IN (" . implode( ",", array_map( "intval", $include_levels ) ) . ") AND m.status = 'active'";
 
 	$sql_parts['GROUP'] = "";
 	$sql_parts['ORDER'] = "";
