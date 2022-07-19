@@ -110,3 +110,41 @@ function pmpro_bp_profile_nav() {
 }
 add_action( 'edit_user_profile', 'pmpro_bp_profile_nav' );
 add_action( 'show_user_profile', 'pmpro_bp_profile_nav' );
+
+/**
+ * Show a message if non-member settings are restricted to all of BuddyPress.
+ * 
+ * @since TBD
+ * @return string $retval The formatted HTML for radio buttons on the edit fields screen.
+ */
+function pmpro_bp_adjust_xprofile_view_radio_buttons( $retval, $r, $args ) {
+	// Get non-member users restriction settings.
+	$non_user_options = pmpro_bp_get_level_options( 0 );
+	if ( $non_user_options['pmpro_bp_restrictions'] === PMPROBP_GIVE_ALL_ACCESS ) {
+			return $retval;
+	}
+
+	$message = esc_html( 'Your profile is only visible to other active members and no fields are shown publicly.', 'pmpro-buddypress' );
+
+	$retval = '<strong>' . esc_html__( 'Note:', 'pmpro-buddypress' ) . '</strong> ' . $message . '<br>' . $retval;
+
+	return $retval;
+}
+add_filter( 'bp_profile_get_visibility_radio_buttons', 'pmpro_bp_adjust_xprofile_view_radio_buttons', 10, 3 );
+
+/**
+ * Remove "Public" status from XProfile fields when non-members restricted.
+ *
+ * @since TBD
+ * @param array $labels of field types for XProfile Fields.
+ * @return array $labels of field types for XProfile Fields.
+ */
+function pmpro_bp_hide_public_non_members( $label ) {
+	$non_user_options = pmpro_bp_get_level_options( 0 );
+	if ( $non_user_options['pmpro_bp_restrictions'] !== PMPROBP_GIVE_ALL_ACCESS ) {
+		unset( $label['public'] );
+	}
+
+	return $label;
+}
+add_filter( 'bp_xprofile_get_visibility_levels', 'pmpro_bp_hide_public_non_members' );
