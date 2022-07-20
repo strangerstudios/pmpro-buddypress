@@ -301,3 +301,26 @@ function pmpro_bp_restricted_message() {
 	return __('This content is restricted.', 'pmpro-buddypress' ) . ' ';
 }
 add_shortcode( 'pmpro_buddypress_restricted', 'pmpro_bp_restricted_message' );
+
+/**
+ * Restrict viewing of the noifications page or individual
+ * notification pages if the user doesn't have access.
+ */
+function pmpro_bp_restrict_notification_viewing() {
+	
+	global $bp;
+
+	//If BuddyPress is not active, don't worry
+	if( empty( $bp ) ) {
+		return;
+	}
+
+	/**
+	 * If you're restricting group access and want to view the notifications, redirect away
+	 */
+	if ( !pmpro_bp_user_can( 'groups_page_viewing' ) && $bp->current_component == 'notifications' ) {	
+		pmpro_bp_redirect_to_access_required_page();
+	}
+
+}
+add_action( 'template_redirect', 'pmpro_bp_restrict_notification_viewing' );
