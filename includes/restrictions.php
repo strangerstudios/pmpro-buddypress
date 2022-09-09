@@ -172,7 +172,12 @@ add_filter( 'bp_get_add_friend_button', 'pmpro_bp_bp_get_add_friend_button' );
  * Redirect away from any BuddyPress page if set to.
  */
 function pmpro_bp_lockdown_all_bp() {
-	global $current_user, $pmpro_pages;
+	global $bp, $current_user, $pmpro_pages;
+
+	// Return if BuddyPress is not active
+	if( empty( $bp ) ) {
+		return;
+	}
 
 	// Make sure PMPro is active.
 	if ( ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
@@ -215,6 +220,12 @@ function pmpro_bp_lockdown_all_bp() {
 	if( $pmpro_bp_options['pmpro_bp_restrictions'] == -1 ) {
 		pmpro_bp_redirect_to_access_required_page();
 	}
+
+	//Redirect away from the members page if no access is allowed
+	if( $bp->current_component == 'members' && pmpro_bp_is_member_directory_locked() ) {
+		pmpro_bp_redirect_to_access_required_page();
+	}
+
 }
 add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
 
