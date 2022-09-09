@@ -77,6 +77,8 @@ add_action( 'pmpro_after_change_membership_level', 'pmpro_bp_set_member_groups',
 /**
  * Remove the group status in meta if one is present
  * 
+ * @since TBD
+ * 
  * @param  array $group_meta Group meta data
  * @param  object $group Group data object
  * @param  bool $is_group If it is a group
@@ -96,12 +98,12 @@ add_filter( 'bp_nouveau_get_group_meta', 'pmpro_bp_nouveau_get_group_meta_custom
 /**
  * Remove the group type if one is present
  * 
+ * @since TBD
+ * 
  * @param  object $group Group data object
  * @return string
  */
 function pmpro_bp_get_group_type_custom( $group ) {
-
 	return '';
-
 }
 add_filter( 'bp_get_group_type', 'pmpro_bp_get_group_type_custom' );
