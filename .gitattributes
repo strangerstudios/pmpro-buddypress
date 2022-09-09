@@ -2,6 +2,7 @@
 
 # Files
 .gitattributes export-ignore
+.gitignore export-ignore
 pmpro-buddypress-banner.png export-ignore
 README.md export-ignore
 
