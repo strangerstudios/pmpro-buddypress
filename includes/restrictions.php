@@ -292,7 +292,7 @@ function pmpro_bp_show_level_on_bp_profile() {
 	<?php
 	}
 }
-add_filter( 'bp_profile_header_meta', 'pmpro_bp_show_level_on_bp_profile' );
+add_filter( 'bp_before_member_header_meta', 'pmpro_bp_show_level_on_bp_profile' );
 
 /**
  * Restricted message shortcode.
