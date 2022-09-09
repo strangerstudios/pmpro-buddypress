@@ -140,6 +140,15 @@ Navigate to Memberships > Settings > PMPro BuddyPress and locate the "Non-member
 3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Settings > Memberships Levels > Edit.
 
 == Changelog ==
+= 1.3 - 2022-09-12 =
+* ENHANCEMENT: Added "Membership" menu tab to the "View Profile" BuddyPress page.
+* ENHANCEMENT: Removed "Public" or "Private" wording from the frontend when viewing groups when this feature requires a level.
+* ENHANCEMENT: Removed "Public" option from XProfile field settings as this is restricted in certain cases.
+* ENHANCEMENT: Improved restrictions for notifications page when BuddyPress settings are locked down (I.e. Group Notifications).
+* ENHANCEMENT: Redirect away from the BuddyPress directory if the user's membership level doesn't allow access to Groups.
+* ENHANCEMENT: Improved the BuddyPress Directory SQL into parts so that tweaking/customizing the filtering is easier. New filter added `pmpro_bp_directory_sql_parts`.
+* BUG FIX: Fixed an issue where the initial installation would not restrict BuddyPress. By default, on initial install all features of BuddyPress are restricted to non-members.
+* BUG FIX: Fixed an issue where the "Show Membership Level on Profiles" wasn't working for BuddyBoss installs.
 
 = 1.2.9 - 2022-06-21=
 * BUG FIX: Fixes an issue where logged-in user's could not access the levels page if BuddyPress registration is set as the registration page.

@@ -77,7 +77,7 @@ add_action( 'pmpro_after_change_membership_level', 'pmpro_bp_set_member_groups',
 /**
  * Remove the group status in meta if one is present
  * 
- * @since TBD
+ * @since 1.3
  * 
  * @param  array $group_meta Group meta data
  * @param  object $group Group data object
@@ -98,7 +98,7 @@ add_filter( 'bp_nouveau_get_group_meta', 'pmpro_bp_nouveau_get_group_meta_custom
 /**
  * Remove the group type if one is present
  * 
- * @since TBD
+ * @since 1.3
  * 
  * @param  object $group Group data object
  * @return string

@@ -101,7 +101,7 @@ function pmpro_bp_get_members_in_directory() {
 	/**
 	 * Filter each SQL part to allow for extended queries in the directory
 	 *
-	 * @since TBD
+	 * @since 1.3
 	 *
 	 * @param array $sql_parts Contains each sql part
 	 * @param array $include_levels Levels that should be included in the query

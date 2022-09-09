@@ -114,7 +114,7 @@ add_action( 'show_user_profile', 'pmpro_bp_profile_nav' );
 /**
  * Show a message if non-member settings are restricted to all of BuddyPress.
  * 
- * @since TBD
+ * @since 1.3
  * @return string $field_html The formatted HTML for radio buttons on the edit fields screen.
  */
 function pmpro_bp_adjust_xprofile_view_radio_buttons( $field_html, $r, $args ) {
@@ -135,7 +135,7 @@ add_filter( 'bp_profile_get_visibility_radio_buttons', 'pmpro_bp_adjust_xprofile
 /**
  * Remove "Public" status from XProfile fields when non-members restricted.
  *
- * @since TBD
+ * @since 1.3
  * @param array $labels of field types for XProfile Fields.
  * @return array $labels of field types for XProfile Fields.
  */
@@ -152,7 +152,7 @@ add_filter( 'bp_xprofile_get_visibility_levels', 'pmpro_bp_hide_public_non_membe
 /**
  * Create a custom menu item for profile page when Paid Memberships Pro is active. Callback runs the [pmpro_account] shortcode.
  *
- * @since TBD
+ * @since 1.3
  */
 function pmpro_bp_custom_user_nav_item() {
     global $bp;
@@ -174,7 +174,7 @@ add_action( 'bp_setup_nav', 'pmpro_bp_custom_user_nav_item', 99 );
 /**
  * Callback for the membership profile content and load the template.
  *
- * @since TBD
+ * @since 1.3
  */
 function pmpro_bp_membership_profile_content() {
     add_action( 'bp_template_content', 'pmpro_bp_membership_profile_screen' );
@@ -184,7 +184,7 @@ function pmpro_bp_membership_profile_content() {
 /**
  * Callback to return the default shortcode for the account page on the BuddyPress profile page.
  *
- * @since TBD
+ * @since 1.3
  * @return string [pmpro_account] Returns the default shortcode screen for Paid Memberships Pro.
  */
 function pmpro_bp_membership_profile_screen() {
