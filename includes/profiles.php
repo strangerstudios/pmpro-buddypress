@@ -115,20 +115,20 @@ add_action( 'show_user_profile', 'pmpro_bp_profile_nav' );
  * Show a message if non-member settings are restricted to all of BuddyPress.
  * 
  * @since TBD
- * @return string $retval The formatted HTML for radio buttons on the edit fields screen.
+ * @return string $field_html The formatted HTML for radio buttons on the edit fields screen.
  */
-function pmpro_bp_adjust_xprofile_view_radio_buttons( $retval, $r, $args ) {
+function pmpro_bp_adjust_xprofile_view_radio_buttons( $field_html, $r, $args ) {
 	// Get non-member users restriction settings.
 	$non_user_options = pmpro_bp_get_level_options( 0 );
 	if ( $non_user_options['pmpro_bp_restrictions'] === PMPROBP_GIVE_ALL_ACCESS ) {
-			return $retval;
+			return $field_html;
 	}
 
-	$message = esc_html( 'Your profile is only visible to other active members and no fields are shown publicly.', 'pmpro-buddypress' );
+	$message = esc_html__( 'Your profile is only visible to other active members and no fields are shown publicly.', 'pmpro-buddypress' );
 
-	$retval = '<strong>' . esc_html__( 'Note:', 'pmpro-buddypress' ) . '</strong> ' . $message . '<br>' . $retval;
+	$field_html = '<strong>' . esc_html__( 'Note:', 'pmpro-buddypress' ) . '</strong> ' . $message . '<br>' . $field_html;
 
-	return $retval;
+	return $field_html;
 }
 add_filter( 'bp_profile_get_visibility_radio_buttons', 'pmpro_bp_adjust_xprofile_view_radio_buttons', 10, 3 );
 
