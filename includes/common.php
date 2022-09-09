@@ -9,7 +9,7 @@
  */
 function pmpro_bp_get_level_options( $level_id ) {
 	$default_options = array(
-		'pmpro_bp_restrictions'             => 0,
+		'pmpro_bp_restrictions'             => -1, //Default to Lock All BuddyPress for non-members
 		'pmpro_bp_group_creation'           => 0,
 		'pmpro_bp_group_single_viewing'     => 0,
 		'pmpro_bp_groups_page_viewing'      => 0,
