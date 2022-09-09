@@ -82,10 +82,37 @@ function pmpro_bp_get_members_in_directory() {
 		return array();
 	}
 
-	$sql = "SELECT DISTINCT user_id FROM $wpdb->pmpro_memberships_users WHERE membership_id IN (" . implode(",", array_map("intval", $include_levels)) . ") AND status = 'active'";
+	$sql_parts = array();
+
+	/**
+	 * Adding in empty keys for supported array args
+	 */
+
+	$sql_parts['SELECT'] = "SELECT DISTINCT m.user_id FROM $wpdb->pmpro_memberships_users as m ";
+
+	$sql_parts['JOIN'] = "";
+
+	$sql_parts['WHERE'] = "WHERE m.membership_id IN (" . implode( ",", array_map( "intval", $include_levels ) ) . ") AND m.status = 'active' ";
+
+	$sql_parts['GROUP'] = "";
+	$sql_parts['ORDER'] = "";
+	$sql_parts['LIMIT'] = "";
+
+	/**
+	 * Filter each SQL part to allow for extended queries in the directory
+	 *
+	 * @since TBD
+	 *
+	 * @param array $sql_parts Contains each sql part
+	 * @param array $include_levels Levels that should be included in the query
+	 */
+	$sql_parts = apply_filters( 'pmpro_bp_directory_sql_parts', $sql_parts, $include_levels );
+
+	$sqlQuery = $sql_parts['SELECT'] . $sql_parts['JOIN'] . $sql_parts['WHERE'] . $sql_parts['GROUP'] . $sql_parts['ORDER'] . $sql_parts['LIMIT'];	
 
 	$wpdb->flush();
-	$include_users = $wpdb->get_col($sql);
+	
+	$include_users = $wpdb->get_col( $sqlQuery );
 
 	return $include_users;
 }

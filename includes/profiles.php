@@ -148,3 +148,47 @@ function pmpro_bp_hide_public_non_members( $label ) {
 	return $label;
 }
 add_filter( 'bp_xprofile_get_visibility_levels', 'pmpro_bp_hide_public_non_members' );
+
+/**
+ * Create a custom menu item for profile page when Paid Memberships Pro is active. Callback runs the [pmpro_account] shortcode.
+ *
+ * @since TBD
+ */
+function pmpro_bp_custom_user_nav_item() {
+    global $bp;
+ 
+    $args = array(
+            'name' => __( 'Membership', 'pmpro_buddypress' ),
+            'slug' => 'membership_account',
+            'default_subnav_slug' => 'membership',
+            'position' => 50,
+            'show_for_displayed_user' => true,
+            'screen_function' => 'pmpro_bp_membership_profile_content',
+            'item_css_id' => 'membership'
+    );
+ 
+    bp_core_new_nav_item( $args );
+}
+add_action( 'bp_setup_nav', 'pmpro_bp_custom_user_nav_item', 99 );
+
+/**
+ * Callback for the membership profile content and load the template.
+ *
+ * @since TBD
+ */
+function pmpro_bp_membership_profile_content() {
+    add_action( 'bp_template_content', 'pmpro_bp_membership_profile_screen' );
+    bp_core_load_template( apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
+}
+
+/**
+ * Callback to return the default shortcode for the account page on the BuddyPress profile page.
+ *
+ * @since TBD
+ * @return string [pmpro_account] Returns the default shortcode screen for Paid Memberships Pro.
+ */
+function pmpro_bp_membership_profile_screen() {
+	$shortcode = esc_html( apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' ) );
+	
+	echo do_shortcode( "$shortcode" );
+}
