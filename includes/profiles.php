@@ -162,7 +162,7 @@ function pmpro_bp_custom_user_nav_item() {
             'slug' => 'membership_account',
             'default_subnav_slug' => 'membership',
             'position' => 50,
-            'show_for_displayed_user' => true,
+            'show_for_displayed_user' => false,
             'screen_function' => 'pmpro_bp_membership_profile_content',
             'item_css_id' => 'membership'
     );
