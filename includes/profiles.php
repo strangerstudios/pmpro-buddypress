@@ -155,8 +155,6 @@ add_filter( 'bp_xprofile_get_visibility_levels', 'pmpro_bp_hide_public_non_membe
  * @since 1.3
  */
 function pmpro_bp_custom_user_nav_item() {
-    global $bp;
- 
     $args = array(
             'name' => __( 'Membership', 'pmpro_buddypress' ),
             'slug' => 'membership_account',
