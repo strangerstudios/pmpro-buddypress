@@ -198,20 +198,9 @@ function pmpro_bp_lockdown_all_bp() {
 	if ( bp_is_my_profile() ) {
 		return;
 	}
-	
-	// Get the user's level.
-	$user_id = $current_user->ID;
-	if( !empty( $user_id ) ) {
-		$level = pmpro_getMembershipLevelForUser( $user_id );
-	}
-	if( !empty( $level ) ) {
-		$level_id = $level->id;
-	} else {
-		$level_id = 0;	//non-member user
-	}
 
 	// Check PMPro BuddyPress options.
-	$pmpro_bp_options = pmpro_bp_get_level_options( $level_id );	
+	$pmpro_bp_options = pmpro_bp_get_user_options();	
 	if( $pmpro_bp_options['pmpro_bp_restrictions'] == -1 ) {
 		pmpro_bp_redirect_to_access_required_page();
 	}
@@ -276,21 +265,20 @@ add_action( 'template_redirect', 'pmpro_bp_buddypress_or_pmpro_registration', 70
  * unless setting says not to
  */
 function pmpro_bp_show_level_on_bp_profile() {
-	
-	if ( !function_exists('pmpro_getMembershipLevelForUser') ) {
+	if ( ! function_exists('pmpro_getMembershipLevelsForUser') ) {
 		return;
 	}
 	
-	$level = pmpro_getMembershipLevelForUser(bp_displayed_user_id());
-	
+	$levels = pmpro_getMembershipLevelsForUser( bp_displayed_user_id() );
 	$show_level = get_option('pmpro_bp_show_level_on_bp_profile');
 	
-	if( $show_level == 'yes' && !empty( $level ) ) {
-	?>
-	<div class="pmpro_bp_show_level_on_bp_profile">
-		<strong><?php _e( 'Membership Level', 'pmpro-buddypress' );?>: <?php echo $level->name; ?> </strong>
-	</div>
-	<?php
+	if( $show_level == 'yes' && ! empty( $levels ) ) {
+		$level_names_string = implode( ', ', wp_list_pluck( $levels, 'name' ) );
+		?>
+		<div class="pmpro_bp_show_level_on_bp_profile">
+			<strong><?php echo esc_html( _n( 'Membership Level', 'Membership Levels', count( $levels ) , 'pmpro-buddypress' ) );?>: <?php echo esc_html( $level_names_string ); ?> </strong>
+		</div>
+		<?php
 	}
 }
 add_filter( 'bp_before_member_header_meta', 'pmpro_bp_show_level_on_bp_profile' );
