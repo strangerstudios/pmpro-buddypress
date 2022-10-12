@@ -133,10 +133,10 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 /**
  * Get options for a user's "last" old level.
  *
- * @deprecated TBD
+ * @deprecated 1.4
  */
 function pmpro_bp_get_user_old_level_options( $user_id = null ) {
-	_deprecated_function( __FUNCTION__, 'TBD' );
+	_deprecated_function( __FUNCTION__, '1.4' );
 
 	if ( empty( $user_id ) ) {
 		global $current_user;

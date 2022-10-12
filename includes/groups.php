@@ -7,11 +7,11 @@
  * @param  int $cancel_level ID of the level being cancelled if specified
  * @return void
  *
- * @deprecated TBD - Use pmpro_bp_groups_pmpro_after_all_membership_level_changes() instead.
+ * @deprecated 1.4 - Use pmpro_bp_groups_pmpro_after_all_membership_level_changes() instead.
  */
 function pmpro_bp_set_member_groups( $level_id, $user_id, $cancel_level = NULL ) {
 	// Show deprecation notice.
-	_deprecated_function( __FUNCTION__, 'TBD', 'pmpro_bp_groups_pmpro_after_all_membership_level_changes()' );
+	_deprecated_function( __FUNCTION__, '1.4', 'pmpro_bp_groups_pmpro_after_all_membership_level_changes()' );
 
 	// Make sure Groups are activated.
 	if ( ! function_exists( 'groups_create_group' ) ) {

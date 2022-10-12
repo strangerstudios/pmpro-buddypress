@@ -9,11 +9,11 @@
  *
  * @since 1.2.1 - BUG FIX: Fatal error when BuddyPress is inactive/not installed
  *
- * @deprecated TBD - Use pmpro_bp_member_types_pmpro_after_all_membership_level_changes() instead.
+ * @deprecated 1.4 - Use pmpro_bp_member_types_pmpro_after_all_membership_level_changes() instead.
  */
 function pmpro_bp_set_member_types( $level_id, $user_id, $cancel_level ) {
 	// Show deprecation notice.
-	_deprecated_function( __FUNCTION__, 'TBD', 'pmpro_bp_member_types_pmpro_after_all_membership_level_changes()' );
+	_deprecated_function( __FUNCTION__, '1.4', 'pmpro_bp_member_types_pmpro_after_all_membership_level_changes()' );
 	
 	// Exit if BuddyPress isn't active
 	if ( ! function_exists( 'bp_set_member_type' ) ) {
