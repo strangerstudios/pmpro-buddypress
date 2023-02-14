@@ -181,5 +181,6 @@ function pmpro_bp_membership_profile_screen() {
 	 */
 	$content_escaped = apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' );
 
+	// phpcs:ignore Content has been escaped within the pmpro_shortcode_account function
 	echo $content_escaped;
 }
