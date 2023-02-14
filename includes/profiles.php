@@ -144,7 +144,7 @@ add_filter( 'bp_profile_get_visibility_radio_buttons', 'pmpro_bp_adjust_xprofile
  */
 function pmpro_bp_custom_user_nav_item() {
     $args = array(
-            'name' => __( 'Membership', 'pmpro_buddypress' ),
+            'name' => __( 'Membership', 'pmpro-buddypress' ),
             'slug' => 'membership_account',
             'default_subnav_slug' => 'membership',
             'position' => 50,
