@@ -168,13 +168,18 @@ function pmpro_bp_membership_profile_content() {
 }
 
 /**
- * Callback to return the default shortcode for the account page on the BuddyPress profile page.
+ * Callback to return the default shortcode for the account page on the BuddyPress profile page for current user only.
  *
  * @since 1.3
  * @return string [pmpro_account] Returns the default shortcode screen for Paid Memberships Pro.
  */
 function pmpro_bp_membership_profile_screen() {
-	$shortcode = esc_html( apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' ) );
-	
-	echo do_shortcode( "$shortcode" );
+	/**
+	 * Allow filtering the content added to the Membership tab of the BuddyPress profile page.
+	 *
+	 * @param string $content The content to add to the Membership tab of the BuddyPress profile page for current user only.
+	 */
+	$content = apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' );
+
+	echo wp_kses_post( $content );
 }
