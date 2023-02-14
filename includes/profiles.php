@@ -177,9 +177,9 @@ function pmpro_bp_membership_profile_screen() {
 	/**
 	 * Allow filtering the content added to the Membership tab of the BuddyPress profile page.
 	 *
-	 * @param string $content The content to add to the Membership tab of the BuddyPress profile page for current user only.
+	 * @param string $content_escaped The content to add to the Membership tab of the BuddyPress profile page for current user only.
 	 */
-	$content = apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' );
+	$content_escaped = apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' );
 
-	echo wp_kses_post( $content );
+	echo $content_escaped;
 }
