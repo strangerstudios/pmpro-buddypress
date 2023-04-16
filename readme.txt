@@ -2,7 +2,7 @@
 Contributors: strangerstudios, paidmembershipspro
 Tags: community, private community, paid memberships pro, buddypress, buddyboss, pmpro
 Requires at least: 5.2
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.0
 Stable tag: 1.4
 
