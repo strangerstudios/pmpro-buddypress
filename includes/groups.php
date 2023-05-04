@@ -161,7 +161,7 @@ function pmpro_bp_groups_pmpro_after_all_membership_level_changes( $pmpro_old_us
 add_action( 'pmpro_after_all_membership_level_changes', 'pmpro_bp_groups_pmpro_after_all_membership_level_changes' );
 
 /**
- * Remove the group status in meta if one is present
+ * Remove the group status in meta if one is present (Disabled since 1.4.1)
  * 
  * @since 1.3
  * 
@@ -179,10 +179,10 @@ function pmpro_bp_nouveau_get_group_meta_custom( $group_meta, $group, $is_group 
 	return $group_meta;
 
 }
-add_filter( 'bp_nouveau_get_group_meta', 'pmpro_bp_nouveau_get_group_meta_custom', 10, 3 );
+// add_filter( 'bp_nouveau_get_group_meta', 'pmpro_bp_nouveau_get_group_meta_custom', 10, 3 );
 
 /**
- * Remove the group type if one is present
+ * Remove the group type if one is present (Disabled since 1.4.1)
  * 
  * @since 1.3
  * 
@@ -192,4 +192,4 @@ add_filter( 'bp_nouveau_get_group_meta', 'pmpro_bp_nouveau_get_group_meta_custom
 function pmpro_bp_get_group_type_custom( $group ) {
 	return '';
 }
-add_filter( 'bp_get_group_type', 'pmpro_bp_get_group_type_custom' );
+// add_filter( 'bp_get_group_type', 'pmpro_bp_get_group_type_custom' );
