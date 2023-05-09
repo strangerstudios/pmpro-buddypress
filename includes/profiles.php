@@ -9,8 +9,8 @@
  * update the xprofile field.
  */
 function pmpro_bp_update_user_meta( $meta_id, $user_id, $meta_key, $meta_value ) {	
-	global $pmprorh_registration_fields;	
-	if( empty( $pmprorh_registration_fields ) ) {
+	global $pmpro_user_fields;	
+	if( empty( $pmpro_user_fields ) ) {
 		return;
 	}
 	
@@ -18,7 +18,7 @@ function pmpro_bp_update_user_meta( $meta_id, $user_id, $meta_key, $meta_value )
 		return;
 	}
 
-	foreach( $pmprorh_registration_fields as $field_location )
+	foreach( $pmpro_user_fields as $field_location )
 	{
 		foreach( $field_location as $rh_field )
 		{
@@ -49,8 +49,8 @@ add_action( 'add_user_meta', 'pmpro_bp_add_user_meta', 10, 3 );
  * When xprofile is updated, see if we need to update user meta.
  */
 function pmpro_bp_xprofile_updated_profile( $user_id, $posted_field_ids, $errors, $old_values, $new_values ) {
-	global $pmprorh_registration_fields;
-	if( empty( $pmprorh_registration_fields ) ) {
+	global $pmpro_user_fields;
+	if( empty( $pmpro_user_fields ) ) {
 		return;
 	}
 	
@@ -58,7 +58,7 @@ function pmpro_bp_xprofile_updated_profile( $user_id, $posted_field_ids, $errors
 		foreach( $posted_field_ids as $xprofile_field_id ) {
 			$xprofile_field = new BP_XProfile_Field( $xprofile_field_id );
 			
-			foreach( $pmprorh_registration_fields as $field_location ) {
+			foreach( $pmpro_user_fields as $field_location ) {
 				foreach( $field_location as $rh_field ) {
 					if( !empty( $rh_field->buddypress ) && $rh_field->buddypress == $xprofile_field->name ) {
 						//switch for type?
