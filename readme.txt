@@ -2,7 +2,7 @@
 Contributors: strangerstudios, paidmembershipspro
 Tags: community, private community, paid memberships pro, buddypress, buddyboss, pmpro
 Requires at least: 5.2
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.0
 Stable tag: 1.4
 
@@ -140,6 +140,12 @@ Navigate to Memberships > Settings > PMPro BuddyPress and locate the "Non-member
 3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Settings > Memberships Levels > Edit.
 
 == Changelog ==
+= 1.4.1 - 2023-05-09 =
+* ENHANCEMENT: Support User Fields sync capability for XProfile fields. (@DarkLotus)
+* ENHANCEMENT: Improved logic around the [pmpro_account] shortcode filter to allow better adjustments with the 'pmpro_buddypress_profile_account_shortcode' filter. (@kimcoleman)
+* REFACTOR: Disabled the logic from update 1.3 to hide group meta. To hide the group meta please use CSS or call the functions directly in your custom plugin. (@andrewlimaza)
+* BUG FIX: Fixed some strings that weren't translatable due to incorrect text domain. (@ipokkel)
+
 = 1.4 - 2023-02-08 =
 * ENHANCEMENT: Added support for Multiple Memberships Per User. This merges the settings across all user's levels and gives access to BuddyPress/BuddyBoss components.
 * ENHANCEMENT: Added support for Pay By Check (pending), Approvals and other Add Ons that may set the `pmpro_hasMembershipLevel` to false when granting access to content.

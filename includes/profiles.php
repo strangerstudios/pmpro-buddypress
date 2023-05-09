@@ -9,8 +9,8 @@
  * update the xprofile field.
  */
 function pmpro_bp_update_user_meta( $meta_id, $user_id, $meta_key, $meta_value ) {	
-	global $pmprorh_registration_fields;	
-	if( empty( $pmprorh_registration_fields ) ) {
+	global $pmpro_user_fields;	
+	if( empty( $pmpro_user_fields ) ) {
 		return;
 	}
 	
@@ -18,7 +18,7 @@ function pmpro_bp_update_user_meta( $meta_id, $user_id, $meta_key, $meta_value )
 		return;
 	}
 
-	foreach( $pmprorh_registration_fields as $field_location )
+	foreach( $pmpro_user_fields as $field_location )
 	{
 		foreach( $field_location as $rh_field )
 		{
@@ -49,8 +49,8 @@ add_action( 'add_user_meta', 'pmpro_bp_add_user_meta', 10, 3 );
  * When xprofile is updated, see if we need to update user meta.
  */
 function pmpro_bp_xprofile_updated_profile( $user_id, $posted_field_ids, $errors, $old_values, $new_values ) {
-	global $pmprorh_registration_fields;
-	if( empty( $pmprorh_registration_fields ) ) {
+	global $pmpro_user_fields;
+	if( empty( $pmpro_user_fields ) ) {
 		return;
 	}
 	
@@ -58,7 +58,7 @@ function pmpro_bp_xprofile_updated_profile( $user_id, $posted_field_ids, $errors
 		foreach( $posted_field_ids as $xprofile_field_id ) {
 			$xprofile_field = new BP_XProfile_Field( $xprofile_field_id );
 			
-			foreach( $pmprorh_registration_fields as $field_location ) {
+			foreach( $pmpro_user_fields as $field_location ) {
 				foreach( $field_location as $rh_field ) {
 					if( !empty( $rh_field->buddypress ) && $rh_field->buddypress == $xprofile_field->name ) {
 						//switch for type?
@@ -144,7 +144,7 @@ add_filter( 'bp_profile_get_visibility_radio_buttons', 'pmpro_bp_adjust_xprofile
  */
 function pmpro_bp_custom_user_nav_item() {
     $args = array(
-            'name' => __( 'Membership', 'pmpro_buddypress' ),
+            'name' => __( 'Membership', 'pmpro-buddypress' ),
             'slug' => 'membership_account',
             'default_subnav_slug' => 'membership',
             'position' => 50,
@@ -168,13 +168,19 @@ function pmpro_bp_membership_profile_content() {
 }
 
 /**
- * Callback to return the default shortcode for the account page on the BuddyPress profile page.
+ * Callback to return the default shortcode for the account page on the BuddyPress profile page for current user only.
  *
  * @since 1.3
  * @return string [pmpro_account] Returns the default shortcode screen for Paid Memberships Pro.
  */
 function pmpro_bp_membership_profile_screen() {
-	$shortcode = esc_html( apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' ) );
-	
-	echo do_shortcode( "$shortcode" );
+	/**
+	 * Allow filtering the content added to the Membership tab of the BuddyPress profile page.
+	 *
+	 * @param string $content_escaped The content to add to the Membership tab of the BuddyPress profile page for current user only.
+	 */
+	$content_escaped = apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' );
+
+	// phpcs:ignore Content has been escaped within the pmpro_shortcode_account function
+	echo $content_escaped;
 }
