@@ -141,9 +141,10 @@ Navigate to Memberships > Settings > PMPro BuddyPress and locate the "Non-member
 
 == Changelog ==
 = 1.4.1 - 2023-05-09 =
-* ENHANCEMENT: Improved logic around the [pmpro_account] shortcode filter to allow better adjustments with the 'pmpro_buddypress_profile_account_shortcode' filter.
-* REFACTOR: Disabled the logic from update 1.3 to hide group meta. To hide the group meta please use CSS or call the functions directly in your custom plugin.
-* BUG FIX: Fixed some strings that weren't translatable due to incorrect text domain.
+* ENHANCEMENT: Support User Fields sync capability for XProfile fields. (@DarkLotus)
+* ENHANCEMENT: Improved logic around the [pmpro_account] shortcode filter to allow better adjustments with the 'pmpro_buddypress_profile_account_shortcode' filter. (@kimcoleman)
+* REFACTOR: Disabled the logic from update 1.3 to hide group meta. To hide the group meta please use CSS or call the functions directly in your custom plugin. (@andrewlimaza)
+* BUG FIX: Fixed some strings that weren't translatable due to incorrect text domain. (@ipokkel)
 
 = 1.4 - 2023-02-08 =
 * ENHANCEMENT: Added support for Multiple Memberships Per User. This merges the settings across all user's levels and gives access to BuddyPress/BuddyBoss components.
