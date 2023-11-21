@@ -27,7 +27,7 @@ function pmpro_bp_level_settings( ) {
 	// Group Settings
 	if ( class_exists( 'BP_Groups_Group' ) ): ?>
 		<hr />
-		<h3><?php _e('BuddyPress Group Membership', 'pmpro-buddypress');?></h3>
+		<h2><?php _e('BuddyPress Group Membership', 'pmpro-buddypress');?></h2>
 		<?php if ( defined( 'BP_PLATFORM_VERSION' ) ) { ?>
 			<p class="description"><?php esc_html_e( 'Note: These settings apply to sites running BuddyPress or BuddyBoss.', 'pmpro-buddypress' ); ?></p>
 		<?php } ?>
@@ -96,7 +96,7 @@ function pmpro_bp_level_settings( ) {
 		</table>
 		<?php endif; ?>
 		<hr />
-		<h3><?php _e('BuddyPress Member Types', 'pmpro-buddypress');?></h3>
+		<h2><?php _e('BuddyPress Member Types', 'pmpro-buddypress');?></h2>
 		<?php if ( defined( 'BP_PLATFORM_VERSION' ) ) { ?>
 			<p class="description"><?php esc_html_e( 'Note: These settings apply to sites running BuddyPress or BuddyBoss.', 'pmpro-buddypress' ); ?></p>
 		<?php } ?>		
@@ -233,7 +233,7 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 	?>
 	<?php if( $level_id <> 0 ) { ?>
 		<hr />
-		<h3> <?php _e('BuddyPress Restrictions', 'pmpro-buddypress');?></h3>
+		<h2> <?php _e('BuddyPress Restrictions', 'pmpro-buddypress');?></h2>
 	<?php } ?>
 	<?php if ( defined( 'BP_PLATFORM_VERSION' ) ) { ?>
 		<p class="description"><?php esc_html_e( 'Note: These settings apply to sites running BuddyPress or BuddyBoss.', 'pmpro-buddypress' ); ?></p>
