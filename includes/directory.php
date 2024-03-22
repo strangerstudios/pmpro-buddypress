@@ -37,10 +37,18 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 		if( is_array( $query_array->query_vars['include'] ) ) {
 			// Compute the intersect of members and include value.
 			$query_array->query_vars['include'] = array_intersect( $query_array->query_vars['include'], $pmpro_bp_members_in_directory );
+			if (count ($query_array->query_vars['include']) == 0) {
+				$query_array->query_vars['include'] = array (0); 
+			}
 		} else {
-			// Only include members in the directory.
-			$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
+			if (is_string($query_array->query_vars['include']) && $query_array->query_vars['include'] == "0") {
+				$query_array->query_vars['include'] = array (0);
+			} else {
+				// Only include members in the directory.
+				$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
+			}
 		}
+
 	} else {
 		// No members, block the directory.
 		$query_array->query_vars['include'] = array(0);
