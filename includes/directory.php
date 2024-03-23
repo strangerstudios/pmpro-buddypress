@@ -39,7 +39,7 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 			$query_array->query_vars['include'] = array_intersect( $query_array->query_vars['include'], $pmpro_bp_members_in_directory );
 		} else {
 			// Only include members in the directory.
-			$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
+			if (is_countable($query_array->query_vars['include'])) $query_array->query_vars['include'] = array (0);
 		}
 	} else {
 		// No members, block the directory.
