@@ -87,10 +87,10 @@ function pmpro_bp_buddpress_admin_page() {
 		<?php
 			$pmprobp_restricted_page = $pmpro_pages['pmprobp_restricted'];
 			if ( ! empty( $pmprobp_restricted_page ) ) {
-				$msgt = '<span class="dashicons dashicons-yes"></span>' . esc_attr( __( '"Access Restricted" page is configured.', 'pmpro-buddypress' ) );
+				$msgt = '<span class="dashicons dashicons-yes"></span>' . esc_attr__( '"Access Restricted" page is configured.', 'pmpro-buddypress' );
 				$msgc = '#46b450';
 			} else {
-				$msgt = '<span class="dashicons dashicons-no"></span>' . esc_attr( __( '"Access Restricted" page is not configured.', 'pmpro-buddypress' ) );
+				$msgt = '<span class="dashicons dashicons-no"></span>' . esc_attr__( '"Access Restricted" page is not configured.', 'pmpro-buddypress' );
 				$msgc = '#a00';
 			}
 		?>
