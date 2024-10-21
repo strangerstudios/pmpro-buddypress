@@ -1,15 +1,18 @@
-# Translation of Plugins - BuddyPress &amp; BuddyBoss Private Community with PMPro &#8211; Restrict Profiles, Groups, Messaging, Forum Discussions - Stable (latest release) in Portuguese (Brazil)
-# This file is distributed under the same license as the Plugins - BuddyPress &amp; BuddyBoss Private Community with PMPro &#8211; Restrict Profiles, Groups, Messaging, Forum Discussions - Stable (latest release) package.
+# Copyright (C) 2024 Paid Memberships Pro
+# This file is distributed under the same license as the Paid Memberships Pro - BuddyPress & BuddyBoss Add On plugin.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-02-16 16:39:45+0000\n"
+"Project-Id-Version: Paid Memberships Pro - BuddyPress & BuddyBoss Add On 1.5\n"
+"Report-Msgid-Bugs-To: info@paidmembershipspro.com\n"
+"Last-Translator: Paid Memberships Pro <info@paidmembershipspro.com>\n"
+"Language-Team: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: GlotPress/4.0.1\n"
-"Language: pt_BR\n"
-"Project-Id-Version: Plugins - BuddyPress &amp; BuddyBoss Private Community with PMPro &#8211; Restrict Profiles, Groups, Messaging, Forum Discussions - Stable (latest release)\n"
+"POT-Creation-Date: 2024-10-21T09:23:39+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: pmpro-buddypress\n"
 
 #: includes/profiles.php:131
 msgid "Your profile is only visible to other active members."
@@ -34,7 +37,7 @@ msgstr "Este conteúdo é restrito."
 #: includes/restrictions.php:279
 msgid "Membership Level"
 msgid_plural "Membership Levels"
-msgstr[0] "Nível de Associação"
+msgstr[0] ""
 msgstr[1] ""
 
 #: includes/pmpro-buddypress-settings.php:134
@@ -323,21 +326,34 @@ msgid "Thank you for activating. <a href=\"%s\">Visit the settings page</a> to g
 msgstr "Obrigado por ativar. <a href=\"%s\">Visite a página de configurações</a> para começar a usar o Complemento do BuddyPress."
 
 #. Author URI of the plugin
+#: pmpro-buddypress.php
 msgid "https://www.paidmembershipspro.com"
 msgstr "https://www.paidmembershipspro.com"
 
 #. Author of the plugin
+#: pmpro-buddypress.php
 msgid "Paid Memberships Pro"
 msgstr "Paid Memberships Pro"
 
 #. Description of the plugin
+#: pmpro-buddypress.php
 msgid "Restrict access to your BuddyPress or BuddyBoss Community using Paid Memberships Pro"
 msgstr "Restrinja o acesso à sua comunidade do BuddyPress ou do BuddyBoss usando o Paid Memberships Pro"
 
 #. Plugin URI of the plugin
+#: pmpro-buddypress.php
 msgid "https://www.paidmembershipspro.com/add-ons/buddypress-integration"
 msgstr "https://www.paidmembershipspro.com/add-ons/buddypress-integration"
 
 #. Plugin Name of the plugin
+#: pmpro-buddypress.php
 msgid "Paid Memberships Pro - BuddyPress & BuddyBoss Add On"
 msgstr "Paid Memberships Pro - Complemento do BuddyPress e BuddyBoss"
+
+#: includes/pmpro-buddypress-settings.php:90
+msgid "\"Access Restricted\" page is configured."
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:93
+msgid "\"Access Restricted\" page is not configured."
+msgstr ""
