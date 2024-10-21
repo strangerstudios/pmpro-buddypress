@@ -2,9 +2,9 @@
 Contributors: strangerstudios, paidmembershipspro
 Tags: community, private community, paid memberships pro, buddypress, buddyboss, pmpro
 Requires at least: 5.2
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 1.4.1
+Stable tag: 1.5
 
 Restrict access to communities in BuddyPress & BuddyBoss for free or premium members with the top WordPress membership plugin Paid Memberships Pro
 
@@ -25,14 +25,14 @@ Use this BuddyPress and BuddyBoss plugin to restrict your membership site for mu
 * **Member Directories:** Restrict visitors and members from being included in the member directory.
 
 ### Restrict Forums and Community Discussions
-If you include discussion boards and forums in your community, check out our [bbPress Integration](https://www.paidmembershipspro.com/add-ons/pmpro-bbpress/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-bbpress). With BuddyPress or BuddyBoss and PMPro you can:
+If you include discussion boards and forums in your community, check out our [bbPress Integration](https://www.paidmembershipspro.com/add-ons/pmpro-bbpress/?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-bbpress). With BuddyPress or BuddyBoss and PMPro you can:
 
 * **Restrict Forum Discussions** by Membership Level.
 * **Assign a Forum Role** by Membership Level.
 * **Adjust the error message shown** when a user does not have permission to view discussions.
 * **Show a member's level name** in line with their discussion replies. This helps other community members see another member's access level.
 
-[Learn more about protecting your members-only community with Paid Memberships Pro in our documentation site](https://www.paidmembershipspro.com/add-ons/buddypress-integration/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress).
+[Learn more about protecting your members-only community with Paid Memberships Pro in our documentation site](https://www.paidmembershipspro.com/add-ons/buddypress-integration/?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress).
 
 ### Compatible with BuddyPress and BuddyBoss
 
@@ -42,7 +42,7 @@ The platform is an evolution of BuddyPress and bbPress, consolidated into a sing
 
 ### About Paid Memberships Pro
 
-[Paid Memberships Pro is a WordPress membership plugin](https://www.paidmembershipspro.com/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress) that puts you in control. Create what you want and release in whatever format works best for your business.
+[Paid Memberships Pro is a WordPress membership plugin](https://www.paidmembershipspro.com/?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress) that puts you in control. Create what you want and release in whatever format works best for your business.
 
 * Courses & E-Learning
 * Private podcasts
@@ -56,19 +56,19 @@ Paid Memberships Pro is built "the WordPress way" with a lean core plugin and ov
 
 Paid Memberships Pro is the flagship product of Stranger Studios. We are a bootstrapped company which grows when membership sites like yours grow. That means we focus our entire company towards helping you succeed.
 
-[Try Paid Memberships Pro entirely for free on WordPress.org](https://wordpress.org/plugins/paid-memberships-pro/) and see why 100,000+ sites trust us to help them #GetPaid.
+[Try Paid Memberships Pro entirely for free](https://www.paidmembershipspro.com) and see why 100,000+ sites trust us to help them #GetPaid.
 
 ### Read More
 
 Want more information on members-only communities, private groups and messaging, and WordPress membership sites? Have a look at:
 
-* The [Paid Memberships Pro](https://www.paidmembershipspro.com/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress) official homepage.
-* The [BuddyPress and BuddyBoss Integration for PMPro documentation page](https://www.paidmembershipspro.com/add-ons/buddypress-integration/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress).
+* The [Paid Memberships Pro](https://www.paidmembershipspro.com/?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress) official homepage.
+* The [BuddyPress and BuddyBoss Integration for PMPro documentation page](https://www.paidmembershipspro.com/add-ons/buddypress-integration/?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress).
 * Also follow PMPro on [Twitter](https://twitter.com/pmproplugin), [YouTube](https://www.youtube.com/channel/UCFtMIeYJ4_YVidi1aq9kl5g) & [Facebook](https://www.facebook.com/PaidMembershipsPro/).
 
 == Installation ==
 
-Note: You must have [Paid Memberships Pro](https://wordpress.org/plugins/paid-memberships-pro/) and [BuddyPress](https://wordpress.org/plugins/buddypress/) or [BuddyBoss](https://www.paidmembershipspro.com/buddyboss-membership-plugin/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress) installed and activated on your site.
+Note: You must have [Paid Memberships Pro](https://www.paidmembershipspro.com) and [BuddyPress](https://wordpress.org/plugins/buddypress/) or [BuddyBoss](https://www.paidmembershipspro.com/buddyboss-membership-plugin/?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress) installed and activated on your site.
 
 ### Install PMPro BuddyPress from within WordPress
 
@@ -98,7 +98,7 @@ This plugin allows you to use the BuddyPress or BuddyBoss user registration proc
 
 Note: If your membership is not free, you must use the Paid Memberships Pro membership checkout process. If you have a free community and want to allow users to register through BuddyPress or BuddyBoss, you must adjust this setting.
 
-If you'd like members that register through the BuddyPress or BuddyBoss system to also be given a membership level, check out this guide on [setting a default level for all user registrations in WordPress](https://www.paidmembershipspro.com/apply-a-buddypress-member-type-on-membership-checkout-or-level-change/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress).
+If you'd like members that register through the BuddyPress or BuddyBoss system to also be given a membership level, check out this guide on [setting a default level for all user registrations in WordPress](https://www.paidmembershipspro.com/apply-a-buddypress-member-type-on-membership-checkout-or-level-change/?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress).
 
 = 2. Assign the "Access Restricted" Page =
 Navigate to Memberships > Settings > Pages to create or edit the "Access Restricted" page.
@@ -121,9 +121,9 @@ From this section you can adjust settings for how you "unlock BuddyPress" for me
 
 Next, adjust the "BuddyPress Group Membership" settings to add or invite members of this level to your existing BuddyPress Groups.
 
-If you want to adjust BuddyPress Member Types, you must first create the types through custom code. [This post explains how to add Member Types to BuddyPress](https://www.paidmembershipspro.com/apply-a-buddypress-member-type-on-membership-checkout-or-level-change/?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress).
+If you want to adjust BuddyPress Member Types, you must first create the types through custom code. [This post explains how to add Member Types to BuddyPress](https://www.paidmembershipspro.com/apply-a-buddypress-member-type-on-membership-checkout-or-level-change/?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress).
 
-[Read our full documentation on Membership Level Settings for your BuddyPress or BuddyBoss community here](https://www.paidmembershipspro.com/add-ons/buddypress-integration/#members?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress).
+[Read our full documentation on Membership Level Settings for your BuddyPress or BuddyBoss community here](https://www.paidmembershipspro.com/add-ons/buddypress-integration/#members?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress).
 
 = 4. Configure Settings for Logged in Non Members =
 
@@ -131,7 +131,7 @@ Some of your WordPress users may not have a membership level in Paid Memberships
 
 Navigate to Memberships > Settings > PMPro BuddyPress and locate the "Non-member User Settings" section.
 
-[Read our full documentation on Non-Member Users in BuddyPress or BuddyBoss here](https://www.paidmembershipspro.com/add-ons/buddypress-integration/#non_member_user?utm_source=wordpress-org&utm_medium=readme&utm_campaign=pmpro-buddypress).
+[Read our full documentation on Non-Member Users in BuddyPress or BuddyBoss here](https://www.paidmembershipspro.com/add-ons/buddypress-integration/#non_member_user?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress).
 
 == Screenshots ==
 
@@ -140,6 +140,11 @@ Navigate to Memberships > Settings > PMPro BuddyPress and locate the "Non-member
 3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Settings > Memberships Levels > Edit.
 
 == Changelog ==
+= 1.5 - 2024-10-21 =
+* FEATURE: Now updating the plugin from paidmembershipspro.com
+* ENHANCEMENT: Added localized string in settings page. #119 (@JarrydLong)
+* ENHANCEMENT: Added language files for Dutch and Portuguese (Brazil).
+
 = 1.4.1 - 2023-05-09 =
 * ENHANCEMENT: Support User Fields sync capability for XProfile fields. (@DarkLotus)
 * ENHANCEMENT: Improved logic around the [pmpro_account] shortcode filter to allow better adjustments with the 'pmpro_buddypress_profile_account_shortcode' filter. (@kimcoleman)
