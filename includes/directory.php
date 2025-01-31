@@ -51,7 +51,7 @@ function pmpro_bp_bp_get_total_member_count($count) {
 }
 
 function pmpro_bp_get_members_in_directory() {
-	global $wpdb, $pmpro_levels;
+	global $wpdb, $pmpro_levels, $pmpro_bp_members_in_directory;
 
 	static $include_users = null;
 	if ( ! is_null( $include_users ) ) {
@@ -60,6 +60,7 @@ function pmpro_bp_get_members_in_directory() {
 
 	if( !function_exists( 'pmpro_getAllLevels' ) ) {
 		$include_users = array();
+		$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
 		return $include_users;
 	}
 
@@ -67,6 +68,7 @@ function pmpro_bp_get_members_in_directory() {
 	
 	if ( empty( $pmpro_levels ) ) {
 		$include_users = array();
+		$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
 		return $include_users;
 	}
 
@@ -83,6 +85,7 @@ function pmpro_bp_get_members_in_directory() {
 	
 	if ( empty( $include_levels ) ) {
 		$include_users = array();
+		$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
 		return $include_users;
 	}
 
@@ -117,6 +120,8 @@ function pmpro_bp_get_members_in_directory() {
 	$wpdb->flush();
 	
 	$include_users = $wpdb->get_col( $sqlQuery );
+
+	$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
 
 	return $include_users;
 }
