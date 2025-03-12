@@ -75,17 +75,23 @@ add_filter( 'bp_user_can_create_groups', 'pmpro_bp_bp_user_can_create_groups', 1
 /**
  * Hide the Join Group button if joining groups is restricted
  */
-function pmpro_bp_disable_group_buttons( $button_args, $group ) {			
+function pmpro_bp_disable_group_buttons( $button_args, $group ) {
+	//Bail if $button_args isn't an array. Something went wrong.
+	if( ! is_array( $button_args ) ) {
+		return $button_args;
+	}
+ 
+  // Check if this is a button for a group that should be restricted.
 	if( !pmpro_bp_user_can_join_group( $group->id ) 
 		&& (! isset( $button_args['id'] ) 
 		|| ( $button_args['id'] === 'join_group' 
 		|| $button_args['id'] === 'request_membership' 
 		|| $button_args['id'] === 'group_membership' ) ) ) {
-
-		global $pmpro_pages;
-		$button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
-		$button_args['link_class'] = str_replace( 'join-group', '', $button_args['link_class'] ?? '' );
-		$button_args['button_element'] = 'a';
+      // Restrict the button.
+		  global $pmpro_pages;
+		  $button_args['link_href'] = get_permalink($pmpro_pages['pmprobp_restricted']);
+		  $button_args['link_class'] = str_replace( 'join-group', '', $button_args['link_class'] ?? '' );
+		  $button_args['button_element'] = 'a';
 	}
 
 	return $button_args;
