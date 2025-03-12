@@ -22,16 +22,22 @@ function pmpro_bp_update_user_meta( $meta_id, $user_id, $meta_key, $meta_value )
 	{
 		foreach( $field_location as $rh_field )
 		{
-			if( $rh_field->meta_key == $meta_key && !empty( $rh_field->buddypress ) )
-			{
+			if( $rh_field->meta_key == $meta_key && !empty( $rh_field->buddypress ) ) {
 				//switch for type
 				
 				$x_field = xprofile_get_field_id_from_name( $rh_field->buddypress );
 
-				if( !empty( $x_field ) )
+				if( !empty( $x_field ) ) {
+					// Get the current visibility for the xprofile field. If not set, this will get the default.
+					$x_field_visibility = xprofile_get_field_visibility_level( $x_field, $user_id );
+
+					// Update the xprofile field visibility.
+					xprofile_set_field_visibility_level( $x_field, $user_id, $x_field_visibility );
+
+					// Update the xprofile field data.
 					xprofile_set_field_data( $x_field, $user_id, $meta_value );
+				}
 			}
-				
 		}
 	}
 }
