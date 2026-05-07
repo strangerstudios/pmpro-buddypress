@@ -235,6 +235,12 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 		<hr />
 		<h3> <?php _e('BuddyPress Restrictions', 'pmpro-buddypress');?></h3>
 	<?php } ?>
+	<p>
+		<?php
+		$buddypress_link = '<a title="' . esc_attr__( 'BuddyPress Integration Add On Documentation', 'pmpro-buddypress' ) . '" target="_blank" rel="nofollow noopener" href="https://www.paidmembershipspro.com/add-ons/buddypress-integration/?utm_source=plugin&utm_medium=pmpro-buddypress&utm_campaign=add-ons">' . esc_html__( 'BuddyPress Integration', 'pmpro-buddypress' ) . '</a>';
+		printf( esc_html__( 'Learn more about the %s.', 'pmpro-buddypress' ), $buddypress_link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		?>
+	</p>
 	<?php if ( defined( 'BP_PLATFORM_VERSION' ) ) { ?>
 		<p class="description"><?php esc_html_e( 'Note: These settings apply to sites running BuddyPress or BuddyBoss.', 'pmpro-buddypress' ); ?></p>
 	<?php } ?>
