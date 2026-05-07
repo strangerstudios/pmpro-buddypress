@@ -28,22 +28,32 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 	}
 
 	global $pmpro_bp_members_in_directory;
-	if( !empty( $pmpro_bp_members_in_directory ) ) {
-		// If an include value was already set, make sure it's in array form.
-		if( !empty( $query_array->query_vars['include'] ) && !is_array( $query_array->query_vars['include']) ) {
-			$query_array->query_vars['include'] = explode( ',', $query_array->query_vars['include'] );
+	if ( ! empty( $pmpro_bp_members_in_directory ) ) {
+		$include = isset( $query_array->query_vars['include'] ) ? $query_array->query_vars['include'] : '';
+
+		// Normalize a non-empty string include value into an array. We can't use !empty() here
+		// because '0' is a valid sentinel (BP Profile Search sets include to '0' when a search
+		// returns no matches). is_string() guards against BP's default include value of false.
+		if ( is_string( $include ) && $include !== '' ) {
+			$include = explode( ',', $include );
 		}
 
-		if( is_array( $query_array->query_vars['include'] ) ) {
+		if ( is_array( $include ) ) {
 			// Compute the intersect of members and include value.
-			$query_array->query_vars['include'] = array_intersect( $query_array->query_vars['include'], $pmpro_bp_members_in_directory );
+			$include = array_intersect( $include, $pmpro_bp_members_in_directory );
+			// If the intersect is empty, force "no users". BP treats an empty include as "no filter"
+			// and would otherwise return all site users.
+			if ( empty( $include ) ) {
+				$include = array( 0 );
+			}
+			$query_array->query_vars['include'] = $include;
 		} else {
-			// Only include members in the directory.
-			if (is_countable($query_array->query_vars['include'])) $query_array->query_vars['include'] = array (0);
+			// No include filter set, lock the directory to PMPro members.
+			$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
 		}
 	} else {
 		// No members, block the directory.
-		$query_array->query_vars['include'] = array(0);
+		$query_array->query_vars['include'] = array( 0 );
 	}
 }
 
