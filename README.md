@@ -3,7 +3,7 @@
 # [Paid Memberships Pro - BuddyPress and BuddyBoss Integration](https://www.paidmembershipspro.com/add-ons/buddypress-integration/) #
 [comment]: # (Generate badges from shields.io, only works for .org plugins to get other stats etc. We'd have to create our own endpoints for Premium plugins)
 
-![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dy/pmpro-buddypress?style=flat-square) ![License](https://img.shields.io/badge/license-GPL--2.0%2B-red.svg?style=flat-square)
+![License](https://img.shields.io/badge/license-GPL--2.0%2B-red.svg?style=flat-square)
 
 ### Welcome to the Paid Memberships Pro - BuddyPress and BuddyBoss Integration GitHub Repository
 Integrate Paid Memberships Pro with BuddyPress and BuddyBoss to add community features to WordPress. Features including Member Profiles, Activity Streams, Direct Messaging, Notifications, and more.
@@ -23,7 +23,7 @@ For detailed installation steps, visit the our [documentation](https://www.paidm
 If you find an issue/bug, let us know by [creating a detailed GitHub issue](https://github.com/strangerstudios/pmpro-buddypress/issues/new).
 
 ## Support ##
-This is a developer's portal for Paid Memberships Pro - BuddyPress and BuddyBoss Integration. We do not offer support on this channel. **Any support related questions should be directed to [wordpress.org/support/plugin/pmpro-buddypress/](https://wordpress.org/support/plugin/pmpro-buddypress/).**
+This is a developer's portal for Paid Memberships Pro - BuddyPress and BuddyBoss Integration. We do not offer support on this channel. **Any support related questions should be directed to [paidmembershipspro.com/support](https://www.paidmembershipspro.com/support).**
 
 ## Contributing to Paid Memberships Pro - BuddyPress and BuddyBoss Integration ##
 We encourage and welcome any contribution to Paid Memberships Pro - BuddyPress and BuddyBoss Integration. Please read the [guidelines for contributing](https://github.com/strangerstudios/pmpro-buddypress/blob/dev/.github/CONTRIBUTING.md) to this repository.
@@ -37,4 +37,4 @@ Here are some ways for **non-developers to contribute** to Paid Memberships Pro 
 
 1. Translate Paid Memberships Pro - BuddyPress and BuddyBoss Integration into your own [language](https://www.paidmembershipspro.com/paid-memberships-pro-in-your-language/).
 2. [Purchase a premium membership](https://paidmembershipspro.com/pricing/) to help fund ongoing development and bug fixes.
-3. Leave an honest review for [Paid Memberships Pro - BuddyPress and BuddyBoss Integration](https://wordpress.org/support/plugin/pmpro-buddypress/reviews/#new-post).
+3. Leave an honest review for [Paid Memberships Pro - BuddyPress and BuddyBoss Integration](https://www.paidmembershipspro.com/submit-testimonial/).

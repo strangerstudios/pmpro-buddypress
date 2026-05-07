@@ -1,36 +1,41 @@
-# Copyright (C) 2023 Paid Memberships Pro
+# Copyright (C) 2025 Paid Memberships Pro
 # This file is distributed under the same license as the Paid Memberships Pro - BuddyPress & BuddyBoss Add On plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Paid Memberships Pro - BuddyPress & BuddyBoss Add On 1.4.1\n"
+"Project-Id-Version: Paid Memberships Pro - BuddyPress & BuddyBoss Add On 1.5.1\n"
 "Report-Msgid-Bugs-To: info@paidmembershipspro.com\n"
 "Last-Translator: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "Language-Team: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-05-09T13:44:17+00:00\n"
+"POT-Creation-Date: 2025-03-12T19:56:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.7.1\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: pmpro-buddypress\n"
 
 #. Plugin Name of the plugin
+#: pmpro-buddypress.php
 msgid "Paid Memberships Pro - BuddyPress & BuddyBoss Add On"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: pmpro-buddypress.php
 msgid "https://www.paidmembershipspro.com/add-ons/buddypress-integration"
 msgstr ""
 
 #. Description of the plugin
+#: pmpro-buddypress.php
 msgid "Restrict access to your BuddyPress or BuddyBoss Community using Paid Memberships Pro"
 msgstr ""
 
 #. Author of the plugin
+#: pmpro-buddypress.php
 msgid "Paid Memberships Pro"
 msgstr ""
 
 #. Author URI of the plugin
+#: pmpro-buddypress.php
 msgid "https://www.paidmembershipspro.com"
 msgstr ""
 
@@ -270,6 +275,14 @@ msgstr ""
 msgid "This plugin redirects users to a specific page if they try to access restricted features. The user is redirected to the page assigned as the \"Access Restricted\" page under Memberships > Settings > Page Settings."
 msgstr ""
 
+#: includes/pmpro-buddypress-settings.php:90
+msgid "\"Access Restricted\" page is configured."
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:93
+msgid "\"Access Restricted\" page is not configured."
+msgstr ""
+
 #: includes/pmpro-buddypress-settings.php:100
 msgid "Non-member User Settings"
 msgstr ""
@@ -311,28 +324,28 @@ msgstr ""
 msgid "Show Membership Level on Profiles?"
 msgstr ""
 
-#: includes/profiles.php:129
+#: includes/profiles.php:135
 msgid "The user's profile is only visible to other active members and no fields are shown publicly. This is due to non-members having no access to BuddyPress components."
 msgstr ""
 
-#: includes/profiles.php:131
+#: includes/profiles.php:137
 msgid "Your profile is only visible to other active members."
 msgstr ""
 
-#: includes/profiles.php:134
+#: includes/profiles.php:140
 msgid "Note:"
 msgstr ""
 
-#: includes/profiles.php:147
+#: includes/profiles.php:153
 msgid "Membership"
 msgstr ""
 
-#: includes/restrictions.php:279
+#: includes/restrictions.php:290
 msgid "Membership Level"
 msgid_plural "Membership Levels"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/restrictions.php:290
+#: includes/restrictions.php:301
 msgid "This content is restricted."
 msgstr ""

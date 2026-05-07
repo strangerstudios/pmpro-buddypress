@@ -9,8 +9,6 @@ function pmpro_bp_directory_init() {
 		return;
 	}
 
-	global $pmpro_bp_members_in_directory;
-	$pmpro_bp_members_in_directory = pmpro_bp_get_members_in_directory();
 	add_action( 'bp_pre_user_query_construct', 'pmpro_bp_bp_pre_user_query_construct', 1, 1 );
 	add_filter( 'bp_get_total_member_count', 'pmpro_bp_bp_get_total_member_count' );
 }
@@ -27,7 +25,7 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 		return;
 	}
 
-	global $pmpro_bp_members_in_directory;
+	$pmpro_bp_members_in_directory = pmpro_bp_get_members_in_directory();
 	if ( ! empty( $pmpro_bp_members_in_directory ) ) {
 		$include = isset( $query_array->query_vars['include'] ) ? $query_array->query_vars['include'] : '';
 
@@ -58,23 +56,30 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 }
 
 function pmpro_bp_bp_get_total_member_count($count) {
-	global $pmpro_bp_members_in_directory;
-
-	$count = count($pmpro_bp_members_in_directory);
+	$count = count( pmpro_bp_get_members_in_directory() );
 	return $count;
 }
 
 function pmpro_bp_get_members_in_directory() {
-	global $wpdb, $pmpro_levels;
+	global $wpdb, $pmpro_levels, $pmpro_bp_members_in_directory;
+
+	static $include_users = null;
+	if ( ! is_null( $include_users ) ) {
+		return $include_users;
+	}
 
 	if( !function_exists( 'pmpro_getAllLevels' ) ) {
-		return array();
+		$include_users = array();
+		$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
+		return $include_users;
 	}
 
 	$pmpro_levels = pmpro_getAllLevels(true, true);
 	
 	if ( empty( $pmpro_levels ) ) {
-		return array();
+		$include_users = array();
+		$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
+		return $include_users;
 	}
 
 	//see if we should include them in the member directory.
@@ -89,7 +94,9 @@ function pmpro_bp_get_members_in_directory() {
 	}
 	
 	if ( empty( $include_levels ) ) {
-		return array();
+		$include_users = array();
+		$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
+		return $include_users;
 	}
 
 	$sql_parts = array();
@@ -123,6 +130,8 @@ function pmpro_bp_get_members_in_directory() {
 	$wpdb->flush();
 	
 	$include_users = $wpdb->get_col( $sqlQuery );
+
+	$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
 
 	return $include_users;
 }
