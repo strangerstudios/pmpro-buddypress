@@ -58,6 +58,9 @@ function pmpro_bp_buddpress_admin_page() {
 		update_option( 'pmpro_bp_registration_page', $_POST['pmpro_bp_register'] );
 		update_option( 'pmpro_bp_show_level_on_bp_profile', $_POST['pmpro_bp_level_profile'], 'no' ) ;
 
+		// Xprofile Field Mapping (saves only if its section nonce verifies).
+		pmpro_bp_save_xprofile_field_map();
+
 		// Assume Success
 		$msg = 1;
 		$msgt = __( 'Your settings have been updated.', 'pmpro-buddypress' );
@@ -141,7 +144,9 @@ function pmpro_bp_buddpress_admin_page() {
 				</td>
 			</tr>
 		</tbody>
-		</table>		
+		</table>
+		<hr />
+		<?php pmpro_bp_render_xprofile_mapping_section(); ?>
 		<p class="submit">
 			<input name="savesettings" type="submit" class="button button-primary" value="<?php _e('Save All Settings', 'pmpro-buddypress');?>" />
 		</p>
