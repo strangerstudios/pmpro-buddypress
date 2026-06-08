@@ -123,6 +123,10 @@ function pmpro_bp_resolve_xprofile_field_id( $buddypress ) {
  *
  * Runs after PMPro loads its settings-based fields (init, priority 1).
  *
+ * A UI mapping always takes precedence over a code-set ->buddypress attribute
+ * for the same meta_key: if a developer has set $field->buddypress in code and a
+ * UI mapping exists for that field's meta_key, the UI mapping overwrites it.
+ *
  * @since TBD
  */
 function pmpro_bp_apply_xprofile_field_map() {
@@ -169,7 +173,11 @@ add_action( 'init', 'pmpro_bp_apply_xprofile_field_map', 20 );
  * @since TBD
  */
 function pmpro_bp_save_xprofile_field_map() {
-	$nonce = isset( $_REQUEST['pmpro_bp_xprofile_mapping_nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['pmpro_bp_xprofile_mapping_nonce'] ) ) : '';
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$nonce = isset( $_POST['pmpro_bp_xprofile_mapping_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['pmpro_bp_xprofile_mapping_nonce'] ) ) : '';
 	if ( ! wp_verify_nonce( $nonce, 'pmpro_bp_xprofile_mapping' ) ) {
 		return;
 	}
