@@ -194,16 +194,17 @@ function pmpro_bp_buddpress_admin_page() {
 											break;
 									}
 
-									// Member type names for this level.
+									// Member type names for this level. The saved option may be false or
+									// contain empty entries when nothing is selected, so filter those out.
 									$member_type_names = array();
-									foreach ( (array) $level_options['pmpro_bp_member_types'] as $member_type ) {
+									foreach ( array_filter( (array) $level_options['pmpro_bp_member_types'] ) as $member_type ) {
 										$member_type_object  = function_exists( 'bp_get_member_type_object' ) ? bp_get_member_type_object( $member_type ) : null;
 										$member_type_names[] = ! empty( $member_type_object->labels['singular_name'] ) ? $member_type_object->labels['singular_name'] : $member_type;
 									}
 
-									// Group names this level is automatically added to.
+									// Group names this level is automatically added to (same false/empty handling).
 									$group_names = array();
-									foreach ( (array) $level_options['pmpro_bp_group_automatic_add'] as $group_id ) {
+									foreach ( array_filter( (array) $level_options['pmpro_bp_group_automatic_add'] ) as $group_id ) {
 										$group         = function_exists( 'groups_get_group' ) ? groups_get_group( $group_id ) : null;
 										$group_names[] = ! empty( $group->name ) ? $group->name : '#' . (int) $group_id;
 									}
