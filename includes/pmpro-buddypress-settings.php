@@ -142,8 +142,85 @@ function pmpro_bp_buddpress_admin_page() {
 				</button>
 			</div>
 			<div class="pmpro_section_inside" style="display: none;">
-				<p><?php esc_html_e( 'Edit your membership levels to set level-specific restrictions on community features.', 'pmpro-buddypress' ); ?></p>
-				<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-membershiplevels' ) ); ?>" class="button button-primary"><?php esc_html_e( 'Edit Membership Levels', 'pmpro-buddypress' ); ?></a></p>
+				<p><?php esc_html_e( 'Edit your membership levels to set level-specific restrictions on community features. These settings are managed in the "BuddyPress Restrictions" section when editing a membership level.', 'pmpro-buddypress' ); ?></p>
+				<?php
+					$pmpro_bp_levels = pmpro_getAllLevels( true, true );
+					if ( function_exists( 'pmpro_sort_levels_by_order' ) ) {
+						$pmpro_bp_levels = pmpro_sort_levels_by_order( $pmpro_bp_levels );
+					}
+				?>
+				<?php if ( empty( $pmpro_bp_levels ) ) { ?>
+					<p><strong><?php esc_html_e( 'No membership levels found.', 'pmpro-buddypress' ); ?></strong> <a href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-membershiplevels' ) ); ?>"><?php esc_html_e( 'Create a membership level to get started.', 'pmpro-buddypress' ); ?></a></p>
+				<?php } else { ?>
+					<table class="widefat striped">
+						<thead>
+							<tr>
+								<th scope="col"><?php esc_html_e( 'Level', 'pmpro-buddypress' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'BuddyPress Access', 'pmpro-buddypress' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Member Types', 'pmpro-buddypress' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Auto-Join Groups', 'pmpro-buddypress' ); ?></th>
+								<th scope="col"><?php esc_html_e( 'Actions', 'pmpro-buddypress' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $pmpro_bp_levels as $pmpro_bp_level ) { ?>
+								<?php
+									// Read the raw per-level option so "use non-member settings" is
+									// reported as such instead of being resolved to its effective values.
+									$level_options = get_option( 'pmpro_bp_options_' . $pmpro_bp_level->id, array() );
+									$level_options = array_merge( pmpro_bp_get_level_options( -1 ), (array) $level_options );
+
+									switch ( (int) $level_options['pmpro_bp_restrictions'] ) {
+										case PMPROBP_USE_NON_MEMBER_SETTINGS:
+											$access_label = __( 'Uses non-member user settings', 'pmpro-buddypress' );
+											break;
+										case PMPROBP_GIVE_ALL_ACCESS:
+											$access_label = __( 'All of BuddyPress unlocked', 'pmpro-buddypress' );
+											break;
+										case PMPROBP_SPECIFIC_FEATURES:
+											$feature_keys = array( 'pmpro_bp_group_creation', 'pmpro_bp_group_single_viewing', 'pmpro_bp_groups_page_viewing', 'pmpro_bp_groups_join', 'pmpro_bp_private_messaging', 'pmpro_bp_public_messaging', 'pmpro_bp_send_friend_request', 'pmpro_bp_member_directory' );
+											$enabled      = 0;
+											foreach ( $feature_keys as $feature_key ) {
+												if ( ! empty( $level_options[ $feature_key ] ) ) {
+													$enabled++;
+												}
+											}
+											// translators: %1$d is the number of unlocked features, %2$d is the total number of features.
+											$access_label = sprintf( __( 'Partial access (%1$d of %2$d features unlocked)', 'pmpro-buddypress' ), $enabled, count( $feature_keys ) );
+											break;
+										case PMPROBP_LOCK_ALL_ACCESS:
+										default:
+											$access_label = __( 'All of BuddyPress locked', 'pmpro-buddypress' );
+											break;
+									}
+
+									// Member type names for this level.
+									$member_type_names = array();
+									foreach ( (array) $level_options['pmpro_bp_member_types'] as $member_type ) {
+										$member_type_object  = function_exists( 'bp_get_member_type_object' ) ? bp_get_member_type_object( $member_type ) : null;
+										$member_type_names[] = ! empty( $member_type_object->labels['singular_name'] ) ? $member_type_object->labels['singular_name'] : $member_type;
+									}
+
+									// Group names this level is automatically added to.
+									$group_names = array();
+									foreach ( (array) $level_options['pmpro_bp_group_automatic_add'] as $group_id ) {
+										$group         = function_exists( 'groups_get_group' ) ? groups_get_group( $group_id ) : null;
+										$group_names[] = ! empty( $group->name ) ? $group->name : '#' . (int) $group_id;
+									}
+
+									$level_edit_url = admin_url( 'admin.php?page=pmpro-membershiplevels&edit=' . (int) $pmpro_bp_level->id );
+								?>
+								<tr>
+									<td><a href="<?php echo esc_url( $level_edit_url ); ?>" target="_blank"><?php echo esc_html( $pmpro_bp_level->name ); ?></a></td>
+									<td><?php echo esc_html( $access_label ); ?></td>
+									<td><?php echo ! empty( $member_type_names ) ? esc_html( implode( ', ', $member_type_names ) ) : '&#8212;'; ?></td>
+									<td><?php echo ! empty( $group_names ) ? esc_html( implode( ', ', $group_names ) ) : '&#8212;'; ?></td>
+									<td><a href="<?php echo esc_url( $level_edit_url ); ?>" target="_blank"><?php esc_html_e( 'Edit Level', 'pmpro-buddypress' ); ?></a></td>
+								</tr>
+							<?php } ?>
+						</tbody>
+					</table>
+				<?php } ?>
 			</div> <!-- end pmpro_section_inside -->
 		</div> <!-- end pmpro_section -->
 
