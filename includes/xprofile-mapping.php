@@ -166,9 +166,8 @@ add_action( 'init', 'pmpro_bp_apply_xprofile_field_map', 20 );
  * Save the submitted Xprofile field map.
  *
  * Called from the main PMPro BuddyPress settings handler when its form is
- * submitted, so the map is persisted alongside the other settings. Bails
- * quietly (rather than dying) if the section nonce is missing or invalid, so a
- * failed check here doesn't block the rest of the shared form from saving.
+ * submitted, so the map is persisted alongside the other settings. The caller
+ * is responsible for capability and nonce checks on the request.
  *
  * @since TBD
  */
@@ -177,13 +176,15 @@ function pmpro_bp_save_xprofile_field_map() {
 		return;
 	}
 
-	$nonce = isset( $_POST['pmpro_bp_xprofile_mapping_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['pmpro_bp_xprofile_mapping_nonce'] ) ) : '';
-	if ( ! wp_verify_nonce( $nonce, 'pmpro_bp_xprofile_mapping' ) ) {
-		return;
-	}
-
 	$user_fields     = pmpro_bp_get_all_user_fields();
 	$xprofile_fields = pmpro_bp_get_xprofile_fields();
+
+	// If either side of the mapping is unavailable (e.g. the Xprofile component
+	// is disabled or no user fields are registered right now), leave the saved
+	// map alone rather than wiping it.
+	if ( empty( $user_fields ) || empty( $xprofile_fields ) ) {
+		return;
+	}
 
 	$submitted = isset( $_POST['pmpro_bp_xprofile_map'] ) ? (array) $_POST['pmpro_bp_xprofile_map'] : array();
 
@@ -213,12 +214,12 @@ function pmpro_bp_save_xprofile_field_map() {
 }
 
 /**
- * Render the Xprofile Field Mapping section.
+ * Render the Xprofile Field Mapping section content.
  *
- * Outputs the section heading, mapping table and helper JS. Designed to be
- * called from inside the main PMPro BuddyPress settings <form>, so it has no
- * <form> tag or submit button of its own — the form's "Save All Settings"
- * button submits the map, and pmpro_bp_save_xprofile_field_map() saves it.
+ * Outputs the mapping table and helper JS. Designed to be called from inside
+ * the main PMPro BuddyPress settings <form>, so it has no <form> tag, nonce,
+ * heading, or submit button of its own — the settings page provides those and
+ * pmpro_bp_save_xprofile_field_map() saves the map on submit.
  *
  * @since TBD
  */
@@ -227,10 +228,7 @@ function pmpro_bp_render_xprofile_mapping_section() {
 	$xprofile_fields = pmpro_bp_get_xprofile_fields();
 	$map             = pmpro_bp_get_xprofile_field_map();
 	?>
-	<h3><?php esc_html_e( 'Xprofile Field Mapping', 'pmpro-buddypress' ); ?></h3>
 	<p><?php esc_html_e( 'Map your BuddyPress or BuddyBoss Xprofile fields to Paid Memberships Pro User Fields. Each Xprofile field can be mapped to one User Field, and mapped fields will stay in sync in both directions.', 'pmpro-buddypress' ); ?></p>
-
-	<?php wp_nonce_field( 'pmpro_bp_xprofile_mapping', 'pmpro_bp_xprofile_mapping_nonce' ); ?>
 
 	<?php if ( empty( $xprofile_fields ) ) { ?>
 		<div class="notice notice-warning inline"><p><?php esc_html_e( 'No Xprofile fields were found. Make sure BuddyPress or BuddyBoss is active and you have created Profile Fields.', 'pmpro-buddypress' ); ?></p></div>
