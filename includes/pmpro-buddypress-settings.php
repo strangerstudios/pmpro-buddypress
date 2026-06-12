@@ -195,7 +195,7 @@ function pmpro_bp_buddpress_admin_page() {
 			<div class="pmpro_section_toggle">
 				<button class="pmpro_section-toggle-button" type="button" aria-expanded="false">
 					<span class="dashicons dashicons-arrow-down-alt2"></span>
-					<?php esc_html_e( 'Xprofile Field Mapping', 'pmpro-buddypress' ); ?>
+					<?php esc_html_e( 'Extended Profile Field Mapping', 'pmpro-buddypress' ); ?>
 				</button>
 			</div>
 			<div class="pmpro_section_inside" style="display: none;">

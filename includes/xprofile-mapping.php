@@ -55,6 +55,9 @@ function pmpro_bp_get_all_user_fields() {
 /**
  * Get the list of available Xprofile fields for the mapping table.
  *
+ * The primary "Name" field is excluded: BuddyPress already keeps that field
+ * in sync with the WordPress user's display name on its own.
+ *
  * @since TBD
  * @return array Map of xprofile field ID => field name.
  */
@@ -71,12 +74,19 @@ function pmpro_bp_get_xprofile_fields() {
 		return $xprofile_fields;
 	}
 
+	$fullname_field_id = function_exists( 'bp_xprofile_fullname_field_id' ) ? (int) bp_xprofile_fullname_field_id() : 0;
+
 	foreach ( $groups as $group ) {
 		if ( empty( $group->fields ) ) {
 			continue;
 		}
 
 		foreach ( $group->fields as $xprofile_field ) {
+			// Skip the primary "Name" field; BuddyPress syncs it with display_name itself.
+			if ( ! empty( $fullname_field_id ) && (int) $xprofile_field->id === $fullname_field_id ) {
+				continue;
+			}
+
 			// Key on the field ID so the mapping survives a field being renamed.
 			$xprofile_fields[ (int) $xprofile_field->id ] = $xprofile_field->name;
 		}
@@ -228,7 +238,7 @@ function pmpro_bp_render_xprofile_mapping_section() {
 	$xprofile_fields = pmpro_bp_get_xprofile_fields();
 	$map             = pmpro_bp_get_xprofile_field_map();
 	?>
-	<p><?php esc_html_e( 'Map your BuddyPress or BuddyBoss Xprofile fields to Paid Memberships Pro User Fields. Each Xprofile field can be mapped to one User Field, and mapped fields will stay in sync in both directions.', 'pmpro-buddypress' ); ?></p>
+	<p><?php esc_html_e( 'Map BuddyPress or BuddyBoss extended profile fields to user meta fields. Each extended profile field can be mapped to one user field. Fields stay in sync when updated in either location.', 'pmpro-buddypress' ); ?></p>
 
 	<?php if ( empty( $xprofile_fields ) ) { ?>
 		<div class="notice notice-warning inline"><p><?php esc_html_e( 'No Xprofile fields were found. Make sure BuddyPress or BuddyBoss is active and you have created Profile Fields.', 'pmpro-buddypress' ); ?></p></div>
