@@ -170,12 +170,15 @@ function pmpro_bp_buddpress_admin_page() {
 									$level_options = get_option( 'pmpro_bp_options_' . $pmpro_bp_level->id, array() );
 									$level_options = array_merge( pmpro_bp_get_level_options( -1 ), (array) $level_options );
 
+									$access_note = '';
 									switch ( (int) $level_options['pmpro_bp_restrictions'] ) {
 										case PMPROBP_USE_NON_MEMBER_SETTINGS:
-											$access_label = __( 'Uses non-member user settings', 'pmpro-buddypress' );
+											$access_label     = __( 'Non-member Settings', 'pmpro-buddypress' );
+											$access_tag_class = 'info';
 											break;
 										case PMPROBP_GIVE_ALL_ACCESS:
-											$access_label = __( 'All of BuddyPress unlocked', 'pmpro-buddypress' );
+											$access_label     = __( 'Unlocked', 'pmpro-buddypress' );
+											$access_tag_class = 'success';
 											break;
 										case PMPROBP_SPECIFIC_FEATURES:
 											$feature_keys = array( 'pmpro_bp_group_creation', 'pmpro_bp_group_single_viewing', 'pmpro_bp_groups_page_viewing', 'pmpro_bp_groups_join', 'pmpro_bp_private_messaging', 'pmpro_bp_public_messaging', 'pmpro_bp_send_friend_request', 'pmpro_bp_member_directory' );
@@ -185,12 +188,15 @@ function pmpro_bp_buddpress_admin_page() {
 													$enabled++;
 												}
 											}
+											$access_label     = __( 'Partial Access', 'pmpro-buddypress' );
+											$access_tag_class = 'alert';
 											// translators: %1$d is the number of unlocked features, %2$d is the total number of features.
-											$access_label = sprintf( __( 'Partial access (%1$d of %2$d features unlocked)', 'pmpro-buddypress' ), $enabled, count( $feature_keys ) );
+											$access_note      = sprintf( __( '%1$d of %2$d features unlocked', 'pmpro-buddypress' ), $enabled, count( $feature_keys ) );
 											break;
 										case PMPROBP_LOCK_ALL_ACCESS:
 										default:
-											$access_label = __( 'All of BuddyPress locked', 'pmpro-buddypress' );
+											$access_label     = __( 'Locked', 'pmpro-buddypress' );
+											$access_tag_class = 'error';
 											break;
 									}
 
@@ -213,7 +219,12 @@ function pmpro_bp_buddpress_admin_page() {
 								?>
 								<tr>
 									<td><a href="<?php echo esc_url( $level_edit_url ); ?>" target="_blank"><?php echo esc_html( $pmpro_bp_level->name ); ?></a></td>
-									<td><?php echo esc_html( $access_label ); ?></td>
+									<td>
+										<span class="pmpro_tag pmpro_tag-<?php echo esc_attr( $access_tag_class ); ?>"><?php echo esc_html( $access_label ); ?></span>
+										<?php if ( ! empty( $access_note ) ) { ?>
+											<p class="description"><?php echo esc_html( $access_note ); ?></p>
+										<?php } ?>
+									</td>
 									<td><?php echo ! empty( $member_type_names ) ? esc_html( implode( ', ', $member_type_names ) ) : '&#8212;'; ?></td>
 									<td><?php echo ! empty( $group_names ) ? esc_html( implode( ', ', $group_names ) ) : '&#8212;'; ?></td>
 									<td><a href="<?php echo esc_url( $level_edit_url ); ?>" target="_blank"><?php esc_html_e( 'Edit Level', 'pmpro-buddypress' ); ?></a></td>
