@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-07T18:30:49+00:00\n"
+"POT-Creation-Date: 2026-06-17T14:18:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: pmpro-buddypress\n"
@@ -64,14 +64,19 @@ msgstr ""
 msgid "Support"
 msgstr ""
 
+#: includes/documents.php:17
+#: includes/documents.php:33
+msgid "You do not have permission to upload documents."
+msgstr ""
+
 #: includes/membership-level-settings.php:30
 msgid "BuddyPress Group Membership"
 msgstr ""
 
 #: includes/membership-level-settings.php:32
 #: includes/membership-level-settings.php:101
-#: includes/membership-level-settings.php:245
-#: includes/pmpro-buddypress-settings.php:116
+#: includes/membership-level-settings.php:252
+#: includes/pmpro-buddypress-settings.php:265
 msgid "Note: These settings apply to sites running BuddyPress or BuddyBoss."
 msgstr ""
 
@@ -97,261 +102,353 @@ msgid "There are no member types defined."
 msgstr ""
 
 #: includes/membership-level-settings.php:119
+#: includes/pmpro-buddypress-settings.php:173
 msgid "Member Types"
 msgstr ""
 
-#: includes/membership-level-settings.php:236
+#: includes/membership-level-settings.php:243
 msgid "BuddyPress Restrictions"
 msgstr ""
 
-#: includes/membership-level-settings.php:240
+#: includes/membership-level-settings.php:247
 msgid "BuddyPress Integration Add On Documentation"
 msgstr ""
 
-#: includes/membership-level-settings.php:240
+#: includes/membership-level-settings.php:247
 msgid "BuddyPress Integration"
 msgstr ""
 
-#: includes/membership-level-settings.php:241
+#: includes/membership-level-settings.php:248
 #, php-format
 msgid "Learn more about the %s."
 msgstr ""
 
-#: includes/membership-level-settings.php:251
+#: includes/membership-level-settings.php:258
 msgid "Unlock BuddyPress?"
 msgstr ""
 
-#: includes/membership-level-settings.php:255
+#: includes/membership-level-settings.php:262
 msgid "No - Lock access to all of BuddyPress."
 msgstr ""
 
-#: includes/membership-level-settings.php:257
+#: includes/membership-level-settings.php:264
 msgid "No - Use non-member user settings."
 msgstr ""
 
-#: includes/membership-level-settings.php:262
+#: includes/membership-level-settings.php:269
 msgid "Yes - Give members access to all of BuddyPress."
 msgstr ""
 
-#: includes/membership-level-settings.php:264
+#: includes/membership-level-settings.php:271
 msgid "Yes - Give non-member users access to all of BuddyPress."
 msgstr ""
 
-#: includes/membership-level-settings.php:271
+#: includes/membership-level-settings.php:278
 msgid "Yes - Give members access to specific features."
 msgstr ""
 
-#: includes/membership-level-settings.php:273
+#: includes/membership-level-settings.php:280
 msgid "Yes - Give non-member users access to specific features."
 msgstr ""
 
-#: includes/membership-level-settings.php:288
+#: includes/membership-level-settings.php:295
 msgid "Groups Page Viewing"
 msgstr ""
 
-#: includes/membership-level-settings.php:291
-#: includes/membership-level-settings.php:312
-#: includes/membership-level-settings.php:333
-#: includes/membership-level-settings.php:354
-#: includes/membership-level-settings.php:375
-#: includes/membership-level-settings.php:395
-#: includes/membership-level-settings.php:415
-#: includes/membership-level-settings.php:435
-#: includes/pmpro-buddypress-settings.php:139
+#: includes/membership-level-settings.php:298
+#: includes/membership-level-settings.php:319
+#: includes/membership-level-settings.php:340
+#: includes/membership-level-settings.php:361
+#: includes/membership-level-settings.php:382
+#: includes/membership-level-settings.php:402
+#: includes/membership-level-settings.php:422
+#: includes/membership-level-settings.php:442
+#: includes/membership-level-settings.php:463
+#: includes/membership-level-settings.php:480
+#: includes/pmpro-buddypress-settings.php:288
 msgid "No"
 msgstr ""
 
-#: includes/membership-level-settings.php:292
-#: includes/membership-level-settings.php:313
-#: includes/membership-level-settings.php:334
-#: includes/membership-level-settings.php:355
-#: includes/membership-level-settings.php:376
-#: includes/membership-level-settings.php:396
-#: includes/membership-level-settings.php:416
-#: includes/membership-level-settings.php:436
-#: includes/pmpro-buddypress-settings.php:138
+#: includes/membership-level-settings.php:299
+#: includes/membership-level-settings.php:320
+#: includes/membership-level-settings.php:341
+#: includes/membership-level-settings.php:362
+#: includes/membership-level-settings.php:383
+#: includes/membership-level-settings.php:403
+#: includes/membership-level-settings.php:423
+#: includes/membership-level-settings.php:443
+#: includes/membership-level-settings.php:464
+#: includes/membership-level-settings.php:481
+#: includes/pmpro-buddypress-settings.php:287
 msgid "Yes"
 msgstr ""
 
-#: includes/membership-level-settings.php:298
+#: includes/membership-level-settings.php:305
 msgid "Can members of this level view the Groups page?"
 msgstr ""
 
-#: includes/membership-level-settings.php:300
+#: includes/membership-level-settings.php:307
 msgid "Can non-member users view the Groups page?"
 msgstr ""
 
-#: includes/membership-level-settings.php:309
+#: includes/membership-level-settings.php:316
 msgid "Single Group Viewing"
 msgstr ""
 
-#: includes/membership-level-settings.php:319
+#: includes/membership-level-settings.php:326
 msgid "Can members of this level view individual Groups?"
 msgstr ""
 
-#: includes/membership-level-settings.php:321
+#: includes/membership-level-settings.php:328
 msgid "Can non-member users view individual Groups?"
 msgstr ""
 
-#: includes/membership-level-settings.php:330
+#: includes/membership-level-settings.php:337
 msgid "Joining Groups"
 msgstr ""
 
-#: includes/membership-level-settings.php:340
+#: includes/membership-level-settings.php:347
 msgid "Can members of this level join Groups?"
 msgstr ""
 
-#: includes/membership-level-settings.php:342
+#: includes/membership-level-settings.php:349
 msgid "Can non-member users join Groups?"
 msgstr ""
 
-#: includes/membership-level-settings.php:351
+#: includes/membership-level-settings.php:358
 msgid "Group Creation"
 msgstr ""
 
-#: includes/membership-level-settings.php:361
+#: includes/membership-level-settings.php:368
 msgid "Can members of this level create Groups?"
 msgstr ""
 
-#: includes/membership-level-settings.php:363
+#: includes/membership-level-settings.php:370
 msgid "Can non-member users create Groups?"
 msgstr ""
 
-#: includes/membership-level-settings.php:372
+#: includes/membership-level-settings.php:379
 msgid "Public Messaging"
 msgstr ""
 
-#: includes/membership-level-settings.php:381
+#: includes/membership-level-settings.php:388
 msgid "Can members of this level send public messages to other members?"
 msgstr ""
 
-#: includes/membership-level-settings.php:383
+#: includes/membership-level-settings.php:390
 msgid "Can non-member users send public messages to other members?"
 msgstr ""
 
-#: includes/membership-level-settings.php:392
+#: includes/membership-level-settings.php:399
 msgid "Private Messaging"
 msgstr ""
 
-#: includes/membership-level-settings.php:401
+#: includes/membership-level-settings.php:408
 msgid "Can members of this level send private messages to other members?"
 msgstr ""
 
-#: includes/membership-level-settings.php:403
+#: includes/membership-level-settings.php:410
 msgid "Can non-member users send private messages to other members?"
 msgstr ""
 
-#: includes/membership-level-settings.php:412
+#: includes/membership-level-settings.php:419
 msgid "Send Friend Requests"
 msgstr ""
 
-#: includes/membership-level-settings.php:421
+#: includes/membership-level-settings.php:428
 msgid "Can members of this level send friend requests to other members?"
 msgstr ""
 
-#: includes/membership-level-settings.php:423
+#: includes/membership-level-settings.php:430
 msgid "Can non-member users send friend requests to other members?"
 msgstr ""
 
-#: includes/membership-level-settings.php:432
+#: includes/membership-level-settings.php:439
 msgid "Include in Member Directory"
 msgstr ""
 
-#: includes/membership-level-settings.php:441
+#: includes/membership-level-settings.php:448
 msgid "Should members of this level be included in the Members page?"
 msgstr ""
 
-#: includes/membership-level-settings.php:443
+#: includes/membership-level-settings.php:450
 msgid "Should non-member users be included in the Members page?"
+msgstr ""
+
+#: includes/membership-level-settings.php:460
+msgid "View Documents"
+msgstr ""
+
+#: includes/membership-level-settings.php:468
+msgid "Can members of this level view documents and folders?"
+msgstr ""
+
+#: includes/membership-level-settings.php:470
+msgid "Can non-member users view documents and folders?"
+msgstr ""
+
+#: includes/membership-level-settings.php:477
+msgid "Upload Documents"
+msgstr ""
+
+#: includes/membership-level-settings.php:485
+msgid "Can members of this level upload or create documents?"
+msgstr ""
+
+#: includes/membership-level-settings.php:487
+msgid "Can non-member users upload or create documents?"
 msgstr ""
 
 #: includes/pmpro-buddypress-settings.php:21
 msgid "PMPro BuddyPress"
 msgstr ""
 
-#: includes/pmpro-buddypress-settings.php:63
-msgid "Your settings have been updated."
-msgstr ""
-
-#: includes/pmpro-buddypress-settings.php:82
-msgid "Paid Memberships Pro - BuddyPress & BuddyBoss Add On Settings"
-msgstr ""
-
-#: includes/pmpro-buddypress-settings.php:83
-#, php-format
-msgid "Restrict access to communities in BuddyPress and BuddyBoss for free or premium members with the Paid Memberships Pro. <strong>This plugin is compatible with both BuddyPress and BuddyBoss.</strong> <a href=\"%s\" target=\"_blank\">Read the documentation</a> for more information about this Add On."
+#: includes/pmpro-buddypress-settings.php:30
+msgid "You do not have permission to access this page."
 msgstr ""
 
 #: includes/pmpro-buddypress-settings.php:85
-msgid "Page Settings"
+msgid "Your settings have been updated."
 msgstr ""
 
-#: includes/pmpro-buddypress-settings.php:86
-msgid "This plugin redirects users to a specific page if they try to access restricted features. The user is redirected to the page assigned as the \"Access Restricted\" page under Memberships > Settings > Page Settings."
+#: includes/pmpro-buddypress-settings.php:104
+msgid "Paid Memberships Pro - BuddyPress & BuddyBoss Add On Settings"
 msgstr ""
 
-#: includes/pmpro-buddypress-settings.php:90
-msgid "\"Access Restricted\" page is configured."
-msgstr ""
-
-#: includes/pmpro-buddypress-settings.php:93
-msgid "\"Access Restricted\" page is not configured."
-msgstr ""
-
-#: includes/pmpro-buddypress-settings.php:100
-msgid "Non-member User Settings"
-msgstr ""
-
-#: includes/pmpro-buddypress-settings.php:101
-msgid "Set how BuddyPress should be locked down for users without a membership level."
-msgstr ""
-
-#: includes/pmpro-buddypress-settings.php:107
-#: includes/pmpro-buddypress-settings.php:146
-msgid "Save All Settings"
-msgstr ""
-
-#: includes/pmpro-buddypress-settings.php:110
-msgid "Membership Level Settings"
+#: includes/pmpro-buddypress-settings.php:105
+#, php-format
+msgid "Restrict access to communities in BuddyPress and BuddyBoss for free or premium members with Paid Memberships Pro. <strong>This plugin is compatible with both BuddyPress and BuddyBoss.</strong> <a href=\"%s\" target=\"_blank\">Read the documentation</a> for more information about this Add On."
 msgstr ""
 
 #: includes/pmpro-buddypress-settings.php:111
-msgid "Edit your membership levels to set level-specific restrictions on community features."
+msgid "Page Settings"
 msgstr ""
 
-#: includes/pmpro-buddypress-settings.php:114
-msgid "General Settings"
+#: includes/pmpro-buddypress-settings.php:115
+msgid "This plugin redirects users to a specific page if they try to access restricted features. The user is redirected to the page assigned as the \"Access Restricted\" page under Memberships > Settings > Page Settings."
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:119
+msgid "\"Access Restricted\" page is configured."
 msgstr ""
 
 #: includes/pmpro-buddypress-settings.php:122
-msgid "Registration Page"
-msgstr ""
-
-#: includes/pmpro-buddypress-settings.php:126
-msgid "Use PMPro Levels Page"
+msgid "\"Access Restricted\" page is not configured."
 msgstr ""
 
 #: includes/pmpro-buddypress-settings.php:127
+msgid "Manage Page Settings"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:135
+msgid "Non-member User Settings"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:139
+msgid "Set how BuddyPress should be locked down for users without a membership level."
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:145
+#: includes/pmpro-buddypress-settings.php:295
+#: includes/pmpro-buddypress-settings.php:310
+msgid "Save All Settings"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:154
+msgid "Membership Level Settings"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:158
+msgid "Edit your membership levels to set level-specific restrictions on community features. These settings are managed in the \"BuddyPress Restrictions\" section when editing a membership level."
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:166
+msgid "No membership levels found."
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:166
+msgid "Create a membership level to get started."
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:171
+msgid "Level"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:172
+msgid "BuddyPress Access"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:174
+msgid "Auto-Join Groups"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:175
+msgid "Actions"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:189
+msgid "Non-member Settings"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:193
+msgid "Unlocked"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:208
+msgid "Partial Access"
+msgstr ""
+
+#. translators: %1$d is the number of unlocked features, %2$d is the total number of features.
+#: includes/pmpro-buddypress-settings.php:211
+#, php-format
+msgid "%1$d of %2$d features unlocked"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:215
+msgid "Locked"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:247
+msgid "Edit Level"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:260
+msgid "General Settings"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:271
+msgid "Registration Page"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:275
+msgid "Use PMPro Levels Page"
+msgstr ""
+
+#: includes/pmpro-buddypress-settings.php:276
 msgid "Use BuddyPress Registration Page"
 msgstr ""
 
-#: includes/pmpro-buddypress-settings.php:134
+#: includes/pmpro-buddypress-settings.php:283
 msgid "Show Membership Level on Profiles?"
 msgstr ""
 
-#: includes/profiles.php:135
+#: includes/pmpro-buddypress-settings.php:304
+msgid "Extended Profile Field Mapping"
+msgstr ""
+
+#: includes/profiles.php:134
 msgid "The user's profile is only visible to other active members and no fields are shown publicly. This is due to non-members having no access to BuddyPress components."
 msgstr ""
 
-#: includes/profiles.php:137
+#: includes/profiles.php:136
 msgid "Your profile is only visible to other active members."
 msgstr ""
 
-#: includes/profiles.php:140
+#: includes/profiles.php:139
 msgid "Note:"
 msgstr ""
 
-#: includes/profiles.php:153
+#: includes/profiles.php:152
 msgid "Membership"
 msgstr ""
 
@@ -363,4 +460,38 @@ msgstr[1] ""
 
 #: includes/restrictions.php:301
 msgid "This content is restricted."
+msgstr ""
+
+#: includes/xprofile-mapping.php:241
+msgid "Map BuddyPress or BuddyBoss extended profile fields to user meta fields. Each extended profile field can be mapped to one user field. Fields stay in sync when updated in either location."
+msgstr ""
+
+#: includes/xprofile-mapping.php:244
+msgid "No Xprofile fields were found. Make sure BuddyPress or BuddyBoss is active and you have created Profile Fields."
+msgstr ""
+
+#. translators: %s is a link to the PMPro User Fields settings screen.
+#: includes/xprofile-mapping.php:250
+#, php-format
+msgid "No Paid Memberships Pro User Fields were found. %s to add some first."
+msgstr ""
+
+#: includes/xprofile-mapping.php:251
+msgid "Edit User Fields"
+msgstr ""
+
+#: includes/xprofile-mapping.php:259
+msgid "Xprofile Field"
+msgstr ""
+
+#: includes/xprofile-mapping.php:260
+msgid "User Field"
+msgstr ""
+
+#: includes/xprofile-mapping.php:270
+msgid "— Not mapped —"
+msgstr ""
+
+#: includes/xprofile-mapping.php:290
+msgid "(in use)"
 msgstr ""
