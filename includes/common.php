@@ -18,6 +18,8 @@ function pmpro_bp_get_level_options( $level_id ) {
 		'pmpro_bp_public_messaging'         => 0,
 		'pmpro_bp_send_friend_request'      => 0,
 		'pmpro_bp_member_directory'         => 0,
+		'pmpro_bp_docs_view'                => 0,
+		'pmpro_bp_docs_upload'              => 0,
 		'pmpro_bp_group_automatic_add'      => array(),
 		'pmpro_bp_group_can_request_invite' => array(),
 		'pmpro_bp_member_types'             => array(),
@@ -45,6 +47,8 @@ function pmpro_bp_get_level_options( $level_id ) {
 			$options['pmpro_bp_public_messaging'] = $non_member_user_options['pmpro_bp_public_messaging'];
 			$options['pmpro_bp_send_friend_request'] = $non_member_user_options['pmpro_bp_send_friend_request'];
 			$options['pmpro_bp_member_directory'] = $non_member_user_options['pmpro_bp_member_directory'];
+			$options['pmpro_bp_docs_view'] = $non_member_user_options['pmpro_bp_docs_view'];
+			$options['pmpro_bp_docs_upload'] = $non_member_user_options['pmpro_bp_docs_upload'];
 		}
 	}
 
@@ -113,6 +117,8 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 			$pmpro_bp_all_options['pmpro_bp_public_messaging'] = max( $pmpro_bp_all_options['pmpro_bp_public_messaging'], $pmpro_bp_options['pmpro_bp_public_messaging'] );
 			$pmpro_bp_all_options['pmpro_bp_send_friend_request'] = max( $pmpro_bp_all_options['pmpro_bp_send_friend_request'], $pmpro_bp_options['pmpro_bp_send_friend_request'] );
 			$pmpro_bp_all_options['pmpro_bp_member_directory'] = max( $pmpro_bp_all_options['pmpro_bp_member_directory'], $pmpro_bp_options['pmpro_bp_member_directory'] );
+			$pmpro_bp_all_options['pmpro_bp_docs_view'] = max( $pmpro_bp_all_options['pmpro_bp_docs_view'], $pmpro_bp_options['pmpro_bp_docs_view'] );
+			$pmpro_bp_all_options['pmpro_bp_docs_upload'] = max( $pmpro_bp_all_options['pmpro_bp_docs_upload'], $pmpro_bp_options['pmpro_bp_docs_upload'] );
 
 			// groups to add
 			$pmpro_bp_all_options['pmpro_bp_group_automatic_add'] = array_unique( array_merge( (array) $pmpro_bp_all_options['pmpro_bp_group_automatic_add'], (array) $pmpro_bp_options['pmpro_bp_group_automatic_add'] ) );

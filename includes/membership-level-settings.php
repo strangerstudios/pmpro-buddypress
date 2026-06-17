@@ -172,6 +172,8 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 	$pmpro_bp_private_messaging = intval( $_REQUEST['pmpro_bp_private_messaging'] );
 	$pmpro_bp_send_friend_request = intval( $_REQUEST['pmpro_bp_send_friend_request'] );
 	$pmpro_bp_member_directory = intval( $_REQUEST['pmpro_bp_member_directory'] );
+	$pmpro_bp_docs_view = isset( $_REQUEST['pmpro_bp_docs_view'] ) ? intval( $_REQUEST['pmpro_bp_docs_view'] ) : 0;
+	$pmpro_bp_docs_upload = isset( $_REQUEST['pmpro_bp_docs_upload'] ) ? intval( $_REQUEST['pmpro_bp_docs_upload'] ) : 0;
 	
 	if( isset( $_REQUEST['pmpro_bp_group_automatic_add'] ) ) {
 		$pmpro_bp_group_automatic_add = array_map( 'sanitize_text_field', $_REQUEST['pmpro_bp_group_automatic_add'] );
@@ -196,11 +198,13 @@ function pmpro_bp_pmpro_save_membership_level($level_id)
 		'pmpro_bp_group_creation'			=> $can_create_groups,
 		'pmpro_bp_group_single_viewing'		=> $can_view_single_group,
 		'pmpro_bp_groups_page_viewing'		=> $can_view_groups_page,
-		'pmpro_bp_groups_join'				=> $can_join_groups,		
+		'pmpro_bp_groups_join'				=> $can_join_groups,
 		'pmpro_bp_private_messaging'		=> $pmpro_bp_private_messaging,
 		'pmpro_bp_public_messaging'			=> $pmpro_bp_public_messaging,
 		'pmpro_bp_send_friend_request'		=> $pmpro_bp_send_friend_request,
 		'pmpro_bp_member_directory'			=> $pmpro_bp_member_directory,
+		'pmpro_bp_docs_view'				=> $pmpro_bp_docs_view,
+		'pmpro_bp_docs_upload'				=> $pmpro_bp_docs_upload,
 		'pmpro_bp_group_automatic_add'		=> $pmpro_bp_group_automatic_add,
 		'pmpro_bp_group_can_request_invite'	=> $pmpro_bp_group_can_request_invite,
 		'pmpro_bp_member_types'				=> $pmpro_bp_member_types);
@@ -228,8 +232,11 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 	$pmpro_bp_restrictions			= $pmpro_bp_options['pmpro_bp_restrictions'];
 	$pmpro_bp_private_messaging		= $pmpro_bp_options['pmpro_bp_private_messaging'];
 	$pmpro_bp_public_messaging		= $pmpro_bp_options['pmpro_bp_public_messaging'];
-	$pmpro_bp_send_friend_request		= $pmpro_bp_options['pmpro_bp_send_friend_request'];		
+	$pmpro_bp_send_friend_request		= $pmpro_bp_options['pmpro_bp_send_friend_request'];
 	$pmpro_bp_member_directory		= $pmpro_bp_options['pmpro_bp_member_directory'];
+	$pmpro_bp_docs_view			= $pmpro_bp_options['pmpro_bp_docs_view'];
+	$pmpro_bp_docs_upload			= $pmpro_bp_options['pmpro_bp_docs_upload'];
+	$pmpro_bp_has_docs			= function_exists( 'bb_user_can_create_document' ) || function_exists( 'bp_docs_user_can' );
 	?>
 	<?php if( $level_id <> 0 ) { ?>
 		<hr />
@@ -446,6 +453,51 @@ function pmpro_bp_restriction_settings_form( $level_id = NULL) {
 				</p>
 				</td>
 			</tr>
+
+			<?php if ( $pmpro_bp_has_docs ) { ?>
+
+			<?php //viewing docs ?>
+			<tr>
+			<th scope="row" valign="top"><label for="pmpro_bp_docs_view"><?php _e('View Documents', 'pmpro-buddypress');?>:</label></th>
+			<td>
+				<select name="pmpro_bp_docs_view" id="pmpro_bp_docs_view">
+						<option value='0' <?php if ( $pmpro_bp_docs_view == 0 ) echo 'selected'; ?>><?php _e('No', 'pmpro-buddypress');?></option>
+						<option value='1' <?php if ( $pmpro_bp_docs_view == 1 ) echo 'selected'; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
+				</select>
+				<p class="description">
+				<?php
+					if ( $level_id <> 0 ) {
+						_e( 'Can members of this level view documents and folders?', 'pmpro-buddypress' );
+					} else {
+						_e( 'Can non-member users view documents and folders?', 'pmpro-buddypress' );
+					}
+				?>
+				</p>
+			</td>
+			</tr>
+
+			<?php //uploading docs ?>
+			<tr>
+			<th scope="row" valign="top"><label for="pmpro_bp_docs_upload"><?php _e('Upload Documents', 'pmpro-buddypress');?>:</label></th>
+			<td>
+				<select name="pmpro_bp_docs_upload" id="pmpro_bp_docs_upload">
+						<option value='0' <?php if ( $pmpro_bp_docs_upload == 0 ) echo 'selected'; ?>><?php _e('No', 'pmpro-buddypress');?></option>
+						<option value='1' <?php if ( $pmpro_bp_docs_upload == 1 ) echo 'selected'; ?>><?php _e('Yes', 'pmpro-buddypress');?></option>
+				</select>
+				<p class="description">
+				<?php
+					if ( $level_id <> 0 ) {
+						_e( 'Can members of this level upload or create documents?', 'pmpro-buddypress' );
+					} else {
+						_e( 'Can non-member users upload or create documents?', 'pmpro-buddypress' );
+					}
+				?>
+				</p>
+			</td>
+			</tr>
+
+			<?php } // end if has docs ?>
+
 	</tbody>
 	</table>
 	<script>
