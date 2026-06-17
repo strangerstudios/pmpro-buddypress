@@ -61,8 +61,17 @@ function pmpro_bp_buddpress_admin_page() {
 		update_option('pmpro_bp_options_users', $pmpro_bp_options, 'no');
 
 		// General Settings
-		update_option( 'pmpro_bp_registration_page', isset( $_POST['pmpro_bp_register'] ) ? sanitize_text_field( wp_unslash( $_POST['pmpro_bp_register'] ) ) : 'pmpro' );
-		update_option( 'pmpro_bp_show_level_on_bp_profile', isset( $_POST['pmpro_bp_level_profile'] ) ? sanitize_text_field( wp_unslash( $_POST['pmpro_bp_level_profile'] ) ) : 'yes', 'no' );
+		$register_value = isset( $_POST['pmpro_bp_register'] ) ? sanitize_text_field( wp_unslash( $_POST['pmpro_bp_register'] ) ) : 'buddypress';
+		if ( ! in_array( $register_value, array( 'pmpro', 'buddypress' ), true ) ) {
+			$register_value = 'buddypress';
+		}
+		update_option( 'pmpro_bp_registration_page', $register_value );
+
+		$level_profile_value = isset( $_POST['pmpro_bp_level_profile'] ) ? sanitize_text_field( wp_unslash( $_POST['pmpro_bp_level_profile'] ) ) : 'no';
+		if ( ! in_array( $level_profile_value, array( 'yes', 'no' ), true ) ) {
+			$level_profile_value = 'no';
+		}
+		update_option( 'pmpro_bp_show_level_on_bp_profile', $level_profile_value, 'no' );
 
 		// Xprofile Field Mapping
 		pmpro_bp_save_xprofile_field_map();
