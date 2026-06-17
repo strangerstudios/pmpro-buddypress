@@ -26,8 +26,14 @@ function pmpro_bp_buddpress_admin_page() {
 
 	global $pmpro_pages, $msg, $msgt;
 
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'You do not have permission to access this page.', 'pmpro-buddypress' ) );
+	}
+
 	//get/set settings
-	if(!empty($_REQUEST['savesettings'])) {
+	if ( ! empty( $_POST['savesettings'] ) ) {
+		check_admin_referer( 'pmpro_bp_save_settings', 'pmpro_bp_settings_nonce' );
+
 		// Non-member user Restrictions
 		$can_create_groups = isset( $_POST['pmpro_bp_group_creation'] ) ? intval( $_POST['pmpro_bp_group_creation'] ) : 0;
 		$can_view_single_group = isset( $_POST['pmpro_bp_group_single_viewing'] ) ? intval( $_POST['pmpro_bp_group_single_viewing'] ) : 0;
@@ -46,7 +52,7 @@ function pmpro_bp_buddpress_admin_page() {
 			'pmpro_bp_group_creation'			=> $can_create_groups,
 			'pmpro_bp_group_single_viewing'		=> $can_view_single_group,
 			'pmpro_bp_groups_page_viewing'		=> $can_view_groups_page,
-			'pmpro_bp_groups_join'				=> $can_join_groups,			
+			'pmpro_bp_groups_join'				=> $can_join_groups,
 			'pmpro_bp_private_messaging'		=> $pmpro_bp_private_messaging,
 			'pmpro_bp_public_messaging'			=> $pmpro_bp_public_messaging,
 			'pmpro_bp_send_friend_request'		=> $pmpro_bp_send_friend_request,
@@ -78,16 +84,16 @@ function pmpro_bp_buddpress_admin_page() {
 		$msg = 1;
 		$msgt = __( 'Your settings have been updated.', 'pmpro-buddypress' );
 	}
-	
+
     $pmpro_bp_register = get_option( 'pmpro_bp_registration_page' );
     $pmpro_bp_level_profile = get_option( 'pmpro_bp_show_level_on_bp_profile' );
-    
+
 	if( empty( $pmpro_bp_register ) ) {
-		$pmpro_bp_register = 'pmpro'; //default to the PMPro Levels page 
+		$pmpro_bp_register = 'pmpro'; //default to the PMPro Levels page
 	}
-    
+
 	if( empty( $pmpro_bp_level_profile ) ) {
-		$pmpro_bp_level_profile = 'yes'; //default to showing Level on BuddyPress Profile 
+		$pmpro_bp_level_profile = 'yes'; //default to showing Level on BuddyPress Profile
 	}
 
 	require_once( PMPRO_DIR . '/adminpages/admin_header.php' ); ?>

@@ -18,16 +18,15 @@ function pmpro_bp_update_user_meta( $meta_id, $user_id, $meta_key, $meta_value )
 		return;
 	}
 
-	foreach( $pmpro_user_fields as $field_location )
-	{
-		foreach( $field_location as $rh_field )
-		{
-			if( $rh_field->meta_key == $meta_key && !empty( $rh_field->buddypress ) ) {
+	foreach( $pmpro_user_fields as $field_location ) {
+		foreach( $field_location as $user_field ) {
+			if( $user_field->meta_key == $meta_key && !empty( $user_field->buddypress ) ) {
 				//switch for type
-				
-				$x_field = xprofile_get_field_id_from_name( $rh_field->buddypress );
 
-				if( !empty( $x_field ) ) {
+				// ->buddypress may be an Xprofile field ID (from the mapping screen) or a name (legacy).
+				$x_field = pmpro_bp_resolve_xprofile_field_id( $user_field->buddypress );
+
+				if( ! empty( $x_field ) ) {
 					// Get the current visibility for the xprofile field. If not set, this will get the default.
 					$x_field_visibility = xprofile_get_field_visibility_level( $x_field, $user_id );
 
@@ -66,7 +65,7 @@ function pmpro_bp_xprofile_updated_profile( $user_id, $posted_field_ids, $errors
 			
 			foreach( $pmpro_user_fields as $field_location ) {
 				foreach( $field_location as $rh_field ) {
-					if( !empty( $rh_field->buddypress ) && $rh_field->buddypress == $xprofile_field->name ) {
+					if( !empty( $rh_field->buddypress ) && pmpro_bp_resolve_xprofile_field_id( $rh_field->buddypress ) == $xprofile_field_id ) {
 						//switch for type?
 						update_user_meta( $user_id, $rh_field->meta_key, $new_values[$xprofile_field_id]['value'] );
 					}
