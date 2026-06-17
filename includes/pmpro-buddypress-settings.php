@@ -44,6 +44,8 @@ function pmpro_bp_buddpress_admin_page() {
 		$pmpro_bp_private_messaging = isset( $_POST['pmpro_bp_private_messaging'] ) ? intval( $_POST['pmpro_bp_private_messaging'] ) : 0;
 		$pmpro_bp_send_friend_request = isset( $_POST['pmpro_bp_send_friend_request'] ) ? intval( $_POST['pmpro_bp_send_friend_request'] ) : 0;
 		$pmpro_bp_member_directory = isset( $_POST['pmpro_bp_member_directory'] ) ? intval( $_POST['pmpro_bp_member_directory'] ) : 0;
+		$pmpro_bp_docs_view = isset( $_POST['pmpro_bp_docs_view'] ) ? intval( $_POST['pmpro_bp_docs_view'] ) : 0;
+		$pmpro_bp_docs_upload = isset( $_POST['pmpro_bp_docs_upload'] ) ? intval( $_POST['pmpro_bp_docs_upload'] ) : 0;
 
 		$pmpro_bp_options = array(
 			'pmpro_bp_restrictions'				=> $pmpro_bp_restrictions,
@@ -55,6 +57,8 @@ function pmpro_bp_buddpress_admin_page() {
 			'pmpro_bp_public_messaging'			=> $pmpro_bp_public_messaging,
 			'pmpro_bp_send_friend_request'		=> $pmpro_bp_send_friend_request,
 			'pmpro_bp_member_directory'			=> $pmpro_bp_member_directory,
+			'pmpro_bp_docs_view'				=> $pmpro_bp_docs_view,
+			'pmpro_bp_docs_upload'				=> $pmpro_bp_docs_upload,
 			'pmpro_bp_group_automatic_add'		=> array(),
 			'pmpro_bp_group_can_request_invite'	=> array(),
 			'pmpro_bp_member_types'				=> array());
@@ -191,6 +195,10 @@ function pmpro_bp_buddpress_admin_page() {
 											break;
 										case PMPROBP_SPECIFIC_FEATURES:
 											$feature_keys = array( 'pmpro_bp_group_creation', 'pmpro_bp_group_single_viewing', 'pmpro_bp_groups_page_viewing', 'pmpro_bp_groups_join', 'pmpro_bp_private_messaging', 'pmpro_bp_public_messaging', 'pmpro_bp_send_friend_request', 'pmpro_bp_member_directory' );
+										if ( function_exists( 'bb_user_can_create_document' ) || function_exists( 'bp_docs_user_can' ) ) {
+											$feature_keys[] = 'pmpro_bp_docs_view';
+											$feature_keys[] = 'pmpro_bp_docs_upload';
+										}
 											$enabled      = 0;
 											foreach ( $feature_keys as $feature_key ) {
 												if ( ! empty( $level_options[ $feature_key ] ) ) {
