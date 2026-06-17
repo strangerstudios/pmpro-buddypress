@@ -3,9 +3,6 @@
 	Code to restrict BuddyBoss Platform Documents and BP Docs based on membership level.
 */
 
-// -------------------------------------------------------------------------
-// BuddyBoss Platform Documents
-// -------------------------------------------------------------------------
 
 /**
  * Block the BuddyBoss AJAX file-upload step for documents when upload is restricted.
@@ -52,7 +49,9 @@ function pmpro_bp_restrict_bb_document_viewing() {
 		pmpro_bp_redirect_to_access_required_page();
 	}
 }
-add_action( 'template_redirect', 'pmpro_bp_restrict_bb_document_viewing' );
+if ( function_exists( 'bb_user_can_create_document' ) ) {
+	add_action( 'template_redirect', 'pmpro_bp_restrict_bb_document_viewing' );
+}
 
 /**
  * Remove the Documents nav item from member profiles when viewing is restricted.
@@ -66,7 +65,9 @@ function pmpro_bp_remove_document_nav() {
 		bp_core_remove_nav_item( 'document' );
 	}
 }
-add_action( 'bp_setup_nav', 'pmpro_bp_remove_document_nav', 100 );
+if ( function_exists( 'bb_user_can_create_document' ) ) {
+	add_action( 'bp_setup_nav', 'pmpro_bp_remove_document_nav', 100 );
+}
 
 // -------------------------------------------------------------------------
 // BP Docs
@@ -113,4 +114,6 @@ function pmpro_bp_restrict_bp_docs_viewing() {
 		pmpro_bp_redirect_to_access_required_page();
 	}
 }
-add_action( 'template_redirect', 'pmpro_bp_restrict_bp_docs_viewing' );
+if ( function_exists( 'bp_docs_is_docs_component' ) ) {
+	add_action( 'template_redirect', 'pmpro_bp_restrict_bp_docs_viewing' );
+}

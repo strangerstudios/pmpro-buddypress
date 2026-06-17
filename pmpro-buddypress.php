@@ -40,9 +40,9 @@ require_once( PMPROBP_DIR . '/includes/groups.php' );
 require_once( PMPROBP_DIR . '/includes/member-types.php' );
 require_once( PMPROBP_DIR . '/includes/profiles.php' );
 require_once( PMPROBP_DIR . '/includes/xprofile-mapping.php' );
+require_once( PMPROBP_DIR . '/includes/documents.php' );
 require_once( PMPROBP_DIR . '/includes/registration.php' );
 require_once( PMPROBP_DIR . '/includes/restrictions.php' );
-require_once( PMPROBP_DIR . '/includes/documents.php' );
 
 if ( class_exists( 'PMPro_Approvals' ) ) {
     require_once( PMPROBP_DIR . '/includes/approvals.php' );
