@@ -3,6 +3,10 @@
  * PMPro Approvals support.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Reset groups and member types when a user is approved.
  */

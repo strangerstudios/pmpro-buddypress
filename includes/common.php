@@ -3,6 +3,10 @@
 	Common functions used throughout the plugin.
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Get the PMPro BuddyPress options for a specific level.
  * Level 0 contains options for non-member users.
@@ -175,7 +179,7 @@ function pmpro_bp_get_user_old_level_options( $user_id = null ) {
 		",
 		$user_id, $level_id
 	);
-	$old_level_id = $wpdb->get_var( $sqlQuery );
+	$old_level_id = $wpdb->get_var( $sqlQuery ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- Query prepared above with $wpdb->prepare() on a PMPro custom table.
 
 	if ( empty( $old_level_id ) ) {
 		$old_level_id = 0;
@@ -200,7 +204,7 @@ function pmpro_bp_redirect_to_access_required_page() {
 	} else {
 		$redirect_to = home_url();
 	}
-	wp_redirect( $redirect_to );
+	wp_redirect( $redirect_to ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- Destination is a site page permalink or home_url(); permalinks are filterable and may legitimately point offsite.
 	exit;
 }
 
