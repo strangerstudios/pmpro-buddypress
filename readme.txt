@@ -2,9 +2,9 @@
 Contributors: strangerstudios, paidmembershipspro
 Tags: community, private community, paid memberships pro, buddypress, buddyboss, pmpro
 Requires at least: 5.2
-Tested up to: 6.9
+Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.6
+Stable tag: 1.6.1
 
 Restrict access to communities in BuddyPress & BuddyBoss for free or premium members with the top WordPress membership plugin Paid Memberships Pro
 
@@ -140,6 +140,10 @@ Navigate to Memberships > Settings > PMPro BuddyPress and locate the "Non-member
 3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Settings > Memberships Levels > Edit.
 
 == Changelog ==
+= 1.6.1 - 2026-09-29 =
+* SECURITY: Improved sanitization and escaping throughout the plugin to resolve Plugin Check security findings. #130 (@dparker1005)
+* BUG FIX: Fixed undefined index notices when saving a membership level with BuddyPress settings missing from the request. #130 (@dparker1005)
+
 = 1.6 - 2026-06-19 =
 * ENHANCEMENT: Improved overall UI/UX for PMPro BuddyPress settings page. Includes new sections for XProfile Field Mapping to sync User Fields and XProfile fields and Membership Level Settings to give a quick overview of level related BuddyPress settings and restrictions.
 * ENHANCEMENT: Added support for granular access to view and upload Documents in BuddyBoss and BuddyPress Docs plugin.

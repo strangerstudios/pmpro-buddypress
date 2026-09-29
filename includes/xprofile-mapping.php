@@ -2,7 +2,7 @@
 /**
  * Settings screen to map BuddyPress/BuddyBoss Xprofile fields to Paid
  * Memberships Pro User Fields. (1:1 mapping only).
- * @since TBD
+ * @since 1.6
 */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get the saved Xprofile field => User Field map.
  *
- * @since TBD
+ * @since 1.6
  * @return array Map of xprofile field ID => user field meta_key.
  */
 function pmpro_bp_get_xprofile_field_map() {
@@ -31,7 +31,7 @@ function pmpro_bp_get_xprofile_field_map() {
  * Fields are stored per group/location and the same field can appear in more
  * than one location, so we collapse to a single entry per meta_key.
  *
- * @since TBD
+ * @since 1.6
  * @return PMPro_Field[] Array of field objects keyed by meta_key.
  */
 function pmpro_bp_get_all_user_fields() {
@@ -62,7 +62,7 @@ function pmpro_bp_get_all_user_fields() {
  * The primary "Name" field is excluded: BuddyPress already keeps that field
  * in sync with the WordPress user's display name on its own.
  *
- * @since TBD
+ * @since 1.6
  * @return array Map of xprofile field ID => field name.
  */
 function pmpro_bp_get_xprofile_fields() {
@@ -106,7 +106,7 @@ function pmpro_bp_get_xprofile_fields() {
  * screen) or an Xprofile field name (the legacy format that code-based
  * mappings may still use), so both keep working.
  *
- * @since TBD
+ * @since 1.6
  * @param int|string $buddypress The ->buddypress attribute value.
  * @return int The Xprofile field ID, or 0 if it can't be resolved.
  */
@@ -141,7 +141,7 @@ function pmpro_bp_resolve_xprofile_field_id( $buddypress ) {
  * for the same meta_key: if a developer has set $field->buddypress in code and a
  * UI mapping exists for that field's meta_key, the UI mapping overwrites it.
  *
- * @since TBD
+ * @since 1.6
  */
 function pmpro_bp_apply_xprofile_field_map() {
 	if ( ! class_exists( 'PMPro_Field_Group' ) ) {
@@ -183,7 +183,7 @@ add_action( 'init', 'pmpro_bp_apply_xprofile_field_map', 20 );
  * submitted, so the map is persisted alongside the other settings. The caller
  * is responsible for capability and nonce checks on the request.
  *
- * @since TBD
+ * @since 1.6
  */
 function pmpro_bp_save_xprofile_field_map() {
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -236,7 +236,7 @@ function pmpro_bp_save_xprofile_field_map() {
  * heading, or submit button of its own — the settings page provides those and
  * pmpro_bp_save_xprofile_field_map() saves the map on submit.
  *
- * @since TBD
+ * @since 1.6
  */
 function pmpro_bp_render_xprofile_mapping_section() {
 	$user_fields     = pmpro_bp_get_all_user_fields();
