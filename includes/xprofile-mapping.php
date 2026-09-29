@@ -5,6 +5,10 @@
  * @since TBD
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Get the saved Xprofile field => User Field map.
  *
@@ -196,6 +200,7 @@ function pmpro_bp_save_xprofile_field_map() {
 		return;
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce and capability checked by the settings page caller (check_admin_referer( 'pmpro_bp_save_settings' )); each key is cast to int and each value is unslashed and sanitized in the loop below.
 	$submitted = isset( $_POST['pmpro_bp_xprofile_map'] ) ? (array) $_POST['pmpro_bp_xprofile_map'] : array();
 
 	$new_map        = array();

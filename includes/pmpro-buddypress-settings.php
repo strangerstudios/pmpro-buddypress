@@ -3,6 +3,10 @@
 	Code to create a Memberships -> BuddyPress page with settings.
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function pmpro_bp_extra_page_settings( $pages ) {
 	$pages['pmprobp_restricted'] = array( 'title'=>'Access Restricted', 'content'=>'[pmpro_buddypress_restricted]', 'hint'=>'Include the shortcode [pmpro_buddypress_restricted].' );
 	return $pages;
@@ -102,7 +106,7 @@ function pmpro_bp_buddpress_admin_page() {
 		<?php wp_nonce_field( 'pmpro_bp_save_settings', 'pmpro_bp_settings_nonce' ); ?>
 		<hr class="wp-header-end">
 		<h1><?php esc_html_e( 'Paid Memberships Pro - BuddyPress & BuddyBoss Add On Settings', 'pmpro-buddypress' ); ?></h1>
-		<p><?php printf( __( 'Restrict access to communities in BuddyPress and BuddyBoss for free or premium members with Paid Memberships Pro. <strong>This plugin is compatible with both BuddyPress and BuddyBoss.</strong> <a href="%s" target="_blank">Read the documentation</a> for more information about this Add On.', 'pmpro-buddypress' ), 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/?utm_source=plugin&utm_medium=pmpro-buddpress-settings&utm_campaign=pmpro-buddypress' ); ?></p>
+		<p><?php echo wp_kses_post( sprintf( __( 'Restrict access to communities in BuddyPress and BuddyBoss for free or premium members with Paid Memberships Pro. <strong>This plugin is compatible with both BuddyPress and BuddyBoss.</strong> <a href="%s" target="_blank">Read the documentation</a> for more information about this Add On.', 'pmpro-buddypress' ), 'https://www.paidmembershipspro.com/add-ons/buddypress-integration/?utm_source=plugin&utm_medium=pmpro-buddpress-settings&utm_campaign=pmpro-buddypress' ) ); ?></p>
 
 		<div id="pmpro-bp-page-settings" class="pmpro_section" data-visibility="shown" data-activated="true">
 			<div class="pmpro_section_toggle">
@@ -123,7 +127,7 @@ function pmpro_bp_buddpress_admin_page() {
 						$page_msgc = '#a00';
 					}
 				?>
-				<p><strong style="color: <?php echo esc_attr( $page_msgc ); ?>"><?php echo $page_msgt; ?></strong></p>
+				<p><strong style="color: <?php echo esc_attr( $page_msgc ); ?>"><?php echo $page_msgt; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static dashicon markup plus esc_html__() text built above. ?></strong></p>
 				<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-pagesettings' ) ); ?>" class="button button-primary"><?php esc_html_e( 'Manage Page Settings', 'pmpro-buddypress' ); ?></a></p>
 			</div> <!-- end pmpro_section_inside -->
 		</div> <!-- end pmpro_section -->

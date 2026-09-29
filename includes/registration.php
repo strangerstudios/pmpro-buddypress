@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 //redirect the Register button from wp-login.php
 function pmpro_bp_registration_pmpro_to_bp_redirect( $url ) {
 	$bp_pages = get_option( 'bp-pages' );

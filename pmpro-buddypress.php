@@ -10,6 +10,10 @@
  Domain Path: /languages
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Load the languages folder for translations.
  */

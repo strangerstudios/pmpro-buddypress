@@ -3,6 +3,10 @@
 	Code to edit the BuddyPress members directory and search.
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function pmpro_bp_directory_init() {
 	// Don't do this if PMPro is deactivated
 	if( !defined( 'PMPRO_VERSION' ) ) {
@@ -129,7 +133,7 @@ function pmpro_bp_get_members_in_directory() {
 
 	$wpdb->flush();
 	
-	$include_users = $wpdb->get_col( $sqlQuery );
+	$include_users = $wpdb->get_col( $sqlQuery ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Static SQL on a PMPro custom table; level IDs are intval'd, and pmpro_bp_directory_sql_parts is a developer filter.
 
 	$pmpro_bp_members_in_directory = $include_users; // For backwards compatibility.
 

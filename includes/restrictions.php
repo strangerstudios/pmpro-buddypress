@@ -3,6 +3,10 @@
 	Code to lock down BuddyPress features based on level settings.
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Make sure administrators can do everything
  */
@@ -265,7 +269,7 @@ function pmpro_bp_buddypress_or_pmpro_registration() {
 
 	// Redirect only if the URL was set.
 	if ( ! empty( $url ) ) {
-		wp_redirect( $url );
+		wp_redirect( $url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- Destination is pmpro_url() or a page permalink, both filterable and may legitimately point offsite (e.g. Network Subsite).
 		exit;
 	}
 }

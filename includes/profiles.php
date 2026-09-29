@@ -3,6 +3,10 @@
 	Code to sync profile fields to PMPro Register Helper or edit profiles in general.
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * See if the meta field is in the RH defined fields 
  * and has the BuddyPress property set. If so,
@@ -186,6 +190,5 @@ function pmpro_bp_membership_profile_screen() {
 	 */
 	$content_escaped = apply_filters( 'pmpro_buddypress_profile_account_shortcode', '[pmpro_account]' );
 
-	// phpcs:ignore Content has been escaped within the pmpro_shortcode_account function
-	echo $content_escaped;
+	echo $content_escaped; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Content has been escaped within the pmpro_shortcode_account function.
 }

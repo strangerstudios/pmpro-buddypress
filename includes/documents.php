@@ -3,6 +3,10 @@
 	Code to restrict BuddyBoss Platform Documents and BP Docs based on membership level.
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 
 /**
  * Block the BuddyBoss AJAX file-upload step for documents when upload is restricted.
