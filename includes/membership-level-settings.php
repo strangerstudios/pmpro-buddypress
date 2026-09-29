@@ -128,7 +128,7 @@ function pmpro_bp_level_settings( ) {
 								{
 								?>
 								<div class="clickable">
-									<input type="checkbox" id="pmpro_bp_member_type_<?php echo esc_attr( $member_type_data->name ); ?>" name="pmpro_bp_member_types[]" value="<?php echo esc_attr($member_type_data->name);?>" <?php if(is_array($pmpro_bp_member_types) && in_array($member_type_data->name, $pmpro_bp_member_types)) echo " checked='checked'";?>"> <?php echo esc_html( $member_type_data->labels['name'] ); ?>
+									<input type="checkbox" id="pmpro_bp_member_type_<?php echo esc_attr( $member_type_data->name ); ?>" name="pmpro_bp_member_types[]" value="<?php echo esc_attr($member_type_data->name);?>" <?php if(is_array($pmpro_bp_member_types) && in_array($member_type_data->name, $pmpro_bp_member_types)) echo " checked='checked'";?>> <?php echo esc_html( $member_type_data->labels['name'] ); ?>
 								</div>
 								<?php
 								}
