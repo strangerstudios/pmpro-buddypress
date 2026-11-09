@@ -106,7 +106,7 @@ Navigate to Memberships > Settings > Pages to create or edit the "Access Restric
 This is the page that visitors and users are redirected to if they cannot access restricted BuddyPress or BuddyBoss features.
 
 = 3. Configure Membership Level Settings =
-Navigate to Memberships > Settings > Membership Levels and locate the "BuddyPress Restrictions" section.
+Navigate to Memberships > Settings > Levels, edit a level, and locate the "BuddyPress Restrictions" section.
 
 From this section you can adjust settings for how you "unlock BuddyPress" for members of this level, including:
 
@@ -129,15 +129,15 @@ If you want to adjust BuddyPress Member Types, you must first create the types t
 
 Some of your WordPress users may not have a membership level in Paid Memberships Pro. This plugin allows you to set how BuddyPress should be locked down for these users without a membership level.
 
-Navigate to Memberships > Settings > PMPro BuddyPress and locate the "Non-member User Settings" section.
+Navigate to Memberships > PMPro BuddyPress and locate the "Non-member User Settings" section.
 
 [Read our full documentation on Non-Member Users in BuddyPress or BuddyBoss here](https://www.paidmembershipspro.com/add-ons/buddypress-integration/#non_member_user?utm_source=pmpro-buddypress-readme&utm_medium=readme&utm_campaign=pmpro-buddypress).
 
 == Screenshots ==
 
 1. **PMPro BuddyPress Settings** - Explore and manage the features of the integration plugin, including Page Settings, Membership Level Settings, and General Settings.
-2. **Membership Level Settings** - Define how you want to restrict BuddyPress for each Membership Level under Memberships > Settings > Memberships Levels > Edit.
-3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Settings > Memberships Levels > Edit.
+2. **Membership Level Settings** - Define how you want to restrict BuddyPress for each Membership Level under Memberships > Settings > Levels > Edit.
+3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Settings > Levels > Edit.
 
 == Changelog ==
 = 1.6.1 - 2026-09-29 =
