@@ -55,45 +55,55 @@ function pmpro_bp_set_member_types( $level_id, $user_id, $cancel_level ) {
  * @param array $pmpro_old_user_levels Array of old user levels before change.
  */
 function pmpro_bp_member_types_pmpro_after_all_membership_level_changes( $pmpro_old_user_levels ) {
+	foreach ( $pmpro_old_user_levels as $user_id => $old_levels ) {
+		pmpro_bp_update_user_member_types( $user_id, wp_list_pluck( $old_levels, 'id' ), pmpro_bp_get_approved_level_ids_for_user( $user_id ) );
+	}
+}
+add_action( 'pmpro_after_all_membership_level_changes', 'pmpro_bp_member_types_pmpro_after_all_membership_level_changes' );
+
+/**
+ * Swap a user's member types for their old levels for the member types for their new levels.
+ *
+ * @since TBD
+ *
+ * @param int   $user_id       ID of the user.
+ * @param array $old_level_ids IDs of the levels the user had before the change.
+ * @param array $new_level_ids IDs of the levels the user has after the change.
+ */
+function pmpro_bp_update_user_member_types( $user_id, $old_level_ids, $new_level_ids ) {
 	// Exit if BuddyPress isn't active
 	if ( ! function_exists( 'bp_set_member_type' ) ) {
 		return;
 	}
 
-	foreach ( $pmpro_old_user_levels as $user_id => $old_levels ) {
-		// Get the user's current active membership levels.
-		$new_levels = pmpro_getMembershipLevelsForUser( $user_id );
+	$old_member_types = array();
+	$new_member_types = array();
 
-		$old_member_types = array();
-		$new_member_types = array();
+	// Get the member types for the old levels.
+	foreach ( $old_level_ids as $old_level_id ) {
+		$old_level_options = pmpro_bp_get_level_options( $old_level_id );
+		$old_member_types  = array_merge( $old_member_types, empty( $old_level_options['pmpro_bp_member_types'] ) ? array() : $old_level_options['pmpro_bp_member_types'] );
+	}
 
-		// Get the member types for the old levels.
-		foreach ( $old_levels as $old_level ) {
-			$old_level_options = pmpro_bp_get_level_options( $old_level->id );
-			$old_member_types  = array_merge( $old_member_types, empty( $old_level_options['pmpro_bp_member_types'] ) ? array() : $old_level_options['pmpro_bp_member_types'] );
-		}
+	// Get the member types for the new levels.
+	foreach ( $new_level_ids as $new_level_id ) {
+		$new_level_options = pmpro_bp_get_level_options( $new_level_id );
+		$new_member_types  = array_merge( $new_member_types, empty( $new_level_options['pmpro_bp_member_types'] ) ? array() : $new_level_options['pmpro_bp_member_types'] );
+	}
 
-		// Get the member types for the new levels.
-		foreach ( $new_levels as $new_level ) {
-			$new_level_options = pmpro_bp_get_level_options( $new_level->id );
-			$new_member_types  = array_merge( $new_member_types, empty( $new_level_options['pmpro_bp_member_types'] ) ? array() : $new_level_options['pmpro_bp_member_types'] );
-		}
+	// Remove duplicates.
+	$old_member_types = array_unique( $old_member_types );
+	$new_member_types = array_unique( $new_member_types );
 
-		// Remove duplicates.
-		$old_member_types = array_unique( $old_member_types );
-		$new_member_types = array_unique( $new_member_types );
+	// Add new member types.
+	foreach ( $new_member_types as $member_type ) {
+		bp_set_member_type( $user_id, $member_type, true );
+	}
 
-		// Add new member types.
-		foreach ( $new_member_types as $member_type ) {
-			bp_set_member_type( $user_id, $member_type, true );
-		}
-
-		// Remove old member types.
-		foreach ( $old_member_types as $member_type ) {
-			if ( ! in_array( $member_type, $new_member_types ) ) {
-				bp_remove_member_type( $user_id, $member_type );
-			}
+	// Remove old member types.
+	foreach ( $old_member_types as $member_type ) {
+		if ( ! in_array( $member_type, $new_member_types ) ) {
+			bp_remove_member_type( $user_id, $member_type );
 		}
 	}
 }
-add_action( 'pmpro_after_all_membership_level_changes', 'pmpro_bp_member_types_pmpro_after_all_membership_level_changes' );
