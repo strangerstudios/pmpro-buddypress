@@ -13,17 +13,17 @@ function pmpro_bp_directory_init() {
 		return;
 	}
 
+	// Only filter the directory and its count when the directory is locked.
+	if ( ! pmpro_bp_is_member_directory_locked() ) {
+		return;
+	}
+
 	add_action( 'bp_pre_user_query_construct', 'pmpro_bp_bp_pre_user_query_construct', 1, 1 );
 	add_filter( 'bp_get_total_member_count', 'pmpro_bp_bp_get_total_member_count' );
 }
 add_action('init', 'pmpro_bp_directory_init', 20);
 
 function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
-	// If no setting is locking the member directory, let's bail.
-	if( !pmpro_bp_is_member_directory_locked() ) {
-		return;
-	}
-	
 	// Only apply this to the directory.
 	if ( 'members' != bp_current_component() ) {
 		return;
