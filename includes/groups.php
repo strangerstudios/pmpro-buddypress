@@ -129,10 +129,10 @@ function pmpro_bp_update_user_groups( $user_id, $old_level_ids, $new_level_ids )
 	}
 
 	// Remove duplicates in the array of old and new groups.
-	$new_subscribes = array_unique( $new_subscribes );		
+	$new_subscribes = array_unique( $new_subscribes );
 	$old_subscribes = array_unique( $old_subscribes );
 	$new_invites    = array_unique( $new_invites );
-	$old_invites    = array_unique( $old_invites );	
+	$old_invites    = array_unique( $old_invites );
 
 	// Add to all groups assigned to the user's new membership levels.
 	// Function will ignore gropus the user is already a member of.
@@ -170,11 +170,10 @@ function pmpro_bp_update_user_groups( $user_id, $old_level_ids, $new_level_ids )
 	$delete_groups = array_diff( array_merge( $old_subscribes, $old_invites ), array_merge( $new_subscribes, $new_invites ) );
 	foreach ( $delete_groups as $group_id ) {
 		// Uninvite and remove from group.
-		groups_uninvite_user( $user_id, $group_id );			
+		groups_uninvite_user( $user_id, $group_id );
 		groups_leave_group( intval( $group_id ), $user_id );
 	}
 }
-
 
 /**
  * Remove the group status in meta if one is present (Disabled since 1.4.1)

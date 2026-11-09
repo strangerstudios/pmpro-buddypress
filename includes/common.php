@@ -149,7 +149,16 @@ function pmpro_bp_get_user_options( $user_id = null ) {
  * @return array Level IDs.
  */
 function pmpro_bp_get_approved_level_ids_for_user( $user_id ) {
-	$level_ids = wp_list_pluck( pmpro_getMembershipLevelsForUser( $user_id ), 'id' );
+	if ( empty( $user_id ) ) {
+		return array();
+	}
+
+	$levels = pmpro_getMembershipLevelsForUser( $user_id );
+	if ( empty( $levels ) ) {
+		return array();
+	}
+
+	$level_ids = wp_list_pluck( $levels, 'id' );
 
 	// Check Approvals directly since its pmpro_has_membership_level filter is skipped in the admin.
 	if ( class_exists( 'PMPro_Approvals' ) ) {
