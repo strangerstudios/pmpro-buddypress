@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Paid Memberships Pro - BuddyPress & BuddyBoss Add On plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Paid Memberships Pro - BuddyPress & BuddyBoss Add On 1.6.1\n"
+"Project-Id-Version: Paid Memberships Pro - BuddyPress & BuddyBoss Add On 1.6.2\n"
 "Report-Msgid-Bugs-To: info@paidmembershipspro.com\n"
 "Last-Translator: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "Language-Team: Paid Memberships Pro <info@paidmembershipspro.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-29T16:02:18+00:00\n"
+"POT-Creation-Date: 2026-11-11T18:39:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: pmpro-buddypress\n"
@@ -325,7 +325,7 @@ msgid "Page Settings"
 msgstr ""
 
 #: includes/pmpro-buddypress-settings.php:119
-msgid "This plugin redirects users to a specific page if they try to access restricted features. The user is redirected to the page assigned as the \"Access Restricted\" page under Memberships > Settings > Page Settings."
+msgid "This plugin redirects users to a specific page if they try to access restricted features. The user is redirected to the page assigned as the \"Access Restricted\" page under Memberships > Settings > Pages."
 msgstr ""
 
 #: includes/pmpro-buddypress-settings.php:123
@@ -452,15 +452,21 @@ msgstr ""
 msgid "Membership"
 msgstr ""
 
-#: includes/restrictions.php:294
+#: includes/restrictions.php:182
+msgid "You do not have permission to join this group."
+msgstr ""
+
+#: includes/restrictions.php:349
+#: includes/restrictions.php:402
+#: includes/restrictions.php:506
+msgid "This content is restricted."
+msgstr ""
+
+#: includes/restrictions.php:495
 msgid "Membership Level"
 msgid_plural "Membership Levels"
 msgstr[0] ""
 msgstr[1] ""
-
-#: includes/restrictions.php:305
-msgid "This content is restricted."
-msgstr ""
 
 #: includes/xprofile-mapping.php:246
 msgid "Map BuddyPress or BuddyBoss extended profile fields to user meta fields. Each extended profile field can be mapped to one user field. Fields stay in sync when updated in either location."
