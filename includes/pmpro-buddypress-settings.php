@@ -116,7 +116,7 @@ function pmpro_bp_buddpress_admin_page() {
 				</button>
 			</div>
 			<div class="pmpro_section_inside">
-				<p><?php esc_html_e( 'This plugin redirects users to a specific page if they try to access restricted features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Settings > Page Settings.', 'pmpro-buddypress' ); ?></p>
+				<p><?php esc_html_e( 'This plugin redirects users to a specific page if they try to access restricted features. The user is redirected to the page assigned as the "Access Restricted" page under Memberships > Settings > Pages.', 'pmpro-buddypress' ); ?></p>
 				<?php
 					$pmprobp_restricted_page = $pmpro_pages['pmprobp_restricted'];
 					if ( ! empty( $pmprobp_restricted_page ) ) {
