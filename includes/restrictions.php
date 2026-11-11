@@ -138,7 +138,7 @@ add_action( 'bp_actions', 'pmpro_bp_remove_request_membership_nav_link' );
  *
  * BuddyPress checks these capabilities in the REST API, the join group link and membership requests.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @param bool   $retval     Whether the user has the capability.
  * @param int    $user_id    The user ID.
@@ -164,7 +164,7 @@ add_filter( 'bp_user_can', 'pmpro_bp_bp_user_can_join_group', 20, 5 );
  *
  * The join group AJAX handlers don't enforce the groups_join_group capability.
  *
- * @since TBD
+ * @since 1.6.2
  */
 function pmpro_bp_ajax_join_group_check() {
 	// Make sure Groups are active.
@@ -215,7 +215,7 @@ add_filter( 'bp_get_send_message_button_args', 'pmpro_bp_bp_get_send_message_but
  * Messages can be sent through AJAX, the REST API or a form POST, so check when the message is saved.
  * BuddyPress won't send a message with no recipients.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @param BP_Messages_Message $message The message being sent.
  */
@@ -295,7 +295,7 @@ add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
 /**
  * Check whether the current user is locked out of all of BuddyPress.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @return bool True if the current user is locked out of all of BuddyPress.
  */
@@ -320,7 +320,7 @@ function pmpro_bp_is_locked_out() {
  * The REST API doesn't load BuddyPress pages, so pmpro_bp_lockdown_all_bp() doesn't run for it.
  * The activity oEmbed route is blocked too, since it returns the activity content.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @param WP_REST_Response|WP_HTTP_Response|WP_Error|mixed $response Result to send to the client.
  * @param array                                            $handler  Route handler used for the request.
@@ -358,7 +358,7 @@ add_filter( 'rest_request_before_callbacks', 'pmpro_bp_lockdown_rest_api', 10, 3
  *
  * BuddyPress sends its feeds before pmpro_bp_lockdown_all_bp() runs.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @param bool $enabled Whether the feed is enabled.
  * @return bool
@@ -380,7 +380,7 @@ add_filter( 'bp_activity_enable_feeds', 'pmpro_bp_lockdown_activity_feeds' );
  * to actions that aren't limited to the displayed user.
  * Runs after BuddyPress sets up the page that the AJAX request came from.
  *
- * @since TBD
+ * @since 1.6.2
  */
 function pmpro_bp_lockdown_ajax() {
 	if ( ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || ! function_exists( 'bp_ajax_action_is_registered' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only reading the AJAX action name.
@@ -409,7 +409,7 @@ add_action( 'admin_init', 'pmpro_bp_lockdown_ajax', 20 );
  *
  * BuddyPress adds new activity to every heartbeat, including logged-out ones.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @param array $response The heartbeat response.
  * @return array

@@ -4,7 +4,7 @@ Tags: community, private community, paid memberships pro, buddypress, buddyboss,
 Requires at least: 5.2
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 
 Restrict access to communities in BuddyPress & BuddyBoss for free or premium members with the top WordPress membership plugin Paid Memberships Pro
 
@@ -140,6 +140,15 @@ Navigate to Memberships > PMPro BuddyPress and locate the "Non-member User Setti
 3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Settings > Levels > Edit.
 
 == Changelog ==
+= 1.6.2 - 2026-11-11 =
+* SECURITY: "Lock all of BuddyPress" now also applies to the BuddyPress REST API (matching routes regardless of letter case), the activity oEmbed route, activity RSS feeds, BuddyPress AJAX requests and the activity heartbeat. As a result, BuddyPress blocks that load their data through the REST API show nothing to locked-out users, and a locked-out user's own Friends and Groups tab lists and @mention suggestions no longer load. #138 (@dparker1005)
+* SECURITY: Private messaging and joining groups now follow the membership level settings everywhere, including the REST API and AJAX requests, not just in the interface. #138 (@dparker1005)
+* BUG FIX: Fixed an issue where "Lock all of BuddyPress" was skipped when the Levels page setting was empty, because every page was treated as the Levels page. #131 (@dparker1005)
+* BUG FIX: On sites using PMPro Approvals, members pending approval no longer get a level's BuddyPress groups and member types until they are approved, and denying or resetting a member now removes them. This changes what pending members get in BuddyPress. #136 (@flintfromthebasement)
+* BUG FIX: The PMPro Approvals integration no longer calls functions that were deprecated in version 1.4. #136 (@flintfromthebasement)
+* BUG FIX: The member directory count is now only filtered when the member directory is locked, so the "All Members" count matches the list. #135 (@flintfromthebasement)
+* BUG FIX: Fixed admin menu paths in the readme and the settings page help text. #137 (@flintfromthebasement)
+
 = 1.6.1 - 2026-09-29 =
 * SECURITY: Improved sanitization and escaping throughout the plugin to resolve Plugin Check security findings. #130 (@dparker1005)
 * BUG FIX: Fixed undefined index notices when saving a membership level with BuddyPress settings missing from the request. #130 (@dparker1005)

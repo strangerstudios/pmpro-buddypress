@@ -97,7 +97,7 @@ add_action( 'pmpro_after_all_membership_level_changes', 'pmpro_bp_groups_pmpro_a
 /**
  * Move a user from the groups for their old levels to the groups for their new levels.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @param int   $user_id       ID of the user.
  * @param array $old_level_ids IDs of the levels the user had before the change.

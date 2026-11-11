@@ -64,7 +64,7 @@ add_action( 'pmpro_after_all_membership_level_changes', 'pmpro_bp_member_types_p
 /**
  * Swap a user's member types for their old levels for the member types for their new levels.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @param int   $user_id       ID of the user.
  * @param array $old_level_ids IDs of the levels the user had before the change.

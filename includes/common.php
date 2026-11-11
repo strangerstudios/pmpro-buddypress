@@ -143,7 +143,7 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 /**
  * Get the IDs of a user's current levels, skipping levels still pending or denied in PMPro Approvals.
  *
- * @since TBD
+ * @since 1.6.2
  *
  * @param int $user_id ID of the user.
  * @return array Level IDs.
