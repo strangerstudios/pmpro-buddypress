@@ -274,7 +274,7 @@ function pmpro_bp_lockdown_all_bp() {
 	}
 	
 	// Make sure we don't lock down the PMPro levels page. The pmpro_bp_buddypress_or_pmpro_registration() will redirect if needed.
-	if ( isset( $pmpro_pages['levels'] ) && is_page( $pmpro_pages['levels'] ) ) {
+	if ( ! empty( $pmpro_pages['levels'] ) && is_page( $pmpro_pages['levels'] ) ) {
 		return;
 	}
 	
