@@ -162,7 +162,7 @@ add_filter( 'bp_user_can', 'pmpro_bp_bp_user_can_join_group', 20, 5 );
 /**
  * Block the AJAX request to join a group if the user's level doesn't allow it.
  *
- * The join group AJAX handlers don't check the groups_join_group capability.
+ * The join group AJAX handlers don't enforce the groups_join_group capability.
  *
  * @since TBD
  */
@@ -339,7 +339,8 @@ function pmpro_bp_lockdown_rest_api( $response, $handler, $request ) {
 	}
 
 	// Like the Register and Activate pages, don't lock down sign ups. BuddyBoss also needs its settings route before log in.
-	if ( preg_match( '#^' . preg_quote( $namespace, '#' ) . '[^/]+/(signup|settings)(/|$)#', $route ) ) {
+	$open_routes = ( 'buddyboss' === bp_rest_namespace() ) ? 'signup|settings' : 'signup';
+	if ( preg_match( '#^' . preg_quote( $namespace, '#' ) . '[^/]+/(' . $open_routes . ')(/|$)#', $route ) ) {
 		return $response;
 	}
 
@@ -373,7 +374,9 @@ add_filter( 'bp_activity_enable_feeds', 'pmpro_bp_lockdown_activity_feeds' );
 /**
  * Block BuddyPress AJAX requests if the user is locked out of all of BuddyPress.
  *
- * Users can still use their own profile, like in pmpro_bp_lockdown_all_bp().
+ * Users can still use their own profile, like in pmpro_bp_lockdown_all_bp(). The profile
+ * comes from the page the request says it was sent from, so the exception doesn't apply
+ * to actions that aren't limited to the displayed user.
  * Runs after BuddyPress sets up the page that the AJAX request came from.
  *
  * @since TBD
@@ -384,11 +387,13 @@ function pmpro_bp_lockdown_ajax() {
 	}
 
 	$action = sanitize_key( wp_unslash( $_REQUEST['action'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only reading the AJAX action name.
-	if ( 'heartbeat' === $action || ! bp_ajax_action_is_registered( $action ) ) {
+
+	// Member suggestions (@mentions) aren't registered with bp_ajax_register_action().
+	if ( 'heartbeat' === $action || ( ! bp_ajax_action_is_registered( $action ) && 'bp_get_suggestions' !== $action ) ) {
 		return;
 	}
 
-	if ( bp_is_my_profile() ) {
+	if ( bp_is_my_profile() && ! in_array( $action, array( 'members_filter', 'groups_filter', 'blogs_filter', 'get_single_activity_content', 'activity_widget_filter', 'bp_get_suggestions' ), true ) ) {
 		return;
 	}
 
@@ -397,6 +402,26 @@ function pmpro_bp_lockdown_ajax() {
 	}
 }
 add_action( 'admin_init', 'pmpro_bp_lockdown_ajax', 20 );
+
+/**
+ * Remove new activity from the heartbeat response if the user is locked out of all of BuddyPress.
+ *
+ * BuddyPress adds new activity to every heartbeat, including logged-out ones.
+ *
+ * @since TBD
+ *
+ * @param array $response The heartbeat response.
+ * @return array
+ */
+function pmpro_bp_lockdown_heartbeat( $response ) {
+	if ( isset( $response['bp_activity_newest_activities'] ) && pmpro_bp_is_locked_out() ) {
+		unset( $response['bp_activity_newest_activities'] );
+	}
+
+	return $response;
+}
+add_filter( 'heartbeat_received', 'pmpro_bp_lockdown_heartbeat', 11 );
+add_filter( 'heartbeat_nopriv_received', 'pmpro_bp_lockdown_heartbeat', 11 );
 
 /**
  * Redirect BuddyPress registration to PMPro
