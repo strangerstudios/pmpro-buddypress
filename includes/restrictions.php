@@ -134,6 +134,58 @@ function pmpro_bp_remove_request_membership_nav_link() {
 add_action( 'bp_actions', 'pmpro_bp_remove_request_membership_nav_link' );
 
 /**
+ * Don't let users join or request to join groups if their level doesn't allow it.
+ *
+ * BuddyPress checks these capabilities in the REST API, the join group link and membership requests.
+ *
+ * @since TBD
+ *
+ * @param bool   $retval     Whether the user has the capability.
+ * @param int    $user_id    The user ID.
+ * @param string $capability The capability being checked.
+ * @param int    $site_id    The site ID.
+ * @param array  $args       Extra arguments, including the group ID.
+ * @return bool
+ */
+function pmpro_bp_bp_user_can_join_group( $retval, $user_id, $capability, $site_id, $args ) {
+	if ( $retval && in_array( $capability, array( 'groups_join_group', 'groups_request_membership' ), true ) ) {
+		$group_id = empty( $args['group_id'] ) ? bp_get_current_group_id() : (int) $args['group_id'];
+		if ( ! pmpro_bp_user_can_join_group( $group_id, $user_id ) ) {
+			$retval = false;
+		}
+	}
+
+	return $retval;
+}
+add_filter( 'bp_user_can', 'pmpro_bp_bp_user_can_join_group', 20, 5 );
+
+/**
+ * Block the AJAX request to join a group if the user's level doesn't allow it.
+ *
+ * The join group AJAX handlers don't enforce the groups_join_group capability.
+ *
+ * @since TBD
+ */
+function pmpro_bp_ajax_join_group_check() {
+	// Make sure Groups are active.
+	if ( ! function_exists( 'groups_is_user_member' ) ) {
+		return;
+	}
+
+	// Nouveau sends item_id. Legacy sends gid, and uses the same action to leave a group.
+	$group_id = isset( $_POST['item_id'] ) ? intval( $_POST['item_id'] ) : ( isset( $_POST['gid'] ) ? intval( $_POST['gid'] ) : 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- BuddyPress checks the nonce.
+	if ( empty( $group_id ) || groups_is_user_member( get_current_user_id(), $group_id ) || groups_check_user_has_invite( get_current_user_id(), $group_id ) ) {
+		return;
+	}
+
+	if ( ! pmpro_bp_user_can_join_group( $group_id ) ) {
+		wp_send_json_error( array( 'feedback' => __( 'You do not have permission to join this group.', 'pmpro-buddypress' ), 'type' => 'error' ), 403 );
+	}
+}
+add_action( 'wp_ajax_groups_join_group', 'pmpro_bp_ajax_join_group_check', 1 );
+add_action( 'wp_ajax_joinleave_group', 'pmpro_bp_ajax_join_group_check', 1 );
+
+/**
  * Redirect away from private messaging page if the user
  * doesn't have access to it.
  */
@@ -156,6 +208,23 @@ function pmpro_bp_bp_get_send_message_button_args($args) {
 	return $args;
 }
 add_filter( 'bp_get_send_message_button_args', 'pmpro_bp_bp_get_send_message_button_args' );
+
+/**
+ * Don't send private messages from users who don't have access to private messaging.
+ *
+ * Messages can be sent through AJAX, the REST API or a form POST, so check when the message is saved.
+ * BuddyPress won't send a message with no recipients.
+ *
+ * @since TBD
+ *
+ * @param BP_Messages_Message $message The message being sent.
+ */
+function pmpro_bp_messages_message_before_save( $message ) {
+	if ( ! pmpro_bp_user_can( 'private_messaging', $message->sender_id ) ) {
+		$message->recipients = array();
+	}
+}
+add_action( 'messages_message_before_save', 'pmpro_bp_messages_message_before_save' );
 
 /**
  * Remove the send public message button if the user
@@ -222,6 +291,138 @@ function pmpro_bp_lockdown_all_bp() {
 
 }
 add_action( 'template_redirect', 'pmpro_bp_lockdown_all_bp', 50 );
+
+/**
+ * Check whether the current user is locked out of all of BuddyPress.
+ *
+ * @since TBD
+ *
+ * @return bool True if the current user is locked out of all of BuddyPress.
+ */
+function pmpro_bp_is_locked_out() {
+	// Make sure PMPro is active.
+	if ( ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
+		return false;
+	}
+
+	// Make sure administrators can do everything.
+	if ( current_user_can( 'manage_options' ) ) {
+		return false;
+	}
+
+	$pmpro_bp_options = pmpro_bp_get_user_options();
+	return $pmpro_bp_options['pmpro_bp_restrictions'] == PMPROBP_LOCK_ALL_ACCESS;
+}
+
+/**
+ * Block the BuddyPress REST API if the user is locked out of all of BuddyPress.
+ *
+ * The REST API doesn't load BuddyPress pages, so pmpro_bp_lockdown_all_bp() doesn't run for it.
+ * The activity oEmbed route is blocked too, since it returns the activity content.
+ *
+ * @since TBD
+ *
+ * @param WP_REST_Response|WP_HTTP_Response|WP_Error|mixed $response Result to send to the client.
+ * @param array                                            $handler  Route handler used for the request.
+ * @param WP_REST_Request                                  $request  Request used to generate the response.
+ * @return WP_REST_Response|WP_HTTP_Response|WP_Error|mixed
+ */
+function pmpro_bp_lockdown_rest_api( $response, $handler, $request ) {
+	if ( is_wp_error( $response ) || ! function_exists( 'bp_rest_namespace' ) ) {
+		return $response;
+	}
+
+	// WordPress matches REST routes case-insensitively, so compare them that way too.
+	$route     = $request->get_route();
+	$namespace = '/' . bp_rest_namespace() . '/';
+	if ( 0 !== stripos( $route, $namespace ) && 0 !== strcasecmp( $route, '/oembed/1.0/embed/activity' ) ) {
+		return $response;
+	}
+
+	// Like the Register and Activate pages, don't lock down sign ups. BuddyBoss also needs its settings route before log in.
+	$open_routes = ( 'buddyboss' === bp_rest_namespace() ) ? 'signup|settings' : 'signup';
+	if ( preg_match( '#^' . preg_quote( $namespace, '#' ) . '[^/]+/(' . $open_routes . ')(/|$)#i', $route ) ) {
+		return $response;
+	}
+
+	if ( pmpro_bp_is_locked_out() ) {
+		return new WP_Error( 'pmpro_bp_locked', __( 'This content is restricted.', 'pmpro-buddypress' ), array( 'status' => rest_authorization_required_code() ) );
+	}
+
+	return $response;
+}
+add_filter( 'rest_request_before_callbacks', 'pmpro_bp_lockdown_rest_api', 10, 3 );
+
+/**
+ * Disable the activity RSS feeds if the user is locked out of all of BuddyPress.
+ *
+ * BuddyPress sends its feeds before pmpro_bp_lockdown_all_bp() runs.
+ *
+ * @since TBD
+ *
+ * @param bool $enabled Whether the feed is enabled.
+ * @return bool
+ */
+function pmpro_bp_lockdown_activity_feeds( $enabled ) {
+	if ( $enabled && pmpro_bp_is_locked_out() ) {
+		$enabled = false;
+	}
+
+	return $enabled;
+}
+add_filter( 'bp_activity_enable_feeds', 'pmpro_bp_lockdown_activity_feeds' );
+
+/**
+ * Block BuddyPress AJAX requests if the user is locked out of all of BuddyPress.
+ *
+ * Users can still use their own profile, like in pmpro_bp_lockdown_all_bp(). The profile
+ * comes from the page the request says it was sent from, so the exception doesn't apply
+ * to actions that aren't limited to the displayed user.
+ * Runs after BuddyPress sets up the page that the AJAX request came from.
+ *
+ * @since TBD
+ */
+function pmpro_bp_lockdown_ajax() {
+	if ( ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || ! function_exists( 'bp_ajax_action_is_registered' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only reading the AJAX action name.
+		return;
+	}
+
+	$action = sanitize_key( wp_unslash( $_REQUEST['action'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Only reading the AJAX action name.
+
+	// Member suggestions (@mentions) aren't registered with bp_ajax_register_action().
+	if ( 'heartbeat' === $action || ( ! bp_ajax_action_is_registered( $action ) && 'bp_get_suggestions' !== $action ) ) {
+		return;
+	}
+
+	if ( bp_is_my_profile() && ! in_array( $action, array( 'members_filter', 'groups_filter', 'blogs_filter', 'get_single_activity_content', 'activity_widget_filter', 'bp_get_suggestions' ), true ) ) {
+		return;
+	}
+
+	if ( pmpro_bp_is_locked_out() ) {
+		wp_send_json_error( array( 'feedback' => __( 'This content is restricted.', 'pmpro-buddypress' ) ), 403 );
+	}
+}
+add_action( 'admin_init', 'pmpro_bp_lockdown_ajax', 20 );
+
+/**
+ * Remove new activity from the heartbeat response if the user is locked out of all of BuddyPress.
+ *
+ * BuddyPress adds new activity to every heartbeat, including logged-out ones.
+ *
+ * @since TBD
+ *
+ * @param array $response The heartbeat response.
+ * @return array
+ */
+function pmpro_bp_lockdown_heartbeat( $response ) {
+	if ( isset( $response['bp_activity_newest_activities'] ) && pmpro_bp_is_locked_out() ) {
+		unset( $response['bp_activity_newest_activities'] );
+	}
+
+	return $response;
+}
+add_filter( 'heartbeat_received', 'pmpro_bp_lockdown_heartbeat', 11 );
+add_filter( 'heartbeat_nopriv_received', 'pmpro_bp_lockdown_heartbeat', 11 );
 
 /**
  * Redirect BuddyPress registration to PMPro
