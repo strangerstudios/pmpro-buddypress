@@ -332,15 +332,16 @@ function pmpro_bp_lockdown_rest_api( $response, $handler, $request ) {
 		return $response;
 	}
 
+	// WordPress matches REST routes case-insensitively, so compare them that way too.
 	$route     = $request->get_route();
 	$namespace = '/' . bp_rest_namespace() . '/';
-	if ( 0 !== strpos( $route, $namespace ) && '/oembed/1.0/embed/activity' !== $route ) {
+	if ( 0 !== stripos( $route, $namespace ) && 0 !== strcasecmp( $route, '/oembed/1.0/embed/activity' ) ) {
 		return $response;
 	}
 
 	// Like the Register and Activate pages, don't lock down sign ups. BuddyBoss also needs its settings route before log in.
 	$open_routes = ( 'buddyboss' === bp_rest_namespace() ) ? 'signup|settings' : 'signup';
-	if ( preg_match( '#^' . preg_quote( $namespace, '#' ) . '[^/]+/(' . $open_routes . ')(/|$)#', $route ) ) {
+	if ( preg_match( '#^' . preg_quote( $namespace, '#' ) . '[^/]+/(' . $open_routes . ')(/|$)#i', $route ) ) {
 		return $response;
 	}
 
