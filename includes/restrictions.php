@@ -548,7 +548,7 @@ function pmpro_bp_get_hidden_activity_content( $activity ) {
 	}
 
 	// With "Show excerpts to non-members" on, show the post's excerpt like PMPro does. Without a manual excerpt, PMPro's excerpt is also the start of the content, so keep the summary.
-	return has_excerpt( $activity_post['post_id'] ) ? get_post_field( 'post_excerpt', $activity_post['post_id'] ) : null;
+	return has_excerpt( $activity_post['post_id'] ) ? wp_kses_post( get_post_field( 'post_excerpt', $activity_post['post_id'] ) ) : null;
 }
 
 /**
