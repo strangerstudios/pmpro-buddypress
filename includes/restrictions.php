@@ -425,6 +425,129 @@ add_filter( 'heartbeat_received', 'pmpro_bp_lockdown_heartbeat', 11 );
 add_filter( 'heartbeat_nopriv_received', 'pmpro_bp_lockdown_heartbeat', 11 );
 
 /**
+ * Get the ID of the post that a post or post comment activity item is about.
+ *
+ * When Site Tracking (or activity tracking for another post type) is on, BuddyPress records
+ * new posts and their comments in the activity stream. Comments made in the activity stream
+ * are attached to the post's activity item instead.
+ *
+ * @since TBD
+ *
+ * @param object $activity The activity item.
+ * @return int The post ID, or 0 if the activity item isn't about a post on this site.
+ */
+function pmpro_bp_get_activity_post_id( $activity ) {
+	static $tracked_types = null;
+
+	if ( empty( $activity->type ) || ! function_exists( 'bp_activity_get_post_types_tracking_args' ) ) {
+		return 0;
+	}
+
+	// Comments made in the activity stream belong to the post's activity item.
+	if ( 'activity_comment' === $activity->type ) {
+		$activity = new BP_Activity_Activity( $activity->item_id );
+		if ( empty( $activity->id ) || empty( $activity->type ) ) {
+			return 0;
+		}
+	}
+
+	if ( null === $tracked_types ) {
+		$tracked_types = array();
+		foreach ( bp_activity_get_post_types_tracking_args() as $tracking_args ) {
+			if ( ! empty( $tracking_args->action_id ) ) {
+				$tracked_types[ $tracking_args->action_id ] = 'post';
+			}
+			if ( ! empty( $tracking_args->comment_action_id ) ) {
+				$tracked_types[ $tracking_args->comment_action_id ] = 'comment';
+			}
+		}
+	}
+
+	if ( empty( $tracked_types[ $activity->type ] ) ) {
+		return 0;
+	}
+
+	// The item ID is the site the post is on. PMPro can only check posts on this site.
+	if ( is_multisite() && (int) $activity->item_id !== get_current_blog_id() ) {
+		return 0;
+	}
+
+	if ( 'comment' === $tracked_types[ $activity->type ] ) {
+		$comment = get_comment( $activity->secondary_item_id );
+		return empty( $comment ) ? 0 : (int) $comment->comment_post_ID;
+	}
+
+	return (int) $activity->secondary_item_id;
+}
+
+/**
+ * Remove the content of an activity item about a post that the current user can't access.
+ *
+ * Comments on the activity item are about the same post, so their content is removed too.
+ * BuddyPress caches the activity objects it returns, so changed items are copies.
+ *
+ * @since TBD
+ *
+ * @param object    $activity The activity item.
+ * @param bool|null $hide     Whether to remove the content, or null to check the activity item's post.
+ * @return object The activity item, or a copy without its content.
+ */
+function pmpro_bp_maybe_hide_activity_content( $activity, $hide = null ) {
+	if ( ! is_object( $activity ) ) {
+		return $activity;
+	}
+
+	if ( null === $hide ) {
+		$post_id = pmpro_bp_get_activity_post_id( $activity );
+		$hide    = ! empty( $post_id ) && ! pmpro_has_membership_access( $post_id ) && ! current_user_can( 'edit_post', $post_id );
+	}
+
+	if ( ! $hide ) {
+		return $activity;
+	}
+
+	$activity          = clone $activity;
+	$activity->content = '';
+
+	if ( ! empty( $activity->children ) && is_array( $activity->children ) ) {
+		$children = array();
+		foreach ( $activity->children as $key => $child ) {
+			$children[ $key ] = pmpro_bp_maybe_hide_activity_content( $child, true );
+		}
+		$activity->children = $children;
+	}
+
+	return $activity;
+}
+
+/**
+ * Don't show the content of restricted posts and their comments in the activity stream.
+ *
+ * BuddyPress saves a summary of the post's content when it records the activity item and shows it
+ * to everyone who can see the activity stream, including through the REST API and RSS feeds. This
+ * removes the content when the activity is loaded, so it also covers activity items recorded
+ * before the post was restricted. The activity item's action, with the post title and link, is still shown.
+ *
+ * @since TBD
+ *
+ * @param array $activity The activity items and their total.
+ * @return array
+ */
+function pmpro_bp_hide_restricted_post_activity_content( $activity ) {
+	if ( empty( $activity['activities'] ) || ! is_array( $activity['activities'] ) || ! function_exists( 'pmpro_has_membership_access' ) || bp_current_user_can( 'bp_moderate' ) ) {
+		return $activity;
+	}
+
+	foreach ( $activity['activities'] as $key => $item ) {
+		$activity['activities'][ $key ] = pmpro_bp_maybe_hide_activity_content( $item );
+	}
+
+	return $activity;
+}
+add_filter( 'bp_activity_get', 'pmpro_bp_hide_restricted_post_activity_content' );
+add_filter( 'bp_activity_get_specific', 'pmpro_bp_hide_restricted_post_activity_content' );
+
+/**
  * Redirect BuddyPress registration to PMPro
  * or redirect PMPro to BuddyPress depending on the
  * "Registration Page" setting.
