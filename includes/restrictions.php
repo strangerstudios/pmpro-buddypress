@@ -514,28 +514,23 @@ function pmpro_bp_get_activity_post( $activity ) {
 }
 
 /**
- * Check whether the current user shouldn't see the content of an activity item about a post.
+ * Get what the current user should see instead of the content of an activity item about a post.
  *
  * @since TBD
  *
  * @param object $activity The activity item.
- * @return bool True if the activity item's content should be removed for the current user.
+ * @return string|null The content to show instead, or null if the current user can see the activity item's content.
  */
-function pmpro_bp_is_activity_content_hidden( $activity ) {
+function pmpro_bp_get_hidden_activity_content( $activity ) {
 	static $post_access = array();
 
 	if ( ! is_object( $activity ) || ! function_exists( 'pmpro_has_membership_access' ) || bp_current_user_can( 'bp_moderate' ) ) {
-		return false;
+		return null;
 	}
 
 	$activity_post = pmpro_bp_get_activity_post( $activity );
 	if ( empty( $activity_post ) ) {
-		return false;
-	}
-
-	// The summary BuddyPress saves for a post is an excerpt, so follow the "Show excerpts to non-members" setting. Comments are never shown.
-	if ( 'post' === $activity_post['type'] && get_option( 'pmpro_showexcerpts' ) ) {
-		return false;
+		return null;
 	}
 
 	$key = get_current_user_id() . ':' . $activity_post['post_id'];
@@ -543,7 +538,17 @@ function pmpro_bp_is_activity_content_hidden( $activity ) {
 		$post_access[ $key ] = pmpro_has_membership_access( $activity_post['post_id'] ) || current_user_can( 'edit_post', $activity_post['post_id'] );
 	}
 
-	return ! $post_access[ $key ];
+	if ( $post_access[ $key ] ) {
+		return null;
+	}
+
+	// Comments are never shown. The summary BuddyPress saves for a post is the start of its content.
+	if ( 'comment' === $activity_post['type'] || ! get_option( 'pmpro_showexcerpts' ) ) {
+		return '';
+	}
+
+	// With "Show excerpts to non-members" on, show the post's excerpt like PMPro does. Without a manual excerpt, PMPro's excerpt is also the start of the content, so keep the summary.
+	return has_excerpt( $activity_post['post_id'] ) ? get_post_field( 'post_excerpt', $activity_post['post_id'] ) : null;
 }
 
 /**
@@ -574,14 +579,14 @@ function pmpro_bp_maybe_hide_activity_content( $activity ) {
 		}
 	}
 
-	$hide = pmpro_bp_is_activity_content_hidden( $activity );
-	if ( ! $hide && null === $children ) {
+	$hidden_content = pmpro_bp_get_hidden_activity_content( $activity );
+	if ( null === $hidden_content && null === $children ) {
 		return $activity;
 	}
 
 	$activity = clone $activity;
-	if ( $hide ) {
-		$activity->content = '';
+	if ( null !== $hidden_content ) {
+		$activity->content = $hidden_content;
 	}
 	if ( null !== $children ) {
 		$activity->children = $children;
@@ -622,6 +627,7 @@ add_filter( 'bp_activity_get_specific', 'pmpro_bp_hide_restricted_post_activity_
  *
  * BuddyBoss rebuilds the content of post and comment activity items from the post or comment
  * when they are displayed, so the content removed when the activity was loaded comes back.
+ * With "Show excerpts to non-members" on, BuddyBoss rebuilds post items from the excerpt, so those are left alone.
  *
  * @since TBD
  *
@@ -630,7 +636,12 @@ add_filter( 'bp_activity_get_specific', 'pmpro_bp_hide_restricted_post_activity_
  * @return string
  */
 function pmpro_bp_hide_restricted_activity_content_display( $content, $activity = null ) {
-	return pmpro_bp_is_activity_content_hidden( $activity ) ? '' : $content;
+	// Comment and @mention emails pass other content with the activity item, and check access as the sender instead of the recipient.
+	if ( doing_action( 'bp_activity_comment_posted' ) || doing_action( 'bp_activity_after_save' ) ) {
+		return $content;
+	}
+
+	return '' === pmpro_bp_get_hidden_activity_content( $activity ) ? '' : $content;
 }
 add_filter( 'bp_get_activity_content_body', 'pmpro_bp_hide_restricted_activity_content_display', 10000, 2 );
 add_filter( 'bp_get_activity_content', 'pmpro_bp_hide_restricted_activity_content_display', 10000, 2 );
@@ -647,7 +658,7 @@ add_filter( 'bp_get_activity_content', 'pmpro_bp_hide_restricted_activity_conten
  * @return string
  */
 function pmpro_bp_hide_restricted_activity_embed( $html, $activity ) {
-	return pmpro_bp_is_activity_content_hidden( $activity ) ? '' : $html;
+	return null === pmpro_bp_get_hidden_activity_content( $activity ) ? $html : '';
 }
 add_filter( 'bp_activity_embed_fallback_html', 'pmpro_bp_hide_restricted_activity_embed', 10, 2 );
 
