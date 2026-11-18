@@ -425,6 +425,250 @@ add_filter( 'heartbeat_received', 'pmpro_bp_lockdown_heartbeat', 11 );
 add_filter( 'heartbeat_nopriv_received', 'pmpro_bp_lockdown_heartbeat', 11 );
 
 /**
+ * Get the activity types that BuddyPress records for posts and their comments.
+ *
+ * @since TBD
+ *
+ * @return array Activity types, with 'post' or 'comment' for each.
+ */
+function pmpro_bp_get_post_activity_types() {
+	static $types = null;
+
+	if ( null !== $types ) {
+		return $types;
+	}
+
+	// Site Tracking's types are included even when it's off, since activity it recorded earlier is still shown.
+	$types = array(
+		'new_blog_post'    => 'post',
+		'new_blog_comment' => 'comment',
+	);
+
+	if ( function_exists( 'bp_activity_get_post_types_tracking_args' ) ) {
+		$tracking_args = bp_activity_get_post_types_tracking_args();
+
+		// Comment tracking entries have an action ID too, so find the comment types first.
+		foreach ( $tracking_args as $args ) {
+			if ( ! empty( $args->comment_action_id ) ) {
+				$types[ $args->comment_action_id ] = 'comment';
+			}
+		}
+		foreach ( $tracking_args as $args ) {
+			if ( ! empty( $args->action_id ) && ! isset( $types[ $args->action_id ] ) ) {
+				$types[ $args->action_id ] = 'post';
+			}
+		}
+	}
+
+	return $types;
+}
+
+/**
+ * Get the post that an activity item is about.
+ *
+ * BuddyPress records new posts and their comments in the activity stream when Site Tracking (or
+ * activity tracking for another post type) is on. Comments made in the activity stream belong to
+ * the post's activity item.
+ *
+ * @since TBD
+ *
+ * @param object $activity The activity item.
+ * @return array|false The post ID and whether the activity item shows the post ('post') or a comment ('comment'), or false if it isn't about a post on this site.
+ */
+function pmpro_bp_get_activity_post( $activity ) {
+	static $root_posts = array();
+
+	if ( empty( $activity->type ) ) {
+		return false;
+	}
+
+	// Comments made in the activity stream are about the post of the activity item they belong to.
+	if ( 'activity_comment' === $activity->type ) {
+		$root_id = (int) $activity->item_id;
+		if ( ! array_key_exists( $root_id, $root_posts ) ) {
+			$root                   = new BP_Activity_Activity( $root_id );
+			$root_posts[ $root_id ] = empty( $root->id ) ? false : pmpro_bp_get_activity_post( $root );
+		}
+
+		return empty( $root_posts[ $root_id ] ) ? false : array( 'post_id' => $root_posts[ $root_id ]['post_id'], 'type' => 'comment' );
+	}
+
+	$types = pmpro_bp_get_post_activity_types();
+	if ( empty( $types[ $activity->type ] ) ) {
+		return false;
+	}
+
+	// The item ID is the site the post is on. PMPro can only check posts on this site.
+	if ( is_multisite() && (int) $activity->item_id !== get_current_blog_id() ) {
+		return false;
+	}
+
+	if ( 'comment' === $types[ $activity->type ] ) {
+		$comment = get_comment( $activity->secondary_item_id );
+		$post_id = empty( $comment ) ? 0 : (int) $comment->comment_post_ID;
+	} else {
+		$post_id = (int) $activity->secondary_item_id;
+	}
+
+	return empty( $post_id ) ? false : array( 'post_id' => $post_id, 'type' => $types[ $activity->type ] );
+}
+
+/**
+ * Get what the current user should see instead of the content of an activity item about a post.
+ *
+ * @since TBD
+ *
+ * @param object $activity The activity item.
+ * @return string|null The content to show instead, or null if the current user can see the activity item's content.
+ */
+function pmpro_bp_get_hidden_activity_content( $activity ) {
+	static $post_access = array();
+
+	if ( ! is_object( $activity ) || ! function_exists( 'pmpro_has_membership_access' ) || bp_current_user_can( 'bp_moderate' ) ) {
+		return null;
+	}
+
+	$activity_post = pmpro_bp_get_activity_post( $activity );
+	if ( empty( $activity_post ) ) {
+		return null;
+	}
+
+	$key = get_current_user_id() . ':' . $activity_post['post_id'];
+	if ( ! isset( $post_access[ $key ] ) ) {
+		$post_access[ $key ] = pmpro_has_membership_access( $activity_post['post_id'] ) || current_user_can( 'edit_post', $activity_post['post_id'] );
+	}
+
+	if ( $post_access[ $key ] ) {
+		return null;
+	}
+
+	// Comments are never shown. The summary BuddyPress saves for a post is the start of its content.
+	if ( 'comment' === $activity_post['type'] || ! get_option( 'pmpro_showexcerpts' ) ) {
+		return '';
+	}
+
+	// With "Show excerpts to non-members" on, show the post's excerpt like PMPro does.
+	if ( has_excerpt( $activity_post['post_id'] ) ) {
+		return wp_kses_post( get_post_field( 'post_excerpt', $activity_post['post_id'] ) );
+	}
+
+	// Without a manual excerpt, PMPro's excerpt is the start of the content, so keep the text of the summary. BuddyPress may add an image, embed URL, audio or video to it, so remove those.
+	$summary = preg_split( '/\R\s*\R/', strip_shortcodes( $activity->content ) );
+	return wp_kses( trim( $summary[0] ), array( 'a' => array( 'href' => true ), 'strong' => array(), 'span' => array() ) );
+}
+
+/**
+ * Remove the content of an activity item, and its comments, when the current user can't see it.
+ *
+ * BuddyPress caches the activity objects it returns, so changed items are copies.
+ *
+ * @since TBD
+ *
+ * @param object $activity The activity item.
+ * @return object The activity item, or a copy with the hidden content removed.
+ */
+function pmpro_bp_maybe_hide_activity_content( $activity ) {
+	if ( ! is_object( $activity ) ) {
+		return $activity;
+	}
+
+	$children = null;
+	if ( ! empty( $activity->children ) && is_array( $activity->children ) ) {
+		foreach ( $activity->children as $key => $child ) {
+			$new_child = pmpro_bp_maybe_hide_activity_content( $child );
+			if ( $new_child !== $child ) {
+				if ( null === $children ) {
+					$children = $activity->children;
+				}
+				$children[ $key ] = $new_child;
+			}
+		}
+	}
+
+	$hidden_content = pmpro_bp_get_hidden_activity_content( $activity );
+	if ( null === $hidden_content && null === $children ) {
+		return $activity;
+	}
+
+	$activity = clone $activity;
+	if ( null !== $hidden_content ) {
+		$activity->content = $hidden_content;
+	}
+	if ( null !== $children ) {
+		$activity->children = $children;
+	}
+
+	return $activity;
+}
+
+/**
+ * Don't show the content of restricted posts and their comments in the activity stream.
+ *
+ * BuddyPress saves a summary of the post's content when it records the activity item and shows it
+ * to everyone who can see the activity stream, including through the REST API and RSS feeds. This
+ * removes the content when the activity is loaded, so it also covers activity items recorded
+ * before the post was restricted. The activity item's action, with the post title and link, is still shown.
+ *
+ * @since TBD
+ *
+ * @param array $activity The activity items and their total.
+ * @return array
+ */
+function pmpro_bp_hide_restricted_post_activity_content( $activity ) {
+	if ( empty( $activity['activities'] ) || ! is_array( $activity['activities'] ) ) {
+		return $activity;
+	}
+
+	foreach ( $activity['activities'] as $key => $item ) {
+		$activity['activities'][ $key ] = pmpro_bp_maybe_hide_activity_content( $item );
+	}
+
+	return $activity;
+}
+add_filter( 'bp_activity_get', 'pmpro_bp_hide_restricted_post_activity_content' );
+add_filter( 'bp_activity_get_specific', 'pmpro_bp_hide_restricted_post_activity_content' );
+
+/**
+ * Don't show the content of restricted posts and their comments when activity is displayed.
+ *
+ * BuddyBoss rebuilds the content of post and comment activity items from the post or comment
+ * when they are displayed, so the content removed when the activity was loaded comes back.
+ * With "Show excerpts to non-members" on, BuddyBoss rebuilds post items from the excerpt, so those are left alone.
+ *
+ * @since TBD
+ *
+ * @param string      $content  The activity item's content.
+ * @param object|null $activity The activity item.
+ * @return string
+ */
+function pmpro_bp_hide_restricted_activity_content_display( $content, $activity = null ) {
+	// Comment and @mention emails pass other content with the activity item, and check access as the sender instead of the recipient.
+	if ( doing_action( 'bp_activity_comment_posted' ) || doing_action( 'bp_activity_after_save' ) ) {
+		return $content;
+	}
+
+	return '' === pmpro_bp_get_hidden_activity_content( $activity ) ? '' : $content;
+}
+add_filter( 'bp_get_activity_content_body', 'pmpro_bp_hide_restricted_activity_content_display', 10000, 2 );
+add_filter( 'bp_get_activity_content', 'pmpro_bp_hide_restricted_activity_content_display', 10000, 2 );
+
+/**
+ * Don't show the content of restricted posts and their comments in activity embeds.
+ *
+ * The oEmbed response loads the activity item directly and includes its content as fallback HTML.
+ *
+ * @since TBD
+ *
+ * @param string $html     The fallback HTML.
+ * @param object $activity The activity item.
+ * @return string
+ */
+function pmpro_bp_hide_restricted_activity_embed( $html, $activity ) {
+	return null === pmpro_bp_get_hidden_activity_content( $activity ) ? $html : '';
+}
+add_filter( 'bp_activity_embed_fallback_html', 'pmpro_bp_hide_restricted_activity_embed', 10, 2 );
+
+/**
  * Redirect BuddyPress registration to PMPro
  * or redirect PMPro to BuddyPress depending on the
  * "Registration Page" setting.
