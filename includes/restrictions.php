@@ -547,8 +547,14 @@ function pmpro_bp_get_hidden_activity_content( $activity ) {
 		return '';
 	}
 
-	// With "Show excerpts to non-members" on, show the post's excerpt like PMPro does. Without a manual excerpt, PMPro's excerpt is also the start of the content, so keep the summary.
-	return has_excerpt( $activity_post['post_id'] ) ? wp_kses_post( get_post_field( 'post_excerpt', $activity_post['post_id'] ) ) : null;
+	// With "Show excerpts to non-members" on, show the post's excerpt like PMPro does.
+	if ( has_excerpt( $activity_post['post_id'] ) ) {
+		return wp_kses_post( get_post_field( 'post_excerpt', $activity_post['post_id'] ) );
+	}
+
+	// Without a manual excerpt, PMPro's excerpt is the start of the content, so keep the text of the summary. BuddyPress may add an image, embed URL, audio or video to it, so remove those.
+	$summary = preg_split( '/\R\s*\R/', strip_shortcodes( $activity->content ) );
+	return wp_kses( trim( $summary[0] ), array( 'a' => array( 'href' => true ), 'strong' => array(), 'span' => array() ) );
 }
 
 /**
