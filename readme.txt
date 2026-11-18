@@ -4,7 +4,7 @@ Tags: community, private community, paid memberships pro, buddypress, buddyboss,
 Requires at least: 5.2
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 
 Restrict access to communities in BuddyPress & BuddyBoss for free or premium members with the top WordPress membership plugin Paid Memberships Pro
 
@@ -140,6 +140,9 @@ Navigate to Memberships > PMPro BuddyPress and locate the "Non-member User Setti
 3. **Group and Member Type Settings** - Add or Invite Members to Groups and Assign Member Types by Membership Level under Memberships > Settings > Levels > Edit.
 
 == Changelog ==
+= 1.6.3 - 2026-11-18 =
+* SECURITY: Content of restricted posts and their comments is no longer shown in the activity stream on this site to users without access. #139 (@dparker1005)
+
 = 1.6.2 - 2026-11-11 =
 * SECURITY: "Lock all of BuddyPress" now also applies to the BuddyPress REST API (matching routes regardless of letter case), the activity oEmbed route, activity RSS feeds, BuddyPress AJAX requests and the activity heartbeat. As a result, BuddyPress blocks that load their data through the REST API show nothing to locked-out users, and a locked-out user's own Friends and Groups tab lists and @mention suggestions no longer load. #138 (@dparker1005)
 * SECURITY: Private messaging and joining groups now follow the membership level settings everywhere, including the REST API and AJAX requests, not just in the interface. #138 (@dparker1005)

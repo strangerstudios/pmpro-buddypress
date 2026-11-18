@@ -427,7 +427,7 @@ add_filter( 'heartbeat_nopriv_received', 'pmpro_bp_lockdown_heartbeat', 11 );
 /**
  * Get the activity types that BuddyPress records for posts and their comments.
  *
- * @since TBD
+ * @since 1.6.3
  *
  * @return array Activity types, with 'post' or 'comment' for each.
  */
@@ -470,7 +470,7 @@ function pmpro_bp_get_post_activity_types() {
  * activity tracking for another post type) is on. Comments made in the activity stream belong to
  * the post's activity item.
  *
- * @since TBD
+ * @since 1.6.3
  *
  * @param object $activity The activity item.
  * @return array|false The post ID and whether the activity item shows the post ('post') or a comment ('comment'), or false if it isn't about a post on this site.
@@ -516,7 +516,7 @@ function pmpro_bp_get_activity_post( $activity ) {
 /**
  * Get what the current user should see instead of the content of an activity item about a post.
  *
- * @since TBD
+ * @since 1.6.3
  *
  * @param object $activity The activity item.
  * @return string|null The content to show instead, or null if the current user can see the activity item's content.
@@ -562,7 +562,7 @@ function pmpro_bp_get_hidden_activity_content( $activity ) {
  *
  * BuddyPress caches the activity objects it returns, so changed items are copies.
  *
- * @since TBD
+ * @since 1.6.3
  *
  * @param object $activity The activity item.
  * @return object The activity item, or a copy with the hidden content removed.
@@ -609,7 +609,7 @@ function pmpro_bp_maybe_hide_activity_content( $activity ) {
  * removes the content when the activity is loaded, so it also covers activity items recorded
  * before the post was restricted. The activity item's action, with the post title and link, is still shown.
  *
- * @since TBD
+ * @since 1.6.3
  *
  * @param array $activity The activity items and their total.
  * @return array
@@ -635,7 +635,7 @@ add_filter( 'bp_activity_get_specific', 'pmpro_bp_hide_restricted_post_activity_
  * when they are displayed, so the content removed when the activity was loaded comes back.
  * With "Show excerpts to non-members" on, BuddyBoss rebuilds post items from the excerpt, so those are left alone.
  *
- * @since TBD
+ * @since 1.6.3
  *
  * @param string      $content  The activity item's content.
  * @param object|null $activity The activity item.
@@ -657,7 +657,7 @@ add_filter( 'bp_get_activity_content', 'pmpro_bp_hide_restricted_activity_conten
  *
  * The oEmbed response loads the activity item directly and includes its content as fallback HTML.
  *
- * @since TBD
+ * @since 1.6.3
  *
  * @param string $html     The fallback HTML.
  * @param object $activity The activity item.
