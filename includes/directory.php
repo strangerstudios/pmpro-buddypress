@@ -26,13 +26,68 @@ add_action('init', 'pmpro_bp_directory_init', 20);
 function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 	// Only apply this to the directory.
 	if ( 'members' != bp_current_component() ) {
-		return;
+		// The AJAX request that loads the directory's list gets its component from the page it says it was sent from, so filter it anywhere.
+		if ( ! doing_action( 'wp_ajax_members_filter' ) && ! doing_action( 'wp_ajax_nopriv_members_filter' ) ) {
+			return;
+		}
+
+		// The same request loads lists of specific users, like a user's friends or friend requests and a group's members or admins.
+		if ( $query_array instanceof BP_Group_Member_Query || ! empty( $query_array->query_vars['user_id'] ) || ! empty( $query_array->query_vars['include'] ) || ! empty( $query_array->query_vars['user_ids'] ) ) {
+			return;
+		}
 	}
 
+	$include = isset( $query_array->query_vars['include'] ) ? $query_array->query_vars['include'] : '';
+	$query_array->query_vars['include'] = pmpro_bp_limit_user_ids_to_directory( $include );
+}
+
+/**
+ * Apply the member directory settings to the list of members in the BuddyPress REST API.
+ *
+ * The REST API doesn't load the Members page, so pmpro_bp_bp_pre_user_query_construct() doesn't run for it.
+ *
+ * @since TBD
+ *
+ * @param array           $args    The arguments for the members query.
+ * @param WP_REST_Request $request The REST API request.
+ * @return array
+ */
+function pmpro_bp_rest_members_get_items_query_args( $args, $request ) {
+	// Only filter the list when the directory is locked. Administrators need every user, like when adding members to a block.
+	if ( ! defined( 'PMPRO_VERSION' ) || ! pmpro_bp_is_member_directory_locked() || current_user_can( 'manage_options' ) ) {
+		return $args;
+	}
+
+	// BuddyPress skips the rest of the query when specific users are asked for.
+	if ( ! empty( $args['user_ids'] ) ) {
+		$args['user_ids'] = pmpro_bp_limit_user_ids_to_directory( $args['user_ids'] );
+	}
+
+	// A user's friends aren't the directory. Neither are the users they follow or their followers in BuddyBoss.
+	if ( ! empty( $args['user_id'] ) && bp_is_active( 'friends' ) ) {
+		return $args;
+	}
+	if ( 'buddyboss' === bp_rest_namespace() && in_array( $request->get_param( 'scope' ), array( 'following', 'followers' ), true ) ) {
+		return $args;
+	}
+
+	$args['include'] = pmpro_bp_limit_user_ids_to_directory( isset( $args['include'] ) ? $args['include'] : '' );
+
+	return $args;
+}
+add_filter( 'bp_rest_members_get_items_query_args', 'pmpro_bp_rest_members_get_items_query_args', 10, 2 );
+
+/**
+ * Limit a list of user IDs to the users in the member directory.
+ *
+ * @since TBD
+ *
+ * @param array|string|bool $include User IDs as an array or comma-separated string, or an empty value for no list.
+ * @return array The user IDs that are in the directory. array( 0 ) if there are none.
+ */
+function pmpro_bp_limit_user_ids_to_directory( $include ) {
 	$pmpro_bp_members_in_directory = pmpro_bp_get_members_in_directory();
 	if ( ! empty( $pmpro_bp_members_in_directory ) ) {
-		$include = isset( $query_array->query_vars['include'] ) ? $query_array->query_vars['include'] : '';
-
 		// Normalize a non-empty string include value into an array. We can't use !empty() here
 		// because '0' is a valid sentinel (BP Profile Search sets include to '0' when a search
 		// returns no matches). is_string() guards against BP's default include value of false.
@@ -48,14 +103,14 @@ function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 			if ( empty( $include ) ) {
 				$include = array( 0 );
 			}
-			$query_array->query_vars['include'] = $include;
+			return $include;
 		} else {
 			// No include filter set, lock the directory to PMPro members.
-			$query_array->query_vars['include'] = $pmpro_bp_members_in_directory;
+			return $pmpro_bp_members_in_directory;
 		}
 	} else {
 		// No members, block the directory.
-		$query_array->query_vars['include'] = array( 0 );
+		return array( 0 );
 	}
 }
 
