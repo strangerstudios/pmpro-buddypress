@@ -79,9 +79,11 @@ function pmpro_bp_get_user_options( $user_id = null ) {
 		// check for level because Admins often don't think to give themselves a level
 		if ( ! empty( $levels ) ) {
 			// Add Ons like PMPro Approvals filter pmpro_hasMembershipLevel, so let's double check
+			// Approvals skips that filter in the admin, which includes AJAX requests, so also check its approval status directly.
+			$approved_level_ids = pmpro_bp_get_approved_level_ids_for_user( $user_id );
 			$new_levels = array();
 			foreach ( $levels as $level ) {
-				if ( pmpro_hasMembershipLevel( $level->id, $user_id ) ) {
+				if ( pmpro_hasMembershipLevel( $level->id, $user_id ) && in_array( $level->id, $approved_level_ids ) ) {
 					$new_levels[] = $level;
 				}
 			}
