@@ -354,6 +354,58 @@ function pmpro_bp_lockdown_rest_api( $response, $handler, $request ) {
 add_filter( 'rest_request_before_callbacks', 'pmpro_bp_lockdown_rest_api', 10, 3 );
 
 /**
+ * Apply the group viewing settings to the BuddyPress REST API.
+ *
+ * The REST API doesn't load BuddyPress pages, so pmpro_bp_restrict_group_viewing() doesn't run for it.
+ * Covers reading the list of groups and reading anything under a single group, like its members.
+ *
+ * @since TBD
+ *
+ * @param WP_REST_Response|WP_HTTP_Response|WP_Error|mixed $response Result to send to the client.
+ * @param array                                            $handler  Route handler used for the request.
+ * @param WP_REST_Request                                  $request  Request used to generate the response.
+ * @return WP_REST_Response|WP_HTTP_Response|WP_Error|mixed
+ */
+function pmpro_bp_restrict_rest_api_group_viewing( $response, $handler, $request ) {
+	if ( is_wp_error( $response ) || ! function_exists( 'bp_rest_namespace' ) || ! function_exists( 'groups_is_user_member' ) || ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
+		return $response;
+	}
+
+	// Only restrict viewing. Joining and creating groups have their own settings.
+	if ( ! in_array( $request->get_method(), array( 'GET', 'HEAD' ), true ) ) {
+		return $response;
+	}
+
+	// WordPress matches REST routes case-insensitively, so compare them that way too.
+	if ( ! preg_match( '#^/' . preg_quote( bp_rest_namespace(), '#' ) . '/[^/]+/groups(?:/(\d+)(?:/.*)?)?/?$#i', $request->get_route(), $matches ) ) {
+		return $response;
+	}
+
+	$user_id = get_current_user_id();
+	if ( ! isset( $matches[1] ) ) {
+		// The list of groups.
+		$can_view = pmpro_bp_user_can( 'groups_page_viewing', $user_id );
+	} else {
+		// A single group. BuddyPress uses the group_id or id parameter over the ID in the route, so check both.
+		$param_id  = $request->get_param( 'group_id' ) ? $request->get_param( 'group_id' ) : $request->get_param( 'id' );
+		$group_ids = array_unique( array( (int) $matches[1], (int) $param_id ) );
+		$can_view  = true;
+		foreach ( $group_ids as $group_id ) {
+			if ( ! pmpro_bp_user_can_view_group( $group_id, $user_id ) ) {
+				$can_view = false;
+			}
+		}
+	}
+
+	if ( ! $can_view ) {
+		return new WP_Error( 'pmpro_bp_restricted', __( 'This content is restricted.', 'pmpro-buddypress' ), array( 'status' => rest_authorization_required_code() ) );
+	}
+
+	return $response;
+}
+add_filter( 'rest_request_before_callbacks', 'pmpro_bp_restrict_rest_api_group_viewing', 10, 3 );
+
+/**
  * Disable the activity RSS feeds if the user is locked out of all of BuddyPress.
  *
  * BuddyPress sends its feeds before pmpro_bp_lockdown_all_bp() runs.
