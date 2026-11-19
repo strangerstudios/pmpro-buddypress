@@ -26,7 +26,15 @@ add_action('init', 'pmpro_bp_directory_init', 20);
 function pmpro_bp_bp_pre_user_query_construct( $query_array ) {
 	// Only apply this to the directory.
 	if ( 'members' != bp_current_component() ) {
-		return;
+		// The AJAX request that loads the directory's list gets its component from the page it says it was sent from, so filter it anywhere.
+		if ( ! doing_action( 'wp_ajax_members_filter' ) && ! doing_action( 'wp_ajax_nopriv_members_filter' ) ) {
+			return;
+		}
+
+		// The same request loads lists of specific users, like a user's friends or friend requests and a group's members or admins.
+		if ( $query_array instanceof BP_Group_Member_Query || ! empty( $query_array->query_vars['user_id'] ) || ! empty( $query_array->query_vars['include'] ) || ! empty( $query_array->query_vars['user_ids'] ) ) {
+			return;
+		}
 	}
 
 	$include = isset( $query_array->query_vars['include'] ) ? $query_array->query_vars['include'] : '';

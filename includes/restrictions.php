@@ -457,6 +457,38 @@ function pmpro_bp_lockdown_ajax() {
 add_action( 'admin_init', 'pmpro_bp_lockdown_ajax', 20 );
 
 /**
+ * Apply the group viewing settings to the AJAX requests that load lists of groups and members.
+ *
+ * These requests don't load the groups pages, so pmpro_bp_restrict_group_viewing() doesn't run for them.
+ * BuddyPress sets up the group from the page the request says it was sent from.
+ *
+ * @since TBD
+ */
+function pmpro_bp_restrict_ajax_group_viewing() {
+	if ( ! function_exists( 'groups_is_user_member' ) || ! function_exists( 'pmpro_getMembershipLevelForUser' ) ) {
+		return;
+	}
+
+	if ( bp_is_group() ) {
+		// A list in a single group, like its members.
+		$can_view = pmpro_bp_user_can_view_group( bp_get_current_group_id() );
+	} elseif ( doing_action( 'wp_ajax_groups_filter' ) || doing_action( 'wp_ajax_nopriv_groups_filter' ) ) {
+		// A list of groups, like the Groups page or a user's groups.
+		$can_view = pmpro_bp_user_can( 'groups_page_viewing' );
+	} else {
+		return;
+	}
+
+	if ( ! $can_view ) {
+		wp_send_json_error( array( 'feedback' => __( 'This content is restricted.', 'pmpro-buddypress' ) ), 403 );
+	}
+}
+add_action( 'wp_ajax_groups_filter', 'pmpro_bp_restrict_ajax_group_viewing', 1 );
+add_action( 'wp_ajax_nopriv_groups_filter', 'pmpro_bp_restrict_ajax_group_viewing', 1 );
+add_action( 'wp_ajax_members_filter', 'pmpro_bp_restrict_ajax_group_viewing', 1 );
+add_action( 'wp_ajax_nopriv_members_filter', 'pmpro_bp_restrict_ajax_group_viewing', 1 );
+
+/**
  * Remove new activity from the heartbeat response if the user is locked out of all of BuddyPress.
  *
  * BuddyPress adds new activity to every heartbeat, including logged-out ones.
